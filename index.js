@@ -12,7 +12,7 @@ s7client.ConnectTo('192.168.1.10', 0, 2, function(err) {
         return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
 
     // Read the first byte from PLC process outputs...
-    s7client.ReadArea(s7client.S7AreaDB, 14 , 0, 11, s7client.S7WLByte,function (err, buf) {
+    s7client.ReadArea(s7client.S7AreaDB, 14 , 0, 15, s7client.S7WLByte,function (err, buf) {
         if (err) {
             console.log(err);
         }
