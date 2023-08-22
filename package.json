@@ -13,6 +13,8 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "node-snap7": "^1.0.6",
-    "nodes7": "^0.3.18"
+    "nodemon": "^3.0.1",
+    "nodes7": "^0.3.18",
+    "prebuild-install": "^7.1.1"
   }
 }
