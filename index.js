@@ -35,5 +35,33 @@ setInterval(function(){
         })   
 },5000); 
 
+
+const multiVars = 
+[
+    {
+        "Area": s7client.S7AreaDB,
+        "WordLen": s7client.S7WLByte,
+        "DBNumber": 14,
+        "Start": 0,
+        "Amount": 14
+    },
+    {
+        "Area": s7client.S7AreaDB,
+        "WordLen": s7client.S7WLByte,
+        "DBNumber":11,
+        "Start": 16,
+        "Amount": 1
+      },
+]
+
+s7client.ReadMultiVars(multiVars, function(err,result){
+    console.log("callback");
+    if (err) {
+        console.log(err);
+    }
+    console.log("lectura3");
+    console.log(result);
+})
+
 s7client.Disconnect();
 
