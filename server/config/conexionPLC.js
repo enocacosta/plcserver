@@ -5,7 +5,7 @@ const connectToPLC = () => {
     return new Promise((resolve, reject) => {
         s7client.ConnectTo('192.168.1.10', 0, 2, (err) => {
             if (err) {
-                reject(new Error(`Error promise: ${err}`));
+                reject(new Error(`Error promesa conexion plc: ${err}`));
             } else {
                 resolve('Conexión exitosa');
             }
@@ -18,7 +18,7 @@ const connectionPLC = async () => {
         const conn = await connectToPLC();
         console.log(`Conexion con PLC establecida: ${conn}`);
     } catch (error) {
-        console.error(`Error function: ${error.message}`);
+        console.error(`Error function conexion plc: ${error.message}`);
     }
 };
 

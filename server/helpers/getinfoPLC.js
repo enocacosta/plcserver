@@ -1,12 +1,27 @@
 const { S7Client } = require('node-snap7');
 const s7client = new S7Client();
-const multiVars = require('../model/modeloRequest')
 
-s7client.ReadMultiVars(multiVars, function(err,result){
-    console.log("callback");
-    if (err) {
-        console.log(err);
+
+const readAreaAsync = () =>{
+    return new Promise((resolve, reject) => {
+        s7client.ReadArea(s7client.S7AreaDB, 54, 0, 46, s7client.S7WLByte, (err, buf) => {
+            if (err) {
+                reject(`Error promesa getInfo: ${err}`);
+            } else {
+                resolve(buf);
+            }
+        });
+    });
+}
+
+const getinforPLC = async () => {
+    try {
+        const buf = await readAreaAsync();
+        console.log("Lectura");
+        console.log(buf);
+    } catch (err) {
+        console.log(`Error funcion ${err}`);
     }
-    console.log("lectura3");
-    console.log(result);
-})
+}
+
+module.exports = getinforPLC
