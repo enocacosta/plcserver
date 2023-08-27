@@ -6,7 +6,7 @@ const readAreaAsync = () =>{
     return new Promise((resolve, reject) => {
         s7client.ReadArea(s7client.S7AreaDB, 54, 0, 46, s7client.S7WLByte, (err, buf) => {
             if (err) {
-                reject(`Error promesa ${err}`);
+                reject(`Error promesa getInfo: ${err}`);
             } else {
                 resolve(buf);
             }
