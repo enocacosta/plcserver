@@ -1,48 +1,34 @@
 const express = require('express')
 const cors = require('cors');
 const app = express();
-const connectionPLC = require('./config/conexionPLC')
-const getinforPLC = require('./helpers/getinfoPLC')
-const setParam = require('./helpers/setParam')
+const {S7Client} = require('s7client');
 
-setParam();
-connectionPLC()
-const result = getinforPLC();
-getinforPLC()
-console.log(result);
-app.use(cors());
+// PLC Connection Settings
+const plcSettings = {
+  name: "LocalPLC",
+  host: '192.168.1.10',
+  port: 102,
+  rack: 0,
+  slot: 2
+};
 
-// const s7client = new snap7.S7Client();
+// DBA to read
+let dbNr = 14;
+let dbVars = [
+  { type: "DINT", start: 7 },
+  { type: "WORD", start: 7},
+  { type: 'BYTE', start: 2 }
+];
 
-// s7client.ConnectTo('192.168.1.10', 0, 2, function(err) {
-//     if(err) {
-//         return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
-//     }else{
-//         console.log('Connection succesful');
-//     }
-// }); 
+let client = new S7Client(plcSettings);
+client.on('error', console.error);
 
-// Read the first byte from PLC process outputs...
-// setInterval(function(){
-//     s7client.ReadArea(s7client.S7AreaDB, 14 , 0, 14, s7client.S7WLBit,function (err, buf) {
-//         if (err) {
-//             console.log(err);
-//         }
-//         console.log("Lectura 1");
-//         console.log(buf);
-//         })   
-// },5000); 
+(async function() {
+  await client.connect();
 
-// // Read the first byte from PLC process outputs... leer un solo byte
-// setInterval(function(){
-//     s7client.ReadArea(s7client.S7AreaDB, 13 , 16, 1, s7client.S7WLBit,function (err, buf1) {
-//         if (err) {
-//             console.log(err);
-//         }
-//         console.log("Lectura 2");
-//         console.log(buf1);
-//         })   
-// },5000); 
+  // Read DB
+  const res = await client.readDB(dbNr, dbVars);
+  console.log(res);
 
-
-
+  client.disconnect();
+})();
