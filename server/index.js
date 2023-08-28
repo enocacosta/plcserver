@@ -16,18 +16,15 @@ const plcSettings = {
 
 // DBA to read
 let dbNr = 14;
-let dbVars = [{
-    ident: 'Int',
-    type: 'INT',
-    start: 4,
-}
-]
+let dbVars = [
+    { type: "BYTE", start: 0, bit:14 },
+
+  ];
 
 let client = new S7Client(plcSettings);
 client.on('error', console.error);
 
 (async function() {
-    await client.setParam(1,5000);
   await client.connect();
 
   // Read DB
