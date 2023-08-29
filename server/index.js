@@ -14,11 +14,17 @@ const plcSettings = {
 
 // DBA to read
 let dbNr = 14;
-let dbVars = [
-  { type: "DINT", start: 7 },
-  { type: "WORD", start: 7},
-  { type: 'BYTE', start: 2 }
-];
+let dbVars = [];
+for(let i=0; i<15; i++){
+    dbVars.push({type: "BYTE" , start: i});
+// let dbVars = [
+//   { type: "DINT", start: 7 },
+//   { type: "WORD", start: 7},
+//   { type: 'BYTE', start: 2 }
+// ];
+}
+console.log("array");
+console.log(dbVars);
 
 let client = new S7Client(plcSettings);
 client.on('error', console.error);
