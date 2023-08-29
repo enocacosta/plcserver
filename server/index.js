@@ -18,6 +18,7 @@ s7client.ConnectTo('192.168.1.10', 0, 2, function(err) {
     }
 }); 
 
+let array = ''
 
 //Read the first byte from PLC process outputs...
 setInterval(function(){
@@ -27,19 +28,29 @@ setInterval(function(){
         }
         console.log("Lectura 1");
         console.log(buf);
-        let array='';
+
+        let concatenated = '';
+
         for(let i=0; i<14;i++){
           buffer=buf[i].toString(16);
-          console.log(buffer);
-          array += buffer + ' ';
+          concatenated += buffer + ' ';
         }
-        array.trim();
-        console.log(array);
+
+        concatenated.trim();
+        array = concatenated;
+        console.log(concatenated);
+
+        const newdatoModelo = new Modelo({
+          array: concatenated,
+        })
+        
+        const save = newdatoModelo.save()
 
         })   
 },5000); 
 
 
+;
 
 
 
