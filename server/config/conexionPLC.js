@@ -13,5 +13,4 @@ const conexionPLC = async() => {
  
 };
 
-
 module.exports = conexionPLC

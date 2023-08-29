@@ -1,5 +1,8 @@
 const client = require('./plcSettings');
 const {dbNr,dbVars} = require('../helpers/dbSettings')
+const Modelo = require('../model/modeloDB')
+
+
 
 client.on('error', console.error);
 
@@ -13,8 +16,17 @@ const readPlc = async()=>{
         for (let i = 0; i < dbVars.length; i++) {
           values += dbVars[i].value.toString(16) + ' ';
         } 
-      
+         
+        values.trim();
         console.log(values);
+        const newdatoModelo = new Modelo({
+            array: values,
+        })
+          
+        const save = newdatoModelo.save()
+        
+
+
         
     } catch (error) {
         console.log(error);

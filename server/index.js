@@ -3,8 +3,11 @@ const cors = require('cors');
 const app = express();
 const conexionPLC = require('./config/conexionPLC');
 const readPlc = require('./config/readPlc');
+const conexionDB = require('./config/conexionDB');
 
-conexionPLC()
+conexionPLC();
+
+conexionDB();
 
 setInterval(readPlc,5000);
 
