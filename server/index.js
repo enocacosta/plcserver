@@ -15,26 +15,31 @@ const plcSettings = {
 // DBA to read
 let dbNr = 14;
 let dbVars = [];
-for(let i=0; i<15; i++){
+for(let i=0; i<14; i++){
     dbVars.push({type: "BYTE" , start: i});
-// let dbVars = [
-//   { type: "DINT", start: 7 },
-//   { type: "WORD", start: 7},
-//   { type: 'BYTE', start: 2 }
-// ];
 }
-console.log("array");
-console.log(dbVars);
 
 let client = new S7Client(plcSettings);
 client.on('error', console.error);
+ 
 
 (async function() {
   await client.connect();
 
+  
   // Read DB
-  const res = await client.readDB(dbNr, dbVars);
-  console.log(res);
+  setInterval(async function(){
 
-  client.disconnect();
+  const res = await client.readDB(dbNr, dbVars);
+
+  let values = ' ';
+
+  for (let i = 0; i < dbVars.length; i++) {
+    values += dbVars[i].value.toString(16) + ' ';
+  } 
+
+  console.log(values);
+  },5000);
+
+  
 })();
