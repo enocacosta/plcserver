@@ -4,13 +4,14 @@ var snap7 = require('node-snap7');
 const app = express();
 const conexionDB = require('./config/conexionDB');
 const Modelo = require('./model/modeloDB');
+require('dotenv').config();
 
 conexionDB();
 app.use(cors());
 
-const s7client = new snap7.S7Client();
 
-s7client.ConnectTo('192.168.1.10', 0, 2, function(err) {
+const s7client = new snap7.S7Client();
+s7client.ConnectTo(process.env.IPDIR, 0, 1, function(err) {
     if(err) {
         return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
     }else{
@@ -22,7 +23,7 @@ let array = ''
 
 //Read the first byte from PLC process outputs...
 setInterval(function(){
-    s7client.ReadArea(s7client.S7AreaDB, 14 , 0, 14, s7client.S7WLByte,function (err, buf) {
+    s7client.ReadArea(s7client.S7AreaDB, 1 , 0, 15, s7client.S7WLByte,function (err, buf) {
         if (err) {
             console.log(err);
         }
@@ -31,7 +32,7 @@ setInterval(function(){
 
         let concatenated = '';
 
-        for(let i=0; i<14;i++){
+        for(let i=0; i<15;i++){
           buffer=buf[i].toString(16);
           concatenated += buffer + ' ';
         }
