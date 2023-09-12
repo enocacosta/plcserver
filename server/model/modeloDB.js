@@ -1,9 +1,7 @@
 const { default: mongoose } = require('mongoose');
 
 const datosDb = mongoose.model('datos', new mongoose.Schema({
-    hora: String,
-    cMalos: String,
-    cBidones: String,
+    array: String,
   },{
     versionKey: false,
     timestamps: true
