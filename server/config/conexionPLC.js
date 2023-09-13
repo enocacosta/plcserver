@@ -1,4 +1,4 @@
-const client = require('./plcSettings');
+const client = require('../helpers/plcSettings');
 
 client.on('error', console.error);
 
