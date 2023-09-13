@@ -6,6 +6,7 @@ const datosDb = mongoose.model('datosOEE', new mongoose.Schema({
   fallosSobre: Number,
   fallosManual: Number,
   estadoMaquina: Number,
+  fecha: Date,
   },{
     versionKey: false,
     timestamps: true

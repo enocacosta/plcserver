@@ -21,12 +21,15 @@ const readPlc = async()=>{
                 oee[key]=accumulation;
             }
         }      
+        const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
+        
 
         const newdatoModelo = new Modelo({
             contador2: oee.contador2,
             contador1: oee.contador1,
             fallosSobre: oee.fallosSobre,
             estadoMaquina: oee.fallosManual,
+            fecha,
         })
           
         const save = newdatoModelo.save()  
