@@ -4,12 +4,15 @@ const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
 const conexionDB = require('./config/conexionDB');
 const userApp = require('./routes/user');
+const {queryDb,result} = require('./helpers/queryC');
 
 conexionPLC();
 
 conexionDB();
 
 setInterval(readPlc,5000);
+
+queryDb();
 
 app.use('/', userApp);
 

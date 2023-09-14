@@ -4,6 +4,7 @@ const sliceBuff = require('../helpers/slice');
 const calcularAcumulado = require('../helpers/hexToDecimal')
 const Modelo = require('../model/modeloDB');
 const modelBuffer = require('../model/modelBuffer');
+const datosDb = require('../model/modeloDB');
 
 client.on('error', console.error);
 let values = {}
@@ -24,13 +25,14 @@ const readPlc = async()=>{
         }      
         const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
         
-        console.log(oee);
+        // console.log(oee);
 
         const newdatoModelo = new Modelo({
             contador2: oee.contador2,
             contador1: oee.contador1,
             fallosSobre: oee.fallosSobre,
-            estadoMaquina: oee.fallosManual,
+            fallosManual:oee.fallosManual,
+            estadoMaquina: oee.estadoMaquina,
             fecha,
         })
         
@@ -42,11 +44,9 @@ const readPlc = async()=>{
             console.error('Error saving document:', error);
           });
 
-
-        
     } catch (error) {
         console.log(error);
     }
 }
 
-module.exports = {readPlc}
+module.exports = {readPlc,oee}
