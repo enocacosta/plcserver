@@ -4,7 +4,6 @@ const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
 const conexionDB = require('./config/conexionDB');
 const userApp = require('./routes/user');
-const datosDb = require('./model/modeloDB');
 
 conexionPLC();
 

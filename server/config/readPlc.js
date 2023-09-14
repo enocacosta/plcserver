@@ -3,6 +3,7 @@ const {dbNr,dbVars} = require('../helpers/dbSettings');
 const sliceBuff = require('../helpers/slice');
 const calcularAcumulado = require('../helpers/hexToDecimal')
 const Modelo = require('../model/modeloDB');
+const modelBuffer = require('../model/modelBuffer');
 
 client.on('error', console.error);
 let values = {}
@@ -23,6 +24,7 @@ const readPlc = async()=>{
         }      
         const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
         
+        console.log(oee);
 
         const newdatoModelo = new Modelo({
             contador2: oee.contador2,
@@ -31,7 +33,7 @@ const readPlc = async()=>{
             estadoMaquina: oee.fallosManual,
             fecha,
         })
-          
+        
         const save = newdatoModelo.save()  
         .then(() => {
             console.log('Document saved successfully');
@@ -39,6 +41,8 @@ const readPlc = async()=>{
           .catch((error) => {
             console.error('Error saving document:', error);
           });
+
+
         
     } catch (error) {
         console.log(error);
