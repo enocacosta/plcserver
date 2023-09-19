@@ -32,34 +32,7 @@ const calcularTiempo = () =>{
     }
   }
     console.log(tiempoDis,tiempoStand,tiempoParado);
-    // return(tiempoDis,tiempoStand,tiempoParado)
-    //console.log(tiempoDis,tiempoStand,tiempoParado);
 }
-
-// if (oee.estadoMaquina !== null) {
-//     const accionesPorEstado = {
-//       1: () => {
-//         tiempoDis += tiempoLectura / 1000;
-//         return tiempoDis
-//       },
-//       2: () => {
-//         tiempoStand += tiempoLectura / 1000;
-//         return tiempoStand
-//       },
-//       3: () => {
-//         tiempoParado += tiempoLectura / 1000;
-//         return tiempoParado
-//       },
-//       default: () => {
-//         console.log('Estado no valido');
-//       },
-//     };
-//     const accionElegida = accionesPorEstado[oee.estadoMaquina] || accionesPorEstado.default;
-//     accionElegida(); // Execute the corresponding function
-//     console.log(tiempoDis,tiempoStand,tiempoParado);
-
-
-
 
 module.exports = {
   tiempoDis,

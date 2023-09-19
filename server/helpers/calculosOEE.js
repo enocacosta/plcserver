@@ -1,11 +1,7 @@
-// const {tiempoDis,tiempoStand,tiempoParado,calcularTiempo,cronCalcularTiempo,} = require('./calcularTiempo');
 const {readPlc,oee} = require('../config/readPlc');
 const { TiempoDis, TiempoStand, TiempoParado, calcularTiempo, cronCalcularTiempo } = require('./calcularTiempo');
 
 calcularTiempo(); // This will update the tiempoDis, tiempoStand, tiempoParado values
-
-// Now you can retrieve their current values using the functions
-
 
 let disponibilidad;
 let rendimiento;
