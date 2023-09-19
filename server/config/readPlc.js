@@ -2,10 +2,10 @@ const client = require('../helpers/plcSettings');
 const {dbNr,dbVars} = require('../helpers/dbSettings');
 const sliceBuff = require('../helpers/slice');
 const calcularAcumulado = require('../helpers/hexToDecimal');
-const {calcularTiempo,cronCalcularTiempo} = require('../helpers/calcularTiempo');
 const Modelo = require('../model/modeloDB');
 const modelBuffer = require('../model/modelBuffer');
 const datosDb = require('../model/modeloDB');
+// const {tiempoDis,tiempoStand,tiempoParado,calcularTiempo,cronCalcularTiempo}  = require('../helpers/calcularTiempo');
 
 client.on('error', console.error);
 
@@ -28,8 +28,7 @@ const readPlc = async()=>{
         
         const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
         
-        calcularTiempo(oee.estadoMaquina);
-        // console.log(oee);
+        //console.log(oee);
 
         const newdatoModelo = new Modelo({
             contador2: oee.contador2,
