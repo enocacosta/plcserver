@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <title>Información de Producción</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="scripts.js"></script>
+    
+
+</head>
+
+
+<body>
+    <div class="contenedor-global">
+        <div class="contenedor-superior">
+
+            <div class="contenedor-superiorizq">
+                
+        
+                <div class="production-info">
+                    
+                    <p>Producción día: <input readonly class="textbox" id="producciondiaria" value="500"> cajas</p>
+        
+                    
+                    <p>Pruducción turno: <input readonly class="textbox" id="produccionturno" value="500"> cajas</p>
+        
+                    
+                    <p>Presentación: <input readonly class="textbox" id="presentacion" value="500"> ml</p>
+
+                    <p>P. Programada: <input readonly class="textbox" id="paradaprogramada" value="500"> min</p>
+
+                    <p>Parada: <input readonly class="textbox" id="parada" value="500"> min</p>
+                </div>
+                
+        
+            </div>
+
+                
+                
+            <div class="contenedor-superiorder">
+
+                <div class="circular-progress">
+                    <div>
+                        <canvas id="Disponibilidad" width="200" height="200"></canvas>
+                    </div>
+                    
+                    <div>
+                        <canvas id="Rendimiento" width="200" height="200"></canvas>
+                    </div>
+
+                    <div>
+                        <canvas id="Calidad" width="200" height="200"></canvas>
+                    </div>
+
+                    <div>
+                        <canvas id="OEE" width="230" height="260"></canvas>
+                    </div>
+
+                    <div>
+                        <canvas id="timeChart" width="310" height="310"></canvas>
+                    </div>
+
+                    <div>
+                        <canvas id="esperadooee" width="140" height="300"></canvas>
+                        <p style="text-align: center;">OEE Esperado:</p>
+                        <button class="btn" id="esperadooeebt"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetb" value="0" style="text-align: center;">
+                    </div>
+                </div>
+
+                
+
+            </div>
+
+        
+
+        </div>
+
+
+        <div class="contenedor-inferior">
+
+
+            <div class="contenedor-inferiorizq">
+                <img src="bandatransportadora.png" style="width:100%;">
+                <button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button>
+                <button id="maq2" class="leds" style="top: 70%; left: 35%;">RUN</button>
+                <button id="maq3" class="leds" style="top: 70%; left: 60%;">RUN</button>
+                <button id="maq4" class="leds" style="top: 70%; left: 90%;">RUN</button>
+            </div>
+
+            <div class="contenedor-inferiorder">
+                <div>
+                    <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> cajas/min</p>
+
+                </div>
+                <div>
+                    <canvas id="velocidad" width="310" height="310"></canvas>
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+</body>
+</html>

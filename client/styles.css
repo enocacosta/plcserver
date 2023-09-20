@@ -1,0 +1,139 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c4f63;
+    font-weight: 700;
+}
+
+
+.contenedor-global {
+    width: 100%;
+
+  
+}
+
+
+.contenedor-superior {
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+    flex: 1;
+    
+}
+
+.contenedor-superiorizq {
+    width: 20%;
+    text-align: left;
+    margin-left: 3ch;
+    
+}
+
+.contenedor-superiorder {
+    width: 80%;
+    
+}
+
+
+/* Estilos para el contenedor inferior */
+.contenedor-inferior {
+    display: flex;
+    justify-content: space-between;
+    height: 50%;
+    flex: 1;
+}
+
+.contenedor-inferiorizq {
+    width: 70%;
+    position: relative;
+}
+
+.contenedor-inferiorder {
+    width: 30%;
+}
+
+.production-info {
+    margin-top: 20px;
+}
+
+/* Estilos de barras circulares */
+.circular-progress {
+    display: flex;
+    
+    margin-top: 25px;
+}
+
+.progress-circle {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-text {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+/* Estilos del gráfico circular de tiempos de operación */
+.time-chart {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.images {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.textbox {
+    background-color: #f2fdf6;
+    color: #2c4f63;
+    font-weight: 700;
+    border: none;
+    height: 30px;
+    width: 80px;
+    border: 2px;
+    border-radius: 4px;
+
+}
+
+.btn {
+    background-color: #969eb1;
+    border: none;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+    color: white;
+    padding: 8px 12px; /* Some padding */
+    font-size: 18px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+    margin-right: 0px;
+  }
+
+#esperadooeetb {
+    border: none;
+    border-radius: 0px;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 8px 12px; /* Some padding */
+    font-size: 18px; /* Set a font size */
+    cursor: pointer; /* Mouse pointer on hover */
+    margin-right: 0px;
+    height: 20px;
+
+}
+
+.leds {
+    position: absolute;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 30px;
+}
