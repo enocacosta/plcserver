@@ -1,18 +1,14 @@
-const {readPlc,oee} = require('../config/readPlc');
+const {oee} = require('../config/readPlc');
 
 const cron = require('node-cron');
 const tiempoLectura = 5000;
-if (typeof tiempoDis === 'undefined') {
-  tiempoDis = 0;
-}
-if (typeof tiempoStand === 'undefined') {
-  tiempoStand = 0;
-}
-if (typeof tiempoParado === 'undefined') {
-  tiempoParado = 0;
-}
 
+//estas variables corresponden a los 3 estados de la maquina
+tiempoDis = 0; 
+tiempoStand = 0;
+tiempoParado = 0;
 
+//cada cambio de turno los tiempos vuelven a 0
 const cronCalcularTiempo = cron.schedule('10,10,10 00,00,00 0,08,16 * * *', reset = () =>{
   tiempoDis = 0;
   tiempoParado = 0;
@@ -21,8 +17,8 @@ const cronCalcularTiempo = cron.schedule('10,10,10 00,00,00 0,08,16 * * *', rese
 );
 
 const calcularTiempo = () =>{
+//se le suma el tiempo entre la llegada de paquetes a los tiempos de la maquina que depende de los estados
   if (oee.estadoMaquina !== null) {
-    
     if (oee.estadoMaquina == 1){
       tiempoDis += tiempoLectura / 1000;
     }else if (oee.estadoMaquina == 2){
