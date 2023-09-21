@@ -20,7 +20,7 @@ let tiempoDisTraba = (28800-tiempoParado)
 disponibilidad = (tiempoDisTraba/28800)*100;
 
 //calculo rendimiento
-let contador = oee.contador1+oee.contador2-oee.fallosSobre;
+let contador = oee.contador1+oee.contador2;
 totalCant = (contador)-(contadorSet);
 let availableOperatingTime = tiempoDis + tiempoStand;
 rendimiento = ((30*(totalCant))/availableOperatingTime)*100;
