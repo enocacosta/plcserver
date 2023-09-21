@@ -35,17 +35,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     function generarNumeroAleatorio() {
-        timeChartval = Math.floor(Math.random() * 100) + 1;
-        valrendimiento = Math.floor(Math.random() * 100) + 1;
-        valdisponibilidad = Math.floor(Math.random() * 100) + 1;
-        valcalidad = Math.floor(Math.random() * 100) + 1;
-        valoee = Math.floor(Math.random() * 100) + 1;
-        velvar = Math.floor(Math.random() * 8) + 23;
-        valmaq1 = Math.floor(Math.random() * 2);
-        valmaq2 = Math.floor(Math.random() * 2);
-        valmaq3 = Math.floor(Math.random() * 2);
-        valmaq4 = Math.floor(Math.random() * 2);
-        console.log(valmaq1);
+
+        fetch('http://localhost:5000')
+        .then(res =>{
+        return res.json();
+        })
+        .then(data =>{
+            console.log(data)
+
+
+            timeChartval = Math.floor(Math.random() * 100) + 1;
+
+            valrendimiento = data.oeeCalculado.rendimiento;
+            valdisponibilidad = data.oeeCalculado.disponibilidad;
+            valcalidad = data.oeeCalculado.calidad;
+
+            valoee = Math.floor(Math.random() * 100) + 1;
+            velvar = Math.floor(Math.random() * 8) + 23;
+            valmaq1 = Math.floor(Math.random() * 2);
+            valmaq2 = Math.floor(Math.random() * 2);
+            valmaq3 = Math.floor(Math.random() * 2);
+            valmaq4 = Math.floor(Math.random() * 2);
+
+
+        }).catch(error => console.log(error));
         
         timeChart.data.datasets[0].data = [timeChartval, 100-timeChartval, (100-timeChartval)*1.45];
         Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
