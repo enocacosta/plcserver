@@ -46,11 +46,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
             timeChartval = Math.floor(Math.random() * 100) + 1;
 
-            valrendimiento = data.oeeCalculado.rendimiento;
-            valdisponibilidad = data.oeeCalculado.disponibilidad;
-            valcalidad = data.oeeCalculado.calidad;
+            valrendimiento = parseInt(data.rendimiento);
+            valdisponibilidad = parseInt(data.disponibilidad);
+            valcalidad = parseInt(data.calidad);
 
-            valoee = valrendimiento*valdisponibilidad*valcalidad;
+            valoee = (valrendimiento*valdisponibilidad*valcalidad)/10000;
 
             
             velvar = Math.floor(Math.random() * 8) + 23;
