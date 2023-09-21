@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', function () {
             valdisponibilidad = data.oeeCalculado.disponibilidad;
             valcalidad = data.oeeCalculado.calidad;
 
-            valoee = Math.floor(Math.random() * 100) + 1;
+            valoee = valrendimiento*valdisponibilidad*valcalidad;
+
+            
             velvar = Math.floor(Math.random() * 8) + 23;
             valmaq1 = Math.floor(Math.random() * 2);
             valmaq2 = Math.floor(Math.random() * 2);
