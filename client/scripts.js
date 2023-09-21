@@ -54,10 +54,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             
             velvar = Math.floor(Math.random() * 8) + 23;
-            valmaq1 = Math.floor(Math.random() * 2);
-            valmaq2 = Math.floor(Math.random() * 2);
-            valmaq3 = Math.floor(Math.random() * 2);
-            valmaq4 = Math.floor(Math.random() * 2);
+            valmaq1 = data.estadoMaquina;
+            valmaq2 = data.estadoMaquina;
+            valmaq3 = data.estadoMaquina;
+            valmaq4 = data.estadoMaquina;
 
 
         }).catch(error => console.log(error));
@@ -122,36 +122,48 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('velocidadtb').value= velvar;
 
 
-        if (valmaq1 == 0) {
-            maquina1.style.backgroundColor = "#9a0501"
-            maquina1.innerHTML = "STOP"
-        }else{
+        if (valmaq1 == 1) {
             maquina1.style.backgroundColor = "green"
             maquina1.innerHTML = "RUN"
+        }else if(valmaq1== 2){
+            maquina1.style.backgroundColor = "blue"
+            maquina1.innerHTML = "STAND BY"
+        }else if (valmaq1== 3){
+            maquina1.style.backgroundColor = "9a0501"
+            maquina1.innerHTML = "STOP"
         }
 
-        if (valmaq2 == 0) {
-            maquina2.style.backgroundColor = "#9a0501"
-            maquina2.innerHTML = "STOP"
-        }else{
+        if (valmaq2 == 1) {
             maquina2.style.backgroundColor = "green"
             maquina2.innerHTML = "RUN"
+        }else if(valmaq2== 2){
+            maquina2.style.backgroundColor = "blue"
+            maquina2.innerHTML = "STAND BY"
+        }else if (valmaq2== 3){
+            maquina2.style.backgroundColor = "9a0501"
+            maquina2.innerHTML = "STOP"
         }
 
-        if (valmaq3 == 0) {
-            maquina3.style.backgroundColor = "#9a0501"
-            maquina3.innerHTML = "STOP"
-        }else{
+        if (valmaq3 == 1) {
             maquina3.style.backgroundColor = "green"
             maquina3.innerHTML = "RUN"
+        }else if(valmaq3== 2){
+            maquina3.style.backgroundColor = "blue"
+            maquina3.innerHTML = "STAND BY"
+        }else if (valmaq3== 3){
+            maquina3.style.backgroundColor = "9a0501"
+            maquina3.innerHTML = "STOP"
         }
 
-        if (valmaq4 == 0) {
-            maquina4.style.backgroundColor = "#9a0501"
-            maquina4.innerHTML = "STOP"
-        }else{
+        if (valmaq4 == 1) {
             maquina4.style.backgroundColor = "green"
             maquina4.innerHTML = "RUN"
+        }else if(valmaq4== 2){
+            maquina4.style.backgroundColor = "blue"
+            maquina4.innerHTML = "STAND BY"
+        }else if (valmaq4== 3){
+            maquina4.style.backgroundColor = "9a0501"
+            maquina4.innerHTML = "STOP"
         }
         
 
