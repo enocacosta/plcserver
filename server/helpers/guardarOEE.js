@@ -9,14 +9,14 @@ const guardarOEE = async() =>{
         const oeeCalculado = getOEE();
         const turnoNumero = getTurnoNumero();
 
-        const newdatoModelo = new datosOEE({
+        const newdatosOEE = new datosOEE({
             disponibilidad: oeeCalculado.disponibilidad,
             rendimiento: oeeCalculado.rendimiento,
             calidad: oeeCalculado.calidad,
             turno: turnoNumero
         })
         
-        const save = await newdatoModelo.save()  
+        const save = await newdatosOEE.save()  
         .then(() => {
             console.log('Document saved successfully in datos oeecalculados');
           })

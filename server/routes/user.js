@@ -10,7 +10,7 @@ app.get('/', (req, res) => {
     try {
         //importar valores calculados de oee
         const oeeCalculado = getOEE();
-        res.json({
+        const res = res.json({
             'disponibilidad': oeeCalculado.disponibilidad,
             'rendimiento': oeeCalculado.rendimiento,
             'calidad': oeeCalculado.calidad,

@@ -2,7 +2,6 @@ const client = require('../helpers/plcSettings');
 const {dbNr,dbVars} = require('../helpers/dbSettings');
 const sliceBuff = require('../helpers/slice');
 const calcularAcumulado = require('../helpers/hexToDecimal');
-const Modelo = require('../model/modeloDB');
 const datosDb = require('../model/modeloDB');
 
 client.on('error', console.error);
@@ -30,7 +29,7 @@ const readPlc = async()=>{
         //fecha del PLC
         const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
         
-        const newdatoModelo = new Modelo({
+        const newdatosDb = new datosDb({
             contador2: oee.contador2,
             contador1: oee.contador1,
             fallosSobre: oee.fallosSobre,
@@ -39,9 +38,9 @@ const readPlc = async()=>{
             fecha,
         })
         
-        const save = newdatoModelo.save()  
+        const save = newdatosDb.save()  
         .then(() => {
-            console.log('Document saved successfully');
+            console.log('Document saved successfully in datosoees');
           })
           .catch((error) => {
             console.error('Error saving document:', error);
