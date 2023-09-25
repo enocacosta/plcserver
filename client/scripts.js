@@ -24,15 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var dd = String(yesterday.getDate()).padStart(2, '0');
         var formattedDate = yyyy + '-' + mm + '-' + dd;
         document.getElementById('fechahist').max = formattedDate;
-
-        var yesyesterday = new Date();
-        yesyesterday.setDate(yesyesterday.getDate() - 2);
-        var yyyy2 = yesyesterday.getFullYear();
-        var mm2 = String(yesyesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var dd2 = String(yesyesterday.getDate()).padStart(2, '0');
-        var formattedDate2 = yyyy2 + '-' + mm2 + '-' + dd2;
-
-        document.getElementById('fechahist').value = formattedDate2;
+        document.getElementById('fechahist').value = formattedDate;
     }setdates ();
 
     function oeeesperadoupdt(){
