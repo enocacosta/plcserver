@@ -10,10 +10,10 @@ const {calculosOEE} = require('./helpers/calculosOEE');
 const cronGuardarOEE = require('./helpers/guardarOEE');
 const queryApp = require('./routes/reporte');
 
-
 const tiempoLectura = 5000;
 
 conexionPLC();
+
 conexionDB();
 selectTurno();
 

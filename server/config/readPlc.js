@@ -3,6 +3,7 @@ const {dbNr,dbVars} = require('../helpers/dbSettings');
 const sliceBuff = require('../helpers/slice');
 const calcularAcumulado = require('../helpers/hexToDecimal');
 const datosDb = require('../model/modeloDB');
+const conexionPLC = require('./conexionPLC');
 
 client.on('error', console.error);
 
@@ -23,7 +24,7 @@ const readPlc = async()=>{
             if (values.hasOwnProperty(key)) {
                 const accumulation = calcularAcumulado(values[key]);
                 oee[key]=accumulation;
-            }
+            } 
         }      
         
         //fecha del PLC
@@ -47,7 +48,11 @@ const readPlc = async()=>{
           });
 
     } catch (error) {
-        console.log(error);
+        console.log(`readPLC ${error}`);
+        client.disconnect();
+        if (client.isConnected() == false){
+            conexionPLC();
+          }
     }
 }
 

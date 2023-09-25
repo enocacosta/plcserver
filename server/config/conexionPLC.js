@@ -8,7 +8,7 @@ const conexionPLC = async() => {
         console.log('Conexión establecida');
         await client.connect();
     } catch (error) {
-        console.log(error);
+        console.log(`conexion ${error}`);
     }
  
 };
