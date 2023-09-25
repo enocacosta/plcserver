@@ -14,6 +14,26 @@ document.addEventListener('DOMContentLoaded', function () {
     var maquina4 = document.getElementById('maq4');
 
     document.getElementById('esperadooeebt').addEventListener ("click", oeeesperadoupdt);
+    document.getElementById('consultar').addEventListener ("click", consultarhistoricos);
+
+    function setdates (){
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        var yyyy = yesterday.getFullYear();
+        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        var dd = String(yesterday.getDate()).padStart(2, '0');
+        var formattedDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('fechahist').max = formattedDate;
+
+        var yesyesterday = new Date();
+        yesyesterday.setDate(yesyesterday.getDate() - 2);
+        var yyyy2 = yesyesterday.getFullYear();
+        var mm2 = String(yesyesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        var dd2 = String(yesyesterday.getDate()).padStart(2, '0');
+        var formattedDate2 = yyyy2 + '-' + mm2 + '-' + dd2;
+
+        document.getElementById('fechahist').value = formattedDate2;
+    }setdates ();
 
     function oeeesperadoupdt(){
         esperadooeetb = document.getElementById('esperadooeetb').value;
@@ -22,12 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
 
-    var timeChartval = 92;
-    var valrendimiento = 42;
-    var valdisponibilidad = 70;
-    var valcalidad = 30;
-    var valoee = 25;
-    var velvar = 24;
+    var timeChartval = 0;
+    var valrendimiento = 0;
+    var valdisponibilidad = 0;
+    var valcalidad = 0;
+    var valoee = 0;
+    var velvar = 0;
     var valmaq1 = 1;
     var valmaq2 = 1;
     var valmaq3 = 1;
@@ -284,7 +304,7 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['P. No Programada', 'T. Productivo', 'P. Programada'],
             datasets: [{
-            data: [timeChartval, 100-timeChartval, (100-timeChartval)*1.45], // Porcentajes de tiempo de operación e inactividad
+            data: [timeChartval, 0, 0], // Porcentajes de tiempo de operación e inactividad
             backgroundColor: ['#ffd20d', '#949fb1', '#3a98e8'], // Colores para cada segmento
             
         }],
@@ -586,6 +606,30 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
     generarNumeroAleatorio();
+
+    function consultarhistoricos(){
+        confecha = document.getElementById('fechahist').value;
+        conturno = document.getElementById('turno').value;
+
+        // Construct the URL with query parameters
+        const url = `/reporte?date=${confecha}&turno=${conturno}`;
+
+        // Make the GET request
+        fetch(url)
+        .then((response) => {
+            if (!response.ok) {
+            throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            // Handle the response data
+            console.log(data.queryResult);
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    }
 
 
 
