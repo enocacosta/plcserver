@@ -5,6 +5,7 @@ const cron = require('node-cron');
 let turno;
 let setPointTurno;
 let contador;
+let turnoNumero;
 
 const selectTurno = async () => {
   
@@ -30,11 +31,14 @@ console.log(`el turno 3 es ${turno3}`);
 
 //se selecciona el turno basado en la hora actual
 if (horaActual >= turno1 && horaActual < turno2) {
-      turno = turno1
+      turno = turno1;
+      turnoNumero = 1;
 }else if(horaActual >= turno2 && horaActual < turno3) {
-      turno = turno2
+      turno = turno2;
+      turnoNumero = 2;
 }else if(horaActual >= turno3 && horaActual < turno1.setDate(turno1.getDate() + 1)) {
-      turno = turno3
+      turno = turno3;
+      turnoNumero = 3;
 }
 console.log(`el turno escogio es ${turno}`);
 
@@ -48,7 +52,7 @@ setPointTurno = await datosDb
       console.log("No matching records found.");
     }
     console.log("Most recent record with a similar hour:", setPointTurno[0]);
-    contador = setPointTurno[0].contador1 + setPointTurno[0].contador2 - setPointTurno[0].fallosSobre;
+    contador = setPointTurno[0].contador1 + setPointTurno[0].contador2 ;
     console.log(contador);
     
   } catch (error) {
@@ -59,5 +63,6 @@ setPointTurno = await datosDb
 const cronSelectTurno = cron.schedule('10,10,10 00,00,00 00,08,16 * * *', selectTurno);
 
 module.exports = {selectTurno,
-  getContador: ()=> contador
-  ,cronSelectTurno};
+  getContador: ()=> contador,
+  getTurnoNumero: () => turnoNumero,
+  cronSelectTurno};

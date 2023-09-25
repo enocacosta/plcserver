@@ -1,4 +1,4 @@
-const express = require('express')
+const express = require('express');
 const app = express();
 const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
@@ -6,7 +6,8 @@ const conexionDB = require('./config/conexionDB');
 const userApp = require('./routes/user');
 const {selectTurno, cronSelectTurno} = require('./helpers/selectTurno');
 const {calcularTiempo,cronCalcularTiempo}  = require('./helpers/calcularTiempo');
-const {calculosOEE} = require('./helpers/calculosOEE')
+const {calculosOEE} = require('./helpers/calculosOEE');
+const cronGuardarOEE = require('./helpers/guardarOEE');
 
 const tiempoLectura = 5000;
 
@@ -22,6 +23,7 @@ setInterval(calculosOEE,tiempoLectura);
 
 cronSelectTurno.start();
 cronCalcularTiempo.start();
+cronGuardarOEE.start();
 
 app.use('/', userApp);
 
