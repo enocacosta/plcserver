@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
 const conexionDB = require('./config/conexionDB');
@@ -9,7 +10,7 @@ const {calcularTiempo,cronCalcularTiempo}  = require('./helpers/calcularTiempo')
 const {calculosOEE} = require('./helpers/calculosOEE');
 const cronGuardarOEE = require('./helpers/guardarOEE');
 const queryApp = require('./routes/reporte');
-
+app.use(cors());  
 const tiempoLectura = 5000;
 
 conexionPLC();
