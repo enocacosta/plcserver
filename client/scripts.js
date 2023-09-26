@@ -604,7 +604,7 @@ document.addEventListener('DOMContentLoaded', function () {
         conturno = document.getElementById('turno').value;
 
         // Construct the URL with query parameters
-        const url = `/reporte?date=${confecha}&turno=${conturno}`;
+        const url = `http://localhost:3000/reporte?date=${confecha}&turno=${conturno}`;
 
         // Make the GET request
         fetch(url)
@@ -616,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
             // Handle the response data
-            console.log(data.queryResult);
+            console.log(data);
         })
         .catch((error) => {
             console.error('There was a problem with the fetch operation:', error);

@@ -35,6 +35,9 @@ app.get('/', async (req, res) => {
                 $lte: endDate,
             };
         }
+
+        console.log(date);
+        console.log(turno);
         const queryResult = await datosOEE.find(query).exec();
 
         res.json(queryResult);
