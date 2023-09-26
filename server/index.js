@@ -13,7 +13,6 @@ const queryApp = require('./routes/reporte');
 const tiempoLectura = 5000;
 
 conexionPLC();
-
 conexionDB();
 selectTurno();
 
