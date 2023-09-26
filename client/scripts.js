@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function () {
             valdisponibilidad = parseInt(data.disponibilidad);
             valcalidad = parseInt(data.calidad);
 
-            valoee = (valrendimiento*valdisponibilidad*valcalidad)/10000;
+            valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
             
             velvar = Math.floor(Math.random() * 8) + 23;
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', function () {
             maquina1.style.backgroundColor = "blue"
             maquina1.innerHTML = "STAND BY"
         }else if (valmaq1== 3){
-            maquina1.style.backgroundColor = "9a0501"
+            maquina1.style.backgroundColor = "#9a0501"
             maquina1.innerHTML = "STOP"
         }
 
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', function () {
             maquina2.style.backgroundColor = "blue"
             maquina2.innerHTML = "STAND BY"
         }else if (valmaq2== 3){
-            maquina2.style.backgroundColor = "9a0501"
+            maquina2.style.backgroundColor = "#9a0501"
             maquina2.innerHTML = "STOP"
         }
 
@@ -151,7 +151,7 @@ document.addEventListener('DOMContentLoaded', function () {
             maquina3.style.backgroundColor = "blue"
             maquina3.innerHTML = "STAND BY"
         }else if (valmaq3== 3){
-            maquina3.style.backgroundColor = "9a0501"
+            maquina3.style.backgroundColor = "#9a0501"
             maquina3.innerHTML = "STOP"
         }
 
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function () {
             maquina4.style.backgroundColor = "blue"
             maquina4.innerHTML = "STAND BY"
         }else if (valmaq4== 3){
-            maquina4.style.backgroundColor = "9a0501"
+            maquina4.style.backgroundColor = "#9a0501"
             maquina4.innerHTML = "STOP"
         }
         
