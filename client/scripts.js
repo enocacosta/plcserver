@@ -1,5 +1,5 @@
-
 document.addEventListener('DOMContentLoaded', function () {
+    window.jsPDF = window.jspdf.jsPDF;
     var ctx = document.getElementById('timeChart').getContext('2d');
     var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
     var ctx2 = document.getElementById('Rendimiento').getContext('2d');
@@ -617,6 +617,20 @@ document.addEventListener('DOMContentLoaded', function () {
         .then((data) => {
             // Handle the response data
             console.log(data);
+            var reportedisponibbilidad = data.disponibilidad;
+            var reporterendimiento = data.rendimiento;
+            var reportecalidad = data.calidad;
+            var reporteturno = data.turno;
+            var reportefecha = data.createdat;
+
+            var doc = new jsPDF();
+            doc.text(20, 20, '         REPORTE     ' + reportefecha);
+            doc.text(20, 30, 'DISPONIBILIDAD:   ' + reportedisponibbilidad);
+            doc.text(20, 40, 'RENDIMIENTO:   ' + reporterendimiento);
+            doc.text(20, 50, 'CALIDAD:   ' + reportecalidad);
+            doc.text(20, 60, 'TURNO:   ' + reporteturno);
+            doc.save('REPORTE-' + reportefecha + '.pdf');
+
         })
         .catch((error) => {
             console.error('There was a problem with the fetch operation:', error);
