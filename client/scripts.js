@@ -689,7 +689,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         var valcalidad = ${reportecalidad};
                         var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-                        document.getElementById("titlereporte").innerHTML = "Reporte Mensual: " + ${reportefecha};
+                        document.getElementById("titlereporte").innerHTML = "Reporte de: " + "${reportefecha}";
                         document.getElementById("titleturno").innerHTML = "Turno: " + ${reporteturno};
 
                         function drawPercentagedisponibilidad(chart) {
