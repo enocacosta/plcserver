@@ -616,6 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
 
+            console.log(data[0].disponibilidad);
             var reportedisponibbilidad = parseInt(data[0].disponibilidad);
             var reporterendimiento = parseInt(data[0].rendimiento);
             var reportecalidad = parseInt(data[0].calidad);
