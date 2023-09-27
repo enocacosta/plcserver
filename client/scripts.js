@@ -616,12 +616,17 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
 
-            console.log(data[0].disponibilidad);
             var reportedisponibbilidad = parseInt(data[0].disponibilidad);
             var reporterendimiento = parseInt(data[0].rendimiento);
             var reportecalidad = parseInt(data[0].calidad);
             var reporteturno = parseInt(data[0].turno);
-            var reportefecha = stringify(data[0].fecha);
+            var reportefecha = data[0].fecha;
+
+            console.log(reportedisponibbilidad);
+            console.log(reporterendimiento);
+            console.log(reportecalidad);
+            console.log(reporteturno);
+            console.log(reportefecha);
 
             const reportHTML = `
             <!DOCTYPE html>
