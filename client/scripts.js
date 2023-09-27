@@ -617,6 +617,12 @@ document.addEventListener('DOMContentLoaded', function () {
         .then((data) => {
             // Handle the response data
             console.log(data);
+            console.log(data[0]);
+            console.log(data[0].disponibilidad);
+            console.log(data[0].rendimiento);
+            console.log(data[0].calidad);
+            console.log(data[0].turno);
+            console.log(data[0].createdAt);
             var reportedisponibbilidad = data[0].disponibilidad;
             var reporterendimiento = data[0].rendimiento;
             var reportecalidad = data[0].calidad;
