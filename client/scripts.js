@@ -620,7 +620,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var reporterendimiento = parseInt(data[0].rendimiento);
             var reportecalidad = parseInt(data[0].calidad);
             var reporteturno = parseInt(data[0].turno);
-            var reportefecha = data[0].fecha;
+            var reportefecha = data[0].createdAt;   
 
             console.log(reportedisponibbilidad);
             console.log(reporterendimiento);
