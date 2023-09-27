@@ -617,11 +617,11 @@ document.addEventListener('DOMContentLoaded', function () {
         .then((data) => {
             // Handle the response data
             console.log(data);
-            var reportedisponibbilidad = data.disponibilidad;
-            var reporterendimiento = data.rendimiento;
-            var reportecalidad = data.calidad;
-            var reporteturno = data.turno;
-            var reportefecha = data.createdat;
+            var reportedisponibbilidad = data[0].disponibilidad;
+            var reporterendimiento = data[0].rendimiento;
+            var reportecalidad = data[0].calidad;
+            var reporteturno = data[0].turno;
+            var reportefecha = data[0].createdAt;
 
             const reportHTML = `
             <!DOCTYPE html>
