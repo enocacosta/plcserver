@@ -616,7 +616,7 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
 
-            var reportedisponibbilidad = parseInt(data[0].disponibilidad);
+            var reportedisponibilidad = parseInt(data[0].disponibilidad);
             var reporterendimiento = parseInt(data[0].rendimiento);
             var reportecalidad = parseInt(data[0].calidad);
             var reporteturno = parseInt(data[0].turno);
@@ -684,7 +684,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
 
-                        var valdisponibilidad = ${reportedisponibbilidad};
+                        var valdisponibilidad = ${reportedisponibilidad};
                         var valrendimiento = ${reporterendimiento};
                         var valcalidad = ${reportecalidad};
                         var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
