@@ -615,14 +615,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return response.json();
         })
         .then((data) => {
-            // Handle the response data
-            console.log(data);
-            console.log(data[0]);
-            console.log(data[0].disponibilidad);
-            console.log(data[0].rendimiento);
-            console.log(data[0].calidad);
-            console.log(data[0].turno);
-            console.log(data[0].createdAt);
+
             var reportedisponibbilidad = data[0].disponibilidad;
             var reporterendimiento = data[0].rendimiento;
             var reportecalidad = data[0].calidad;
@@ -690,8 +683,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         var valcalidad = ${reportecalidad};
                         var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-                        document.getElementById("titlereporte").innerHTML = "Reporte Mensual: " + ${reportefecha};
-                        document.getElementById("titleturno").innerHTML = "Turno: " + ${reporteturno};
+                        document.getElementById("titlereporte").innerHTML = "Reporte Mensual: ";
+                        document.getElementById("titleturno").innerHTML = "Turno: ";
 
                         function drawPercentagedisponibilidad(chart) {
                             var ctx = chart.chart.ctx;
