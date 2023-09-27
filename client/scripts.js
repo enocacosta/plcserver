@@ -616,11 +616,11 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then((data) => {
 
-            var reportedisponibbilidad = data[0].disponibilidad;
-            var reporterendimiento = data[0].rendimiento;
-            var reportecalidad = data[0].calidad;
-            var reporteturno = data[0].turno;
-            var reportefecha = data[0].createdAt;
+            var reportedisponibbilidad = parseInt(data[0].disponibilidad);
+            var reporterendimiento = parseInt(data[0].rendimiento);
+            var reportecalidad = parseInt(data[0].calidad);
+            var reporteturno = parseInt(data[0].turno);
+            var reportefecha = stringify(data[0].fecha);
 
             const reportHTML = `
             <!DOCTYPE html>
@@ -683,8 +683,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         var valcalidad = ${reportecalidad};
                         var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-                        document.getElementById("titlereporte").innerHTML = "Reporte Mensual: ";
-                        document.getElementById("titleturno").innerHTML = "Turno: ";
+                        document.getElementById("titlereporte").innerHTML = "Reporte Mensual: " + ${reportefecha};
+                        document.getElementById("titleturno").innerHTML = "Turno: " + ${reporteturno};
 
                         function drawPercentagedisponibilidad(chart) {
                             var ctx = chart.chart.ctx;
