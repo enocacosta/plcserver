@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             timeChartval = Math.floor(Math.random() * 100) + 1;
-            velvar = data.velocidad;
+            velvar = (data.velocidad*60).toFixed(2);
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);

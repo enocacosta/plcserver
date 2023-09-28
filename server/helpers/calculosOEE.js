@@ -35,11 +35,9 @@ let availableOperatingTime = tiempoDis + tiempoStand;
 rendimiento = ((30*(totalCant))/availableOperatingTime)*100;
 velocidad = totalCant/availableOperatingTime;
 
-console.log(`contador1 = ${oee.contador1}`);
-console.log(`contador2 = ${oee.contador2}`);
-console.log(`contador = ${contador}`);
-console.log(`contadorSet = ${contadorSet}`);
-console.log(`totalCant = ${totalCant}`);
+if(velocidad == NaN || velocidad == null || velocidad == undefined){
+    velocidad = 0;
+}
 
 console.log(tiempoDis);
 console.log(tiempoStand);
