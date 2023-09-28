@@ -1,4 +1,3 @@
-const { set } = require('mongoose');
 const datosDb = require('../model/modeloDB');
 const cron = require('node-cron');
 
@@ -6,6 +5,7 @@ let turno;
 let setPointTurno;
 let contador;
 let turnoNumero;
+let contadorMediaNoche;
 
 const selectTurno = async () => {
   
@@ -53,6 +53,11 @@ setPointTurno = await datosDb
     }
     console.log("Most recent record with a similar hour:", setPointTurno[0]);
     contador = setPointTurno[0].contador1 + setPointTurno[0].contador2 ;
+    
+    if(turnoNumero == 1){
+      contadorMediaNoche = contador;
+    }
+
     console.log(contador);
     
   } catch (error) {
@@ -60,9 +65,10 @@ setPointTurno = await datosDb
   }
 }
 //en las horas de cambio de turno se vuelve a ejecutar la funcion
-const cronSelectTurno = cron.schedule('10,10,10 00,00,00 00,08,16 * * *', selectTurno);
+const cronSelectTurno = cron.schedule('03,03,03 00,00,00 00,08,16 * * *', selectTurno);
 
 module.exports = {selectTurno,
   getContador: ()=> contador,
-  getTurnoNumero: () => turnoNumero,
+  getTurnoNumero: ()=> turnoNumero,
+  getContadorTurno1: ()=>contadorMediaNoche,
   cronSelectTurno};

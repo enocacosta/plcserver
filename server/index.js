@@ -10,6 +10,7 @@ const {calcularTiempo,cronCalcularTiempo}  = require('./helpers/calcularTiempo')
 const {calculosOEE} = require('./helpers/calculosOEE');
 const cronGuardarOEE = require('./helpers/guardarOEE');
 const queryApp = require('./routes/reporte');
+
 app.use(cors());  
 const tiempoLectura = 5000;
 

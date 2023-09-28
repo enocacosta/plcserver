@@ -41,6 +41,7 @@ app.get('/', async (req, res) => {
         const queryResult = await datosOEE.find(query).exec();
 
         res.json(queryResult);
+
     } catch (error) {
         console.error('Database Error:', error);
         res.status(500).json({ error: 'Internal server error' });
