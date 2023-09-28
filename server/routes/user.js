@@ -21,9 +21,13 @@ app.get('/', (req, res) => {
             'totalDia': oeeCalculado.totalDia,
             'produccionTurno': oeeCalculado.totalCant,
             'tiempoStop': tiempoParado,
+            'tiempoProductivo': oeeCalculado.availableOperatingTime,
+            'velocidad': oeeCalculado.velocidad,
+
         });
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
+        console.log(error);
     }
 });
 

@@ -67,9 +67,9 @@ document.addEventListener('DOMContentLoaded', function () {
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
             document.getElementById('producciondiaria').value = parseInt(data.totalDia);
-            document.getElementById('produccionturno').value = parseInt(data.totalCant);
-            document.getElementById('parada').value = (parseInt(data.tiempoParado))/60;
-            tparada  = (parseInt(data.tiempoParado))/60;
+            document.getElementById('produccionturno').value = parseInt(data.produccionTurno);
+            document.getElementById('parada').value = (parseInt(data.tiempoStop))/60;
+            tparada  = (parseInt(data.tiempoStop))/60;
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
             valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
