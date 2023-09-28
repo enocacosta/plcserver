@@ -44,6 +44,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var valmaq2 = 1;
     var valmaq3 = 1;
     var valmaq4 = 1;
+    var tparada = 0;
+    var tproductivo = 0;
 
 
     function generarNumeroAleatorio() {
@@ -57,24 +59,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             timeChartval = Math.floor(Math.random() * 100) + 1;
+            velvar = data.velocidad;
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);
             valcalidad = parseInt(data.calidad);
-
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
+            document.getElementById('producciondiaria').value = data.totalDia;
+            document.getElementById('produccionturno').value = data.totalCant;
+            document.getElementById('parada').value = (data.tiempoParado)/60;
+            tparada  = (data.tiempoParado)/60;
+            tproductivo = (data.tiempoProductivo)/60;
             
-            velvar = Math.floor(Math.random() * 8) + 23;
-            valmaq1 = data.estadoMaquina;
-            valmaq2 = data.estadoMaquina;
-            valmaq3 = data.estadoMaquina;
-            valmaq4 = data.estadoMaquina;
+            valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
 
 
         }).catch(error => console.log(error));
         
-        timeChart.data.datasets[0].data = [timeChartval, 100-timeChartval, (100-timeChartval)*1.45];
+        timeChart.data.datasets[0].data = [tparada, tproductivo, 0];
         Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
         Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
         Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
