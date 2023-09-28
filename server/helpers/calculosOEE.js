@@ -7,6 +7,10 @@ calcularTiempo(); // Actualiza las variable tiempoDis, tiempoStand,tiempoParado
 let disponibilidad;
 let rendimiento;
 let calidad;
+let velocidad;
+let totalCant;
+let totalDia;
+let availableOperatingTime;
 
 const calculosOEE = () =>{
 
@@ -14,7 +18,10 @@ const calculosOEE = () =>{
 const contadorSet = getContador();
 console.log(contadorSet);
 
-const contadorTurno1 = getContadorTurno1();
+let contadorTurno1 = getContadorTurno1();
+if (contadorTurno1== undefined){
+    contadorTurno1 = 0; 
+}
 console.log(contadorTurno1);
 
 //calculo disponibilidad
@@ -26,6 +33,13 @@ let contador = oee.contador1+oee.contador2;
 totalCant = (contador)-(contadorSet);
 let availableOperatingTime = tiempoDis + tiempoStand;
 rendimiento = ((30*(totalCant))/availableOperatingTime)*100;
+velocidad = totalCant/availableOperatingTime;
+
+console.log(`contador1 = ${oee.contador1}`);
+console.log(`contador2 = ${oee.contador2}`);
+console.log(`contador = ${contador}`);
+console.log(`contadorSet = ${contadorSet}`);
+console.log(`totalCant = ${totalCant}`);
 
 console.log(tiempoDis);
 console.log(tiempoStand);
@@ -51,6 +65,12 @@ console.log(disponibilidad,rendimiento,calidad);
 }
 
 module.exports = {
-    getOEE: ()=> ({disponibilidad,rendimiento,calidad,totalCant,totalDia}),
-    calculosOEE
+    getOEE: ()=> ({disponibilidad,
+        rendimiento,
+        calidad,
+        totalCant,
+        totalDia,
+        availableOperatingTime,
+        velocidad}),
+        calculosOEE
 };
