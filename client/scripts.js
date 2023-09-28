@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             document.getElementById('producciondiaria').value = parseInt(data.totalDia);
             document.getElementById('produccionturno').value = parseInt(data.totalCant);
-            document.getElementById('parada').value = (parseInt(data.tiempoParado))/60;
+            document.getElementById('parada').value = ((parseInt(data.tiempoParado))/60);
             tparada  = (parseInt(data.tiempoParado))/60;
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
