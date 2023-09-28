@@ -66,11 +66,11 @@ document.addEventListener('DOMContentLoaded', function () {
             valcalidad = parseInt(data.calidad);
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-            document.getElementById('producciondiaria').value = data.totalDia;
-            document.getElementById('produccionturno').value = data.totalCant;
-            document.getElementById('parada').value = (data.tiempoParado)/60;
-            tparada  = (data.tiempoParado)/60;
-            tproductivo = (data.tiempoProductivo)/60;
+            document.getElementById('producciondiaria').value = parseInt(data.totalDia);
+            document.getElementById('produccionturno').value = parseInt(data.totalCant);
+            document.getElementById('parada').value = (parseInt(data.tiempoParado))/60;
+            tparada  = (parseInt(data.tiempoParado))/60;
+            tproductivo = (parseInt(data.tiempoProductivo))/60;
             
             valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
 
