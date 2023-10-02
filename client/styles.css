@@ -117,7 +117,7 @@ body {
     margin-right: 0px;
   }
 
-#esperadooeetb {
+#esperadooeetb, #esperadooeetbp2, #esperadooeetbp3 {
     border: none;
     border-radius: 0px;
     border-top-right-radius: 8px;
@@ -136,4 +136,27 @@ body {
     padding: 10px 20px;
     border: none;
     border-radius: 30px;
+}
+
+.tab {
+    display: none;
+}
+
+/* Estilo para la pestaña activa */
+.active-tab {
+    display: block;
+}
+
+/* Estilo para los botones de pestaña */
+.tab-button {
+    cursor: pointer;
+    padding: 10px 20px;
+    background-color: #ccc;
+    border: 1px solid #aaa;
+    border-radius: 5px 5px 0 0;
+}
+
+/* Estilo para el botón de pestaña activa */
+.active-button {
+    background-color: #fff;
 }

@@ -1,20 +1,20 @@
 document.addEventListener('DOMContentLoaded', function () {
     window.jsPDF = window.jspdf.jsPDF;
-    var ctx = document.getElementById('timeChart').getContext('2d');
-    var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
-    var ctx2 = document.getElementById('Rendimiento').getContext('2d');
-    var ctx3 = document.getElementById('Calidad').getContext('2d');
-    var ctx4 = document.getElementById('OEE').getContext('2d');
-    var ctx5 = document.getElementById('velocidad').getContext('2d');
-    var ctx6 = document.getElementById('esperadooee').getContext('2d');
-    var esperadooeetb = document.getElementById('esperadooeetb').value;
-    var maquina1 = document.getElementById('maq1');
-    var maquina2 = document.getElementById('maq2');
-    var maquina3 = document.getElementById('maq3');
-    var maquina4 = document.getElementById('maq4');
+    var ctx = document.getElementById('timeChartp2').getContext('2d');
+    var ctx1 = document.getElementById('Disponibilidadp2').getContext('2d');
+    var ctx2 = document.getElementById('Rendimientop2').getContext('2d');
+    var ctx3 = document.getElementById('Calidadp2').getContext('2d');
+    var ctx4 = document.getElementById('OEEp2').getContext('2d');
+    var ctx5 = document.getElementById('velocidadp2').getContext('2d');
+    var ctx6 = document.getElementById('esperadooeep2').getContext('2d');
+    var esperadooeetb = document.getElementById('esperadooeetbp2').value;
+    var maquina1 = document.getElementById('maq1p2');
+    var maquina2 = document.getElementById('maq2p2');
+    var maquina3 = document.getElementById('maq3p2');
+    var maquina4 = document.getElementById('maq4p2');
 
-    document.getElementById('esperadooeebt').addEventListener ("click", oeeesperadoupdt);
-    document.getElementById('consultar').addEventListener ("click", consultarhistoricos);
+    document.getElementById('esperadooeebtp2').addEventListener ("click", oeeesperadoupdt);
+    document.getElementById('consultarp2').addEventListener ("click", consultarhistoricos);
 
     function setdates (){
         var yesterday = new Date();
@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', function () {
         var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
         var dd = String(yesterday.getDate()).padStart(2, '0');
         var formattedDate = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('fechahist').max = formattedDate;
-        document.getElementById('fechahist').value = formattedDate;
+        document.getElementById('fechahistp2').max = formattedDate;
+        document.getElementById('fechahistp2').value = formattedDate;
     }setdates ();
 
     function oeeesperadoupdt(){
-        esperadooeetb = document.getElementById('esperadooeetb').value;
+        esperadooeetb = document.getElementById('esperadooeetbp2').value;
         esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
         esperadooee.update();
     }
@@ -66,9 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
             valcalidad = parseInt(data.calidad);
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-            document.getElementById('producciondiaria').value = parseInt(data.totalDia);
-            document.getElementById('produccionturno').value = parseInt(data.produccionTurno);
-            document.getElementById('parada').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
+            document.getElementById('producciondiariap2').value = parseInt(data.totalDia);
+            document.getElementById('produccionturnop2').value = parseInt(data.produccionTurno);
+            document.getElementById('paradap2').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
             tparada  = (parseInt(data.tiempoStop))/60;
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
@@ -134,7 +134,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var horaActual = horas + ':' + minutos + ':' + segundos;
         velocidad.data.labels.push(horaActual);
         velocidad.data.datasets[0].data.push(velvar);
-        document.getElementById('velocidadtb').value= velvar;
+        document.getElementById('velocidadtbp2').value= velvar;
 
 
         if (valmaq1 == 1) {
@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
         velocidad.update();
         esperadooee.update();
 
-    }setInterval(generarNumeroAleatorio, 10000);
+    }setInterval(generarNumeroAleatorio, 3000);
     
 
 
@@ -535,10 +535,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             scales: {
                 y: {
-                    max: 40,
+                    max: 3,
                     min: 0,
                     ticks: {
-                        stepSize: 5
+                        stepSize: 1
                     }
                 }
             }
@@ -603,8 +603,8 @@ document.addEventListener('DOMContentLoaded', function () {
     generarNumeroAleatorio();
 
     function consultarhistoricos(){
-        confecha = document.getElementById('fechahist').value;
-        conturno = document.getElementById('turno').value;
+        confecha = document.getElementById('fechahistp2').value;
+        conturno = document.getElementById('turnop2').value;
 
         // Construct the URL with query parameters
         const url = `http://localhost:3000/reporte?date=${confecha}&turno=${conturno}`;
@@ -692,8 +692,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         var valcalidad = ${reportecalidad};
                         var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-                        document.getElementById("titlereporte").innerHTML = "Reporte de: " + "${reportefecha}";
-                        document.getElementById("titleturno").innerHTML = "Turno: " + ${reporteturno};
+                        document.getElementById("titlereportep2").innerHTML = "Reporte de: " + "${reportefecha}";
+                        document.getElementById("titleturnop2").innerHTML = "Turno: " + ${reporteturno};
 
                         function drawPercentagedisponibilidad(chart) {
                             var ctx = chart.chart.ctx;
@@ -820,7 +820,7 @@ document.addEventListener('DOMContentLoaded', function () {
                         }
 
 
-                        var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
+                        var ctx1 = document.getElementById('Disponibilidadp2').getContext('2d');
                         var myChart = new Chart(ctx1, {
                             type: 'doughnut',
                             data: {
@@ -859,7 +859,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         });
 
-                        var ctx2 = document.getElementById('Rendimiento').getContext('2d');
+                        var ctx2 = document.getElementById('Rendimientop2').getContext('2d');
                         var myChart = new Chart(ctx2, {
                             type: 'doughnut',
                             data: {
@@ -898,7 +898,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         });
 
-                        var ctx3 = document.getElementById('Calidad').getContext('2d');
+                        var ctx3 = document.getElementById('Calidadp2').getContext('2d');
                         var myChart = new Chart(ctx3, {
                             type: 'doughnut',
                             data: {
@@ -937,7 +937,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             }
                         });
 
-                        var ctx4 = document.getElementById('OEE').getContext('2d');
+                        var ctx4 = document.getElementById('OEEp2').getContext('2d');
                         var myChart = new Chart(ctx4, {
                             type: 'doughnut',
                             data: {
