@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function () {
         velocidad.update();
         esperadooee.update();
 
-    }setInterval(generarNumeroAleatorio, 10000);
+    }setInterval(generarNumeroAleatorio, 3000);
     
 
 
@@ -535,10 +535,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             scales: {
                 y: {
-                    max: 40,
+                    max: 3,
                     min: 0,
                     ticks: {
-                        stepSize: 5
+                        stepSize: 1
                     }
                 }
             }
