@@ -18,4 +18,4 @@ function changeTab(tabIndex) {
 }
 
 // Por defecto, muestra la primera pestaña
-changeTab(1);
+changeTab(0);

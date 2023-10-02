@@ -15,6 +15,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('esperadooeebtp2').addEventListener ("click", oeeesperadoupdt);
     document.getElementById('consultarp2').addEventListener ("click", consultarhistoricos);
+    document.getElementById('fechahistp2').addEventListener ("change", comparedates);
+    document.getElementById('fechahistfinp2').addEventListener ("change", comparedates);
 
     function setdates (){
         var yesterday = new Date();
@@ -25,7 +27,18 @@ document.addEventListener('DOMContentLoaded', function () {
         var formattedDate = yyyy + '-' + mm + '-' + dd;
         document.getElementById('fechahistp2').max = formattedDate;
         document.getElementById('fechahistp2').value = formattedDate;
+        document.getElementById('fechahistfinp2').value = formattedDate;
+        document.getElementById('fechahistfinp2').max = formattedDate;
     }setdates ();
+
+    function comparedates (){
+        var fecha1 = new Date(document.getElementById('fechahistp2').value);
+        var fecha2 = new Date(document.getElementById('fechahistfinp2').value);
+
+        if (fecha1 > fecha2) {
+            document.getElementById('fechahistp2').value = document.getElementById('fechahistfinp2').value;
+        }
+    }
 
     function oeeesperadoupdt(){
         esperadooeetb = document.getElementById('esperadooeetbp2').value;
