@@ -12,9 +12,10 @@
 
 <body>
     <div id="tabs">
-        <button class="tab-button" onclick="changeTab(0)">Pestaña 1</button>
-        <button class="tab-button" onclick="changeTab(1)">Pestaña 2</button>
-        <button class="tab-button" onclick="changeTab(2)">Pestaña 3</button>
+        <button class="tab-button" onclick="changeTab(0)">General</button>
+        <button class="tab-button" onclick="changeTab(1)">Producción</button>
+        <button class="tab-button" onclick="changeTab(2)">Mantenimiento</button>
+        <button class="tab-button" onclick="changeTab(3)">Gerencial</button>
     </div>
 
     <div class="tab" id="tab1">
@@ -344,10 +345,120 @@
 
     </div>
 
+    <div class="tab" id="tab4">
+    
+        <div class="contenedor-global">
+            <div class="contenedor-superior">
+
+                <div class="contenedor-superiorizq">
+                    
+            
+                    <div class="production-info">
+                        
+                        <p>Producción día: <input readonly class="textbox" id="producciondiariap4" value="500"> cajas</p>
+            
+                        
+                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop4" value="500"> cajas</p>
+            
+                        
+                        <p>Presentación: <input readonly class="textbox" id="presentacionp4" value="500"> ml</p>
+
+                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap4" value="500"> min</p>
+
+                        <p>Parada: <input readonly class="textbox" id="paradap4" value="500"> min</p>
+                    </div>
+                    
+            
+                </div>
+
+                    
+                    
+                <div class="contenedor-superiorder">
+
+                    <div class="circular-progress">
+                        <div>
+                            <canvas id="Disponibilidadp4" width="200" height="200"></canvas>
+                        </div>
+                        
+                        <div>
+                            <canvas id="Rendimientop4" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="Calidadp4" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="OEEp4" width="230" height="260"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="timeChartp4" width="310" height="310"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="esperadooeep4" width="140" height="300"></canvas>
+                            <p style="text-align: center;">OEE Esperado:</p>
+                            <button class="btn" id="esperadooeebtp4"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetbp4" value="0" style="text-align: center;">
+                        </div>
+
+                        <div>
+                            <p style="text-align: center;">Consulta historicos</p>
+                            <input type="date" id="fechahistp4">
+                            <label for="Turno"># de turno</label>
+                            <select id="turnop4" name="noturno">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            </select>  
+                            <div><button id="consultarp4">Consultar</button></div>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+            
+
+            </div>
+
+
+            <div class="contenedor-inferior">
+
+
+                <div class="contenedor-inferiorizq">
+                    <img src="bandatransportadora.png" style="width:100%;">
+                    <button id="maq1p4" class="leds" style="top: 70%; left: 10%;">RUN</button>
+                    <button id="maq2p4" class="leds" style="top: 70%; left: 35%;">RUN</button>
+                    <button id="maq3p4" class="leds" style="top: 70%; left: 60%;">RUN</button>
+                    <button id="maq4p4" class="leds" style="top: 70%; left: 90%;">RUN</button>
+                </div>
+
+                <div class="contenedor-inferiorder">
+                    <div>
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp4" value="0"> cajas/min</p>
+
+                    </div>
+                    <div>
+                        <canvas id="velocidadp4" width="310" height="310"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
 
     <script src="scriptp1.js"></script>
     <script src="scriptp2.js"></script>
     <script src="scriptp3.js"></script>
+    <script src="scriptp4.js"></script>
     <script src="tabs.js"></script>
 </body>
 </html>
