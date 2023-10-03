@@ -1,5 +1,5 @@
 const {oee} = require('../config/readPlc');
-const {calcularTiempo} = require('./calcularTiempo');
+const {calcularTiempo, tiempoParado} = require('./calcularTiempo');
 const {getContador,getContadorTurno1} = require('./selectTurno');
 
 calcularTiempo(); // Actualiza las variable tiempoDis, tiempoStand,tiempoParado
@@ -25,8 +25,9 @@ if (contadorTurno1== undefined){
 console.log(contadorTurno1);
 
 //calculo disponibilidad
+let tiempoTotal = 28800;
 let tiempoDisTraba = (28800-tiempoParado)
-disponibilidad = (tiempoDisTraba/28800)*100;
+disponibilidad = (tiempoDisTraba/(tiempoTotal))*100;
 
 //calculo rendimiento
 let contador = oee.contador1+oee.contador2;

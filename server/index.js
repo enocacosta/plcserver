@@ -7,7 +7,7 @@ const conexionDB = require('./config/conexionDB');
 const {selectTurno, cronSelectTurno} = require('./calculos/selectTurno');
 const {calcularTiempo,cronCalcularTiempo}  = require('./calculos/calcularTiempo');
 const {calculosOEE} = require('./calculos/calculosOEE');
-const cronGuardarOEE = require('./calculos/guardarOEE');
+const {cronGuardarOEE,cronGuardarOEEMediaNoche} = require('./calculos/guardarOEE');
 const userApp = require('./routes/user');
 const queryApp = require('./routes/reporte');
 const gerencialApp = require('./routes/gerencial');
@@ -28,6 +28,7 @@ setInterval(calculosOEE,tiempoLectura);
 cronSelectTurno.start();
 cronCalcularTiempo.start();
 cronGuardarOEE.start();
+cronGuardarOEEMediaNoche.start();
 
 app.use('/', userApp);
 app.use('/reporte', queryApp);

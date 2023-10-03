@@ -29,7 +29,8 @@ const guardarOEE = async() =>{
     }
 }
 
-const cronGuardarOEE = cron.schedule('00,00,59 00,00,59 08,16,23 * * *', guardarOEE);
+const cronGuardarOEE = cron.schedule('00 08,16 * * *', guardarOEE);
+const cronGuardarOEEMediaNoche = cron.schedule('59 59 23 * * *', guardarOEE);
 
 
-module.exports = cronGuardarOEE;
+module.exports = {cronGuardarOEE, cronGuardarOEEMediaNoche};

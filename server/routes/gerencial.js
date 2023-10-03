@@ -9,17 +9,11 @@ app.get('/', async (req, res) => {
     try {
 
         // Find the three most recent documents
-        const queryResult = datosOEE.find().sort({ createdAt: -1 }).limit(3).exec((err, documents) => {
-            if (err) {
-            console.error("Error querying MongoDB:", err);
-            return;
-            }
-        
-            console.log("Three most recent documents:", documents);
-        });
-
+        const queryResult = await datosOEE.find().sort({ createdAt: -1 }).limit(3).exec();
 
         res.json(queryResult);
+
+        console.log(queryResult);
 
     } catch (error) {
         console.error('Database Error:', error);

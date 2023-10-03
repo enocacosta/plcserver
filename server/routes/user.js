@@ -5,7 +5,7 @@ const {oee} = require('../config/readPlc');
 const {getOEE} = require ('../calculos/calculosOEE');
 const {calcularTiempo} = require ('../calculos/calcularTiempo');
 app.use(cors());
-
+ 
 calcularTiempo(); // Actualiza las variable tiempoDis, tiempoStand,tiempoParado
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
