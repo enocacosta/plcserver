@@ -1,6 +1,6 @@
 const {oee} = require('../config/readPlc');
 const {calcularTiempo} = require('./calcularTiempo');
-const {getContador,getContadorTurno1} = require('../helpers/selectTurno');
+const {getContador,getContadorTurno1} = require('./selectTurno');
 
 calcularTiempo(); // Actualiza las variable tiempoDis, tiempoStand,tiempoParado
 
