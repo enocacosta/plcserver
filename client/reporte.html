@@ -102,6 +102,8 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
+            const oeePorDia = [];
+
             function getinfort(){
                 fetch('http://localhost:3000', {
                     method: 'POST',
@@ -115,7 +117,6 @@
                 })
                 .then(data =>{
                     console.log(data);
-                    const oeePorDia = [];
                     for (let i = 0; i < data.length; i += 3) {
                     const dia = [];
                     for (let j = i; j < i + 3; j++) {
@@ -131,7 +132,7 @@
 
                 }).catch(error => console.log(error));
 
-            }
+            }getinfort();
 
             var valdisponibilidad = 20;
             var valrendimiento = 50;
@@ -480,7 +481,7 @@
             labels: dias,
             datasets: turnos.map((turno, index) => ({
                 label: turno,
-                data: data.map((d) => d[index]),
+                data: oeePorDia.map((d) => d[index]),
                 backgroundColor: colores[index],
                 borderColor: colores[index],
                 borderWidth: 1,
