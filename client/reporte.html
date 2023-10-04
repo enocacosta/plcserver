@@ -102,25 +102,20 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            const oeePorDia = [];
-
             function getinfort(){
-
-                date1= "2023-09-25T13:00:00.000+00:00";
-                date2= "2023-09-26T13:00:00.000+00:00";
-
                 fetch('http://localhost:3000', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ date1, date2 }),
+                    body: JSON.stringify({ startDate, endDate }),
                   })
                 .then(res =>{
                 return res.json();
                 })
                 .then(data =>{
                     console.log(data);
+                    const oeePorDia = [];
                     for (let i = 0; i < data.length; i += 3) {
                     const dia = [];
                     for (let j = i; j < i + 3; j++) {
@@ -181,8 +176,6 @@
             // Establece los valores mínimo y máximo del rango
             dateRange.min = 0;
             dateRange.max = dateDiff;
-
-            getinfort();
 
             function drawPercentagedisponibilidad(chart) {
                 var ctx = chart.chart.ctx;
@@ -487,7 +480,7 @@
             labels: dias,
             datasets: turnos.map((turno, index) => ({
                 label: turno,
-                data: oeePorDia.map((d) => d[index]),
+                data: data.map((d) => d[index]),
                 backgroundColor: colores[index],
                 borderColor: colores[index],
                 borderWidth: 1,
