@@ -18,6 +18,7 @@
             border: 1px solid #000;
             padding: 10px;
             margin: 20px 0;
+            margin-left: 15%;
             text-align: center;
         }
 
@@ -35,31 +36,146 @@
             margin-right: 10px; /* Espacio entre los canvas */
         }
 
-        @media print {
-            body {
-                margin: 0;
-                padding: 0;
-            }
+        .sidebar {
+            height: 100%;
+            width: 15%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            background-color: #f5cbcb;
+            padding-top: 20px;
+            text-align: center;
 
-            h1 {
-                page-break-before: always;
-            }
-
-            .informe {
-                page-break-inside: avoid;
-            }
         }
+        .slider {
+            width: 100%; /* Full-width */
+            height: 25px; /* Specified height */
+            
+        }
+        
     </style>
+</head>
+<body>
+
+    <div class="sidebar">
+        <div>
+            <p style="text-align: center;">Consulta historicos</p>
+            <p>Desde:</p><input type="date" id="fechahist">
+            <p>Hasta:</p><input type="date" id="fechahistfin">
+            <p></p>
+            <label for="Turno"># de turno</label>
+            <select id="turno" name="noturno">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            </select>  
+            <p></p>
+            <input type="range" min="1" max="100" value="50" class="slider" id="dateRange">
+            <span id="selectedDate">Fecha seleccionada: </span>
+            <div><button id="consultar">Consultar</button></div>
+        </div>
+    </div>
+
+    <div class="informe">
+        <h1 id="titlereporte"></h1> 
+        <h2 id="titleturno" style="text-align: center;"></h2>
+        <h2>PARAMETROS</h2>
+        <div class="canvas-container">
+            <canvas id="Disponibilidad" width="200" height="200"></canvas>
+            <canvas id="Rendimiento" width="200" height="200"></canvas>
+            <canvas id="Calidad" width="200" height="200"></canvas>
+            <canvas id="OEE" width="225" height="225"></canvas>
+        </div>
+    </div>
+
+    <div class="informe">
+        <h1>Historico con turnos</h1>
+        <div class="canvas-container">
+            <canvas id="OEETotal" width="200" height="200"></canvas>
+        </div>
+        
+    </div>
+
+
+
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
-            var valdisponibilidad = ${reportedisponibbilidad};
-            var valrendimiento = ${reporterendimiento};
-            var valcalidad = ${reportecalidad};
+            function getinfort(){
+                fetch('http://localhost:3000', {
+                    method: 'POST',
+                    headers: {
+                      'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ startDate, endDate }),
+                  })
+                .then(res =>{
+                return res.json();
+                })
+                .then(data =>{
+                    console.log(data);
+                    const oeePorDia = [];
+                    for (let i = 0; i < data.length; i += 3) {
+                    const dia = [];
+                    for (let j = i; j < i + 3; j++) {
+                        if (j < data.length) {
+                        const turno = data[j];
+                        const oee = (turno.disponibilidad * turno.rendimiento * turno.calidad) / 3;
+                        dia.push(oee);
+                        }
+                    }
+                    oeePorDia.push(dia);
+                    }
+                    console.log(oeePorDia);
+
+                }).catch(error => console.log(error));
+
+            }
+
+            var valdisponibilidad = 20;
+            var valrendimiento = 50;
+            var valcalidad = 30;
             var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-            document.getElementById("titlereporte").innerHTML = "Reporte Mensual: " + ${reportefecha};
-            document.getElementById("titleturno").innerHTML = "Turno: " + ${reporteturno};
+            document.getElementById("titlereporte").innerHTML = "Reporte: " + "2023-09-25";
+            document.getElementById("titleturno").innerHTML = "Turno: " + 1;
+
+            document.getElementById("fechahist").value = "2023-09-15";
+            document.getElementById("fechahistfin").value = "2023-09-26";
+            document.getElementById("turno").value = 1;
+
+            const dateRange = document.getElementById('dateRange');
+            const selectedDate = document.getElementById('selectedDate');
+
+            // Fecha inicial y final
+            var startDate = new Date(Date.parse(document.getElementById("fechahist").value + "T00:00:00"));
+            var endDate = new Date(Date.parse(document.getElementById("fechahistfin").value + "T00:00:00"));
+
+            const dateDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+            // Configura las opciones del control deslizante como fechas
+            for (let i = 0; i <= dateDiff; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = currentDate.toLocaleDateString();
+                dateRange.appendChild(option);
+            }
+
+            // Actualiza el texto con la fecha seleccionada
+            dateRange.addEventListener('input', function () {
+                const index = parseInt(dateRange.value);
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + index);
+                selectedDate.textContent = 'Fecha seleccionada: ' + currentDate.toLocaleDateString();
+                document.getElementById("titlereporte").innerHTML = "Reporte: " + currentDate.toLocaleDateString();
+            });
+
+            // Establece los valores mínimo y máximo del rango
+            dateRange.min = 0;
+            dateRange.max = dateDiff;
 
             function drawPercentagedisponibilidad(chart) {
                 var ctx = chart.chart.ctx;
@@ -338,32 +454,72 @@
                     },
         
                     borderWidth: 0,
-                    cutout: 60,
+                    cutout: 70,
                 }
             });
         
+            var ctx5 = document.getElementById('OEETotal').getContext('2d');
+            const dias = ["Día 1", "Día 2", "Día 3", "Día 4", "Día 5"];
+            const turnos = ["Turno 1", "Turno 2", "Turno 3"];
+            const colores = ["#FC9D9A", "#F9CDAD", "#C8C8A9"];
+
+            const data = [
+            // Día 1
+            [80, 65, 75],
+            // Día 2
+            [75, 70, 60],
+            // Día 3
+            [85, 80, 90],
+            // Día 4
+            [70, 75, 80],
+            // Día 5
+            [60, 55, 65],
+            ];
+
+            const chartData = {
+            labels: dias,
+            datasets: turnos.map((turno, index) => ({
+                label: turno,
+                data: data.map((d) => d[index]),
+                backgroundColor: colores[index],
+                borderColor: colores[index],
+                borderWidth: 1,
+            })),
+            };
+
+            const chartOptions = {
+                responsive: true, // Esto permite que el gráfico se ajuste al tamaño del contenedor
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                    stacked: false,
+                    },
+                    y: {
+                    beginAtZero: true,
+                    max: 100,
+                    title: {
+                        display: true,
+                        text: "OEE (%)",
+                    },
+                    },
+                },
+                plugins: {
+                    legend: {
+                    display: true,
+                    position: "top",
+                    },
+                },
+            };
+
+            // Crear el gráfico
+            new Chart(ctx5, {
+            type: "bar",
+            data: chartData,
+            options: chartOptions,
+            });
+
         });
     </script>
-</head>
-<body>
-    <h1 id="titlereporte"></h1> 
-    <h2 id="titleturno" style="text-align: center;"></h2>
-
-    <div class="informe">
-        <h2>PARAMETROS</h2>
-        <div class="canvas-container">
-            <canvas id="Disponibilidad" width="200" height="200"></canvas>
-            <canvas id="Rendimiento" width="200" height="200"></canvas>
-            <canvas id="Calidad" width="200" height="200"></canvas>
-        </div>
-    </div>
-
-    <div class="informe">
-        <h2>OEE</h2>
-            <div class="canvas-container">
-                <canvas id="OEE" width="200" height="200"></canvas>
-            </div>
-    </div>
 
 </body>
 </html>
