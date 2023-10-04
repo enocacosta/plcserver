@@ -132,7 +132,7 @@
 
                 }).catch(error => console.log(error));
 
-            }getinfort();
+            }
 
             var valdisponibilidad = 20;
             var valrendimiento = 50;
@@ -177,6 +177,8 @@
             // Establece los valores mínimo y máximo del rango
             dateRange.min = 0;
             dateRange.max = dateDiff;
+
+            getinfort();
 
             function drawPercentagedisponibilidad(chart) {
                 var ctx = chart.chart.ctx;
