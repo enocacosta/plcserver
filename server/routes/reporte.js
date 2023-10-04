@@ -2,32 +2,24 @@ const express = require('express');
 const app = express.Router();
 const cors = require('cors');
 const datosOEE = require('../model/modeloOEE');
+const formatoFecha = require('../helpers/formatoFecha');
 app.use(cors());
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
 app.get('/', async (req, res) => {
     try {
         // Receive data from the front-end
-        let { date, turno } = req.query;
+        let { fechaI, fechaF, turno } = req.query; 
 
-        if (date) {
-            const parsedDate = new Date(date);
-            if (!isNaN(parsedDate.getTime())) { // Check if the parsed date is valid
-                parsedDate.setHours(parsedDate.getHours() + 5);
-                date = parsedDate;
-            } else {
-                return res.status(400).json({ error: 'Invalid date format' });
-            }
-        }
+        const query = {};
 
-        const query = {
-            turno: Number(turno),
-        };
+        fechaI = formatoFecha(fechaI);
+        fechaF = formatoFecha(fechaF);
 
-        if (date) {
-            const startDate = new Date(date);
+        if (fechaI && fechaF) {
+            const startDate = new Date(fechaI);
             startDate.setHours(0, 0, 0, 0); // Set time to midnight
-            const endDate = new Date(date);
+            const endDate = new Date(fechaF);
             endDate.setHours(23, 59, 59, 999); // Set time to 23:59:59.999
 
             query.createdAt = {
@@ -36,7 +28,8 @@ app.get('/', async (req, res) => {
             };
         }
 
-        console.log(date);
+        console.log(fechaI);
+        console.log(fechaF);
         console.log(turno);
         const queryResult = await datosOEE.find(query).exec();
 
@@ -49,3 +42,4 @@ app.get('/', async (req, res) => {
 });
 
 module.exports = app;
+    

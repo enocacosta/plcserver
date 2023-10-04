@@ -4,12 +4,13 @@ const cors = require('cors');
 const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
 const conexionDB = require('./config/conexionDB');
+const {selectTurno, cronSelectTurno} = require('./calculos/selectTurno');
+const {calcularTiempo,cronCalcularTiempo}  = require('./calculos/calcularTiempo');
+const {calculosOEE} = require('./calculos/calculosOEE');
+const {cronGuardarOEE,cronGuardarOEEMediaNoche} = require('./calculos/guardarOEE');
 const userApp = require('./routes/user');
-const {selectTurno, cronSelectTurno} = require('./helpers/selectTurno');
-const {calcularTiempo,cronCalcularTiempo}  = require('./helpers/calcularTiempo');
-const {calculosOEE} = require('./helpers/calculosOEE');
-const cronGuardarOEE = require('./helpers/guardarOEE');
 const queryApp = require('./routes/reporte');
+const gerencialApp = require('./routes/gerencial');
 
 app.use(cors());  
 const tiempoLectura = 5000;
@@ -27,9 +28,11 @@ setInterval(calculosOEE,tiempoLectura);
 cronSelectTurno.start();
 cronCalcularTiempo.start();
 cronGuardarOEE.start();
+cronGuardarOEEMediaNoche.start();
 
 app.use('/', userApp);
 app.use('/reporte', queryApp);
+app.use('/gerencial',gerencialApp);
 
 // Start the server
 const port = process.env.PORT || 3000;

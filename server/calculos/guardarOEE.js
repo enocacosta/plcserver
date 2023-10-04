@@ -1,11 +1,10 @@
-const {getOEE} = require ('../helpers/calculosOEE')
+const {getOEE} = require ('./calculosOEE')
 const datosOEE = require('../model/modeloOEE');
-const {getTurnoNumero} = require('../helpers/selectTurno')
+const {getTurnoNumero} = require('./selectTurno')
 const cron = require('node-cron');
 
 const guardarOEE = async() =>{
     try {
-        console.log('funcion guardar oee');
         const oeeCalculado = getOEE();
         const turnoNumero = getTurnoNumero();
 
@@ -30,7 +29,8 @@ const guardarOEE = async() =>{
     }
 }
 
-const cronGuardarOEE = cron.schedule('00,00,00 00,00,00 00,08,16 * * *', guardarOEE);
+const cronGuardarOEE = cron.schedule('00 08,16 * * *', guardarOEE);
+const cronGuardarOEEMediaNoche = cron.schedule('59 59 23 * * *', guardarOEE);
 
 
-module.exports = cronGuardarOEE;
+module.exports = {cronGuardarOEE, cronGuardarOEEMediaNoche};
