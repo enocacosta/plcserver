@@ -105,12 +105,16 @@
             const oeePorDia = [];
 
             function getinfort(){
+
+                date1= "2023-09-25T13:00:00.000+00:00";
+                date2= "2023-09-26T13:00:00.000+00:00";
+
                 fetch('http://localhost:3000', {
                     method: 'POST',
                     headers: {
                       'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ startDate, endDate }),
+                    body: JSON.stringify({ date1, date2 }),
                   })
                 .then(res =>{
                 return res.json();
