@@ -5,7 +5,6 @@ const cron = require('node-cron');
 
 const guardarOEE = async() =>{
     try {
-        console.log('funcion guardar oee');
         const oeeCalculado = getOEE();
         const turnoNumero = getTurnoNumero();
 
@@ -30,7 +29,7 @@ const guardarOEE = async() =>{
     }
 }
 
-const cronGuardarOEE = cron.schedule('00,00,00 00,00,00 00,08,16 * * *', guardarOEE);
+const cronGuardarOEE = cron.schedule('00,00,59 00,00,59 08,16,23 * * *', guardarOEE);
 
 
 module.exports = cronGuardarOEE;
