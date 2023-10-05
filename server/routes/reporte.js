@@ -9,7 +9,9 @@ app.use(cors());
 app.get('/', async (req, res) => {
     try {
         // Receive data from the front-end
-        let { fechaI, fechaF, turno } = req.query; 
+        let { fechaI, fechaF} = req.query; 
+
+        console.log(fechaI);
 
         const query = {};
 
@@ -28,11 +30,11 @@ app.get('/', async (req, res) => {
             };
         }
 
-        console.log(fechaI);
         console.log(fechaF);
-        console.log(turno);
-        const queryResult = await datosOEE.find(query).exec();
+        console.log(fechaI);
 
+        const queryResult = await datosOEE.find(query).exec();
+        // console.log(queryResult);
         res.json(queryResult);
 
     } catch (error) {
