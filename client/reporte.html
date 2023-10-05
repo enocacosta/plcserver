@@ -103,6 +103,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
 
+            const oeePorDia = [];
             function getinfort(){
                 fetch('http://localhost:3000', {
                     method: 'POST',
@@ -116,7 +117,7 @@
                 })
                 .then(data =>{
                     console.log(data);
-                    const oeePorDia = [];
+                    
                     for (let i = 0; i < data.length; i += 3) {
                     const dia = [];
                     for (let j = i; j < i + 3; j++) {
@@ -152,6 +153,9 @@
             // Fecha inicial y final
             var startDate = new Date(Date.parse(document.getElementById("fechahist").value + "T00:00:00"));
             var endDate = new Date(Date.parse(document.getElementById("fechahistfin").value + "T00:00:00"));
+
+            getinfort();
+            
 
             const dateDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
 
