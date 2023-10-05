@@ -530,6 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [],
                 backgroundColor: ['#36A42B'],
                 borderColor: ['#36A42B'],
+                radius: 0,
 
             }],
         },
