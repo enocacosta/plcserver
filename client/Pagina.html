@@ -91,14 +91,20 @@
 
 
                 <div class="contenedor-inferiorizq">
-                    <img src="bandatransportadora.png" style="width:30%;">
+                    <img src="bandatransportadora.png" style="width:30%; float: left;">
                     <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
                     <button id="maq1" class="leds" style="top: 70%; left: 12%;">RUN</button>
                     <button id="maq2" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
                     <button id="maq3" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
                     <button id="maq4" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
 
-                    <div style="left: 50%; position:absolute; top: 20%;">
+                    
+                    <div style="float: left;   margin-left: 400px;">
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> cajas/min</p>
+                        <canvas id="velocidad" width="310" height="310"></canvas>
+                    </div>
+
+                    <div style="float: left;   margin-left: 280px; margin-top: 40px;">
                         <p style="text-align: center;">Consulta historicos</p>
                         <p>Desde:</p><input type="date" id="fechahist">
                         <p>Hasta:</p><input type="date" id="fechahistfin">
@@ -114,13 +120,7 @@
                 </div>
 
                 <div class="contenedor-inferiorder">
-                    <div>
-                        <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> cajas/min</p>
-
-                    </div>
-                    <div>
-                        <canvas id="velocidad" width="310" height="310"></canvas>
-                    </div>
+                    
                 </div>
 
             </div>
