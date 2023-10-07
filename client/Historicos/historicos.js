@@ -525,6 +525,22 @@ document.addEventListener('DOMContentLoaded', function () {
             }
           }
         }
-      });
+    });
+
+    var tempparams = new URLSearchParams(window.location.search);
+    var temp1 = tempparams.get('valor1');
+    var temp2 = tempparams.get('valor2');
+    var temp3 = tempparams.get('valor3');
+
+    if (temp1 !== null && temp2 !== null && temp3 !== null) {
+
+        document.getElementById("fechahist").value = temp1;
+        document.getElementById("fechahistfin").value = temp2;
+        document.getElementById("turno").value = temp3;
+
+        getinfort();
+
+
+    }
 
 });
