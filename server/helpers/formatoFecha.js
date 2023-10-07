@@ -5,6 +5,7 @@ const formatoFecha = (fecha) =>{
             if (!isNaN(parsedDate.getTime())) { // Check if the parsed fechaI is valid
                 parsedDate.setHours(parsedDate.getHours() + 5);
                 fecha = parsedDate;
+                return fecha
             } else {
                 throw new Error('Formato invalido');
             }

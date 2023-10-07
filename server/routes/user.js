@@ -13,6 +13,8 @@ app.get('/', (req, res) => {
     try {
         //importar valores calculados de oee
         const oeeCalculado = getOEE();
+        let tiempoProductivo = tiempoDis+tiempoStand;
+        
         res.json({
             'disponibilidad': oeeCalculado.disponibilidad,
             'rendimiento': oeeCalculado.rendimiento,
@@ -21,10 +23,12 @@ app.get('/', (req, res) => {
             'totalDia': oeeCalculado.totalDia,
             'produccionTurno': oeeCalculado.totalCant,
             'tiempoStop': tiempoParado,
-            'tiempoProductivo': oeeCalculado.availableOperatingTime,
+            'tiempoProductivo': tiempoProductivo,
             'velocidad': oeeCalculado.velocidad,
 
         });
+
+    
     } catch (error) {
         res.status(500).json({ error: 'Internal server error' });
         console.log(error);
