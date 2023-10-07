@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var tproductivo = 0;
 
 
-    function generarNumeroAleatorio() {
+    function Realtime() {
 
         fetch('http://localhost:3000')
         .then(res =>{
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
         velocidad.update();
         esperadooee.update();
 
-    }setInterval(generarNumeroAleatorio, 3000);
+    }setInterval(Realtime, 3000);
     
 
 
@@ -614,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
         
-    generarNumeroAleatorio();
+    Realtime();
 
     function consultarhistoricos(){
         confecha = document.getElementById('fechahist').value;
