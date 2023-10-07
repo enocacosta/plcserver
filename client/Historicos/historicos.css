@@ -13,6 +13,7 @@ h1 {
     margin: 20px 0;
     margin-left: 15%;
     text-align: center;
+    display: none;
 }
 
 .informe h2 {
@@ -41,7 +42,7 @@ canvas {
 
 }
 .slider {
-    width: 100%; /* Full-width */
+    width: 50%; /* Full-width */
     height: 25px; /* Specified height */
     
 }

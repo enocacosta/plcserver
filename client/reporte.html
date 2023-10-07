@@ -14,15 +14,6 @@
             <p>Desde:</p><input type="date" id="fechahist">
             <p>Hasta:</p><input type="date" id="fechahistfin">
             <p></p>
-            <label for="Turno"># de turno</label>
-            <select id="turno" name="noturno">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            </select>  
-            <p></p>
-            <input type="range" min="1" max="100" value="50" class="slider" id="dateRange">
-            <span id="selectedDate">Fecha seleccionada: </span>
             <div><button id="consultar">Consultar</button></div>
             <img src="logos/logo.png" style="width:100%; top: 100%; ">
         </div>
@@ -37,6 +28,18 @@
             <canvas id="Rendimiento" width="200" height="200"></canvas>
             <canvas id="Calidad" width="200" height="200"></canvas>
             <canvas id="OEE" width="225" height="225"></canvas>
+        </div>
+        <div>
+            <label for="Turno"># de turno</label>
+            <select id="turno" name="noturno">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            </select>  
+            <p></p>
+            <input type="range" min="1" max="100" value="50" class="slider" id="dateRange">
+            <p></p>
+            <span id="selectedDate">Fecha seleccionada: </span>
         </div>
     </div>
 

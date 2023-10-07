@@ -1,28 +1,36 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    
+    document.getElementById("titlereporte").innerHTML = "Reporte histórico";
+    document.getElementById("titleturno").innerHTML = "Turno: " + 1;
+    document.getElementById("fechahist").value = "2023-09-20";
+    document.getElementById("fechahistfin").value = "2023-09-26";
+    document.getElementById("turno").value = 1;
+    const dateRange = document.getElementById('dateRange');
+    const selectedDate = document.getElementById('selectedDate');
+    var datetocompare = "";
+    var filteredData;
+    var extractedData;
+
     var labels1 = [];
     var turno1Data = [];
     var turno2Data = [];
     var turno3Data = [];
 
     document.getElementById("consultar").addEventListener("click", getinfort);
-    
+    document.getElementById("turno").addEventListener("change", detailedOEE);
+    document.getElementById("dateRange").addEventListener("change", detailedOEE);
     
 
     function getinfort(){
 
         fecha1 = document.getElementById("fechahist").value;
         fecha2 = document.getElementById("fechahistfin").value;
-        console.log(fecha1);
-        console.log(fecha2);
 
-        fetch(`http://localhost:3000/reporte?fechaI=${"2023-09-21"}&fechaF=${"2023-09-21"}&turno=${1}`)
+        fetch(`http://localhost:3000/reporte?fechaI=${fecha1}&fechaF=${fecha2}`)
         .then(res =>{
         return res.json();
         })
         .then(data =>{
-            console.log(data);
 
             // 1. Convertir las variables rendimiento, calidad y disponibilidad a enteros
             data.forEach((item) => {
@@ -33,9 +41,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // 2. Calcular el valor de oee para cada objeto y acortar la fecha
             data.forEach((item) => {
-                item.oee = (item.disponibilidad * item.rendimiento * item.calidad) / 10000;
+                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
                 item.createdAt = item.createdAt.slice(0, 10);
             });
+
 
             const groupedData = data.reduce((acc, item) => {
                 const date = item.createdAt;
@@ -46,6 +55,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 acc[date][`turno${turno}`] = item.oee;
                 return acc;
             }, {});
+            console.log(groupedData);
 
 
             // Obtén las fechas únicas y ordénalas
@@ -63,71 +73,99 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Configura las etiquetas (labels) del eje X
             labels1 = dates;
-            console.log(turno1Data);
-            console.log(turno2Data);
-            console.log(turno3Data);
 
-           
-            
+            OEETotal.data.labels = labels1;
+            OEETotal.data.datasets[0].data = turno1Data;
+            OEETotal.data.datasets[1].data = turno2Data;
+            OEETotal.data.datasets[2].data = turno3Data;
+            OEETotal.update();
 
+           document.getElementsByClassName("informe")[0].style.display = "block";
+           document.getElementsByClassName("informe")[1].style.display = "block";
 
-            
+           setslider();
+
+           extractedData = data;
+
+           detailedOEE();
+             
 
         }).catch(error => console.log(error));
 
     }
 
-    var valdisponibilidad = 20;
-    var valrendimiento = 50;
-    var valcalidad = 30;
-    var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
-    var Disponibilidadcolor =0;
-    var Rendimientocolor =0;
-    var Calidadcolor =0;
-    var OEEcolor =0;
-
-    document.getElementById("titlereporte").innerHTML = "Reporte: " + "2023-09-25";
-    document.getElementById("titleturno").innerHTML = "Turno: " + 1;
-
-    document.getElementById("fechahist").value = "2023-09-15";
-    document.getElementById("fechahistfin").value = "2023-09-26";
-    document.getElementById("turno").value = 1;
-
-    const dateRange = document.getElementById('dateRange');
-    const selectedDate = document.getElementById('selectedDate');
-
-    // Fecha inicial y final
-    var startDate = new Date(Date.parse(document.getElementById("fechahist").value + "T00:00:00"));
-    var endDate = new Date(Date.parse(document.getElementById("fechahistfin").value + "T00:00:00"));
-
     
 
+    function setslider(){
+        // Fecha inicial y final
+        var startDate = new Date(Date.parse(document.getElementById("fechahist").value + "T00:00:00"));
+        var endDate = new Date(Date.parse(document.getElementById("fechahistfin").value + "T00:00:00"));
 
-    const dateDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+        
 
-    // Configura las opciones del control deslizante como fechas
-    for (let i = 0; i <= dateDiff; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i);
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = currentDate.toLocaleDateString();
-        dateRange.appendChild(option);
+
+        const dateDiff = Math.floor((endDate - startDate) / (1000 * 60 * 60 * 24));
+
+        // Configura las opciones del control deslizante como fechas
+        for (let i = 0; i <= dateDiff; i++) {
+            const currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + i);
+            const option = document.createElement('option');
+            option.value = i;
+            option.textContent = currentDate.toLocaleDateString();
+            dateRange.appendChild(option);
+        }
+
+        // Actualiza el texto con la fecha seleccionada
+        function actualizarFechaslider() {
+            const index = parseInt(dateRange.value);
+            const currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + index);
+            selectedDate.textContent = 'Fecha seleccionada: ' + currentDate.toLocaleDateString();
+            datetocompare = currentDate.toISOString().split('T')[0];
+            document.getElementById("titlereporte").innerHTML = "Reporte: " + currentDate.toLocaleDateString();
+        }
+        
+        dateRange.addEventListener('input', actualizarFechaslider);
+        
+        actualizarFechaslider();
+
+        // Establece los valores mínimo y máximo del rango
+        dateRange.min = 0;
+        dateRange.max = dateDiff;
+
+    }setslider();
+
+
+
+    function detailedOEE(){
+
+        document.getElementById("titleturno").innerHTML = "Turno: " + document.getElementById("turno").value;
+
+        filteredData = extractedData.filter(item => {
+            return item.createdAt == datetocompare && item.turno == document.getElementById("turno").value;
+        });
+        
+        console.log(filteredData[0]);
+
+        Disponibilidad.data.datasets[0].data = [filteredData[0].disponibilidad, 100-filteredData[0].disponibilidad];
+        console.log(Disponibilidad.data.datasets[0].data[0]);
+        Rendimiento.data.datasets[0].data = [filteredData[0].rendimiento, 100-filteredData[0].rendimiento];
+        Calidad.data.datasets[0].data = [filteredData[0].calidad, 100-filteredData[0].calidad];
+        OEE.data.datasets[0].data = [filteredData[0].oee, 100-filteredData[0].oee];
+
+        setcolor();
+
+        Disponibilidad.update();
+        Rendimiento.update();
+        Calidad.update();
+        OEE.update();
+
     }
 
-    // Actualiza el texto con la fecha seleccionada
-    dateRange.addEventListener('input', function () {
-        const index = parseInt(dateRange.value);
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + index);
-        selectedDate.textContent = 'Fecha seleccionada: ' + currentDate.toLocaleDateString();
-        document.getElementById("titlereporte").innerHTML = "Reporte: " + currentDate.toLocaleDateString();
-    });
 
-    // Establece los valores mínimo y máximo del rango
-    dateRange.min = 0;
-    dateRange.max = dateDiff;
-
+    //Charts
+    
     function drawPercentagedisponibilidad(chart) {
         var ctx = chart.chart.ctx;
         var width = (chart.chart.width);
@@ -137,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valdisponibilidad + "%";
+        var text = Disponibilidad.data.datasets[0].data[0] + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -160,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valrendimiento + "%";
+        var text = Rendimiento.data.datasets[0].data[0] + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -183,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valcalidad + "%";
+        var text = Calidad.data.datasets[0].data[0] + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -206,7 +244,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valoee + "%";
+        var text = OEE.data.datasets[0].data[0] + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -221,39 +259,44 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function setcolor(){
-        if (valdisponibilidad<=40) {
+        if (Disponibilidad.data.datasets[0].data[0]<=40) {
             Disponibilidadcolor = ['#fd0100', '#e5e5e5'];
-        } else if (valdisponibilidad>40 && valdisponibilidad<75) {
+        } else if (Disponibilidad.data.datasets[0].data[0]>40 && Disponibilidad.data.datasets[0].data[0]<75) {
             Disponibilidadcolor = ['#fffe06', '#e5e5e5'];            
         }else {
             Disponibilidadcolor = ['#05fc03', '#e5e5e5'];
         }
 
-        if (valrendimiento<=40) {
+        if (Rendimiento.data.datasets[0].data[0]<=40) {
             Rendimientocolor = ['#fd0100', '#e5e5e5'];
-        } else if (valrendimiento>40 && valrendimiento<75) {
+        } else if (Rendimiento.data.datasets[0].data[0]>40 && Rendimiento.data.datasets[0].data[0]<75) {
             Rendimientocolor = ['#fffe06', '#e5e5e5'];            
         }else {
             Rendimientocolor = ['#05fc03', '#e5e5e5'];
         }
 
-        if (valcalidad<=40) {
+        if (Calidad.data.datasets[0].data[0]<=40) {
             Calidadcolor = ['#fd0100', '#e5e5e5'];
-        } else if (valcalidad>40 && valcalidad<75) {
+        } else if (Calidad.data.datasets[0].data[0]>40 && Calidad.data.datasets[0].data[0]<75) {
             Calidadcolor = ['#fffe06', '#e5e5e5'];            
         }else {
             Calidadcolor = ['#05fc03', '#e5e5e5'];
         }
 
-        if (valoee<=40) {
+        if (OEE.data.datasets[0].data[0]<=40) {
             OEEcolor = ['#fd0100', '#e5e5e5'];
-        } else if (valoee>40 && valoee<75) {
+        } else if (OEE.data.datasets[0].data[0]>40 && OEE.data.datasets[0].data[0]<75) {
             OEEcolor = ['#fffe06', '#e5e5e5'];            
         }else {
             OEEcolor = ['#05fc03', '#e5e5e5'];
         }
 
-    }setcolor();
+        Disponibilidad.data.datasets[0].backgroundColor = Disponibilidadcolor;
+        Rendimiento.data.datasets[0].backgroundColor = Rendimientocolor;
+        Calidad.data.datasets[0].backgroundColor = Calidadcolor;
+        OEE.data.datasets[0].backgroundColor = OEEcolor;
+
+    }
 
 
     var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
@@ -262,8 +305,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Disponibilidad'],
             datasets: [{
-            data: [valdisponibilidad, 100-valdisponibilidad],
-            backgroundColor: Disponibilidadcolor,
+            data: [80, 100-80],
+            backgroundColor: '#9BD0F5',
             }],
         },
         options: {
@@ -301,8 +344,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Rendimiento'],
             datasets: [{
-            data: [valrendimiento, 100-valrendimiento],
-            backgroundColor: Rendimientocolor,
+            data: [80, 100-80],
+            backgroundColor: '#9BD0F5',
             }],
         },
         options: {
@@ -340,8 +383,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Calidad'],
             datasets: [{
-            data: [valcalidad, 100-valcalidad],
-            backgroundColor: Calidadcolor,
+            data: [80, 100-80],
+            backgroundColor: '#9BD0F5',
             }],
         },
         options: {
@@ -379,8 +422,8 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['OEE'],
             datasets: [{
-            data: [valoee, 100-valoee],
-            backgroundColor: OEEcolor,
+            data: [80, 100-80],
+            backgroundColor: '#9BD0F5',
             }],
         },
         options: {
@@ -412,6 +455,7 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    
     var ctx5 = document.getElementById('OEETotal').getContext('2d');
     var OEETotal = new Chart(ctx5, {
         type: 'line',
