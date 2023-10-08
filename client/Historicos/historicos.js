@@ -19,7 +19,33 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById("consultar").addEventListener("click", getinfort);
     document.getElementById("turno").addEventListener("change", detailedOEE);
     document.getElementById("dateRange").addEventListener("change", detailedOEE);
+    document.getElementById('fechahist').addEventListener ("change", comparedates);
+    document.getElementById('fechahistfin').addEventListener ("change", comparedates);
+
+    //SETEAR FECHAS
+    function setdates (){
+        var yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        var yyyy = yesterday.getFullYear();
+        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        var dd = String(yesterday.getDate()).padStart(2, '0');
+        var formattedDate = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('fechahist').max = formattedDate;
+        document.getElementById('fechahist').value = formattedDate;
+        document.getElementById('fechahistfin').value = formattedDate;
+        document.getElementById('fechahistfin').max = formattedDate;
+    }setdates ();
+
+    function comparedates (){
+        var fecha1 = new Date(document.getElementById('fechahist').value);
+        var fecha2 = new Date(document.getElementById('fechahistfin').value);
+
+        if (fecha1 > fecha2) {
+            document.getElementById('fechahist').value = document.getElementById('fechahistfin').value;
+        }
+    }
     
+    //OBTENER INFORMACIÓN
 
     function getinfort(){
 
@@ -148,11 +174,22 @@ document.addEventListener('DOMContentLoaded', function () {
         
         console.log(filteredData[0]);
 
-        Disponibilidad.data.datasets[0].data = [filteredData[0].disponibilidad, 100-filteredData[0].disponibilidad];
-        console.log(Disponibilidad.data.datasets[0].data[0]);
-        Rendimiento.data.datasets[0].data = [filteredData[0].rendimiento, 100-filteredData[0].rendimiento];
-        Calidad.data.datasets[0].data = [filteredData[0].calidad, 100-filteredData[0].calidad];
-        OEE.data.datasets[0].data = [filteredData[0].oee, 100-filteredData[0].oee];
+        if (filteredData[0] === undefined) {
+            Disponibilidad.data.datasets[0].data = [0, 0];
+            console.log(Disponibilidad.data.datasets[0].data[0]);
+            Rendimiento.data.datasets[0].data = [0, 0];
+            Calidad.data.datasets[0].data = [0, 0];
+            OEE.data.datasets[0].data = [0, 0];
+            document.getElementById("nodata").style.display = "block";
+          } else {
+            Disponibilidad.data.datasets[0].data = [filteredData[0].disponibilidad, 100-filteredData[0].disponibilidad];
+            console.log(Disponibilidad.data.datasets[0].data[0]);
+            Rendimiento.data.datasets[0].data = [filteredData[0].rendimiento, 100-filteredData[0].rendimiento];
+            Calidad.data.datasets[0].data = [filteredData[0].calidad, 100-filteredData[0].calidad];
+            OEE.data.datasets[0].data = [filteredData[0].oee, 100-filteredData[0].oee];
+            document.getElementById("nodata").style.display = "none";
+          }
+        
 
         setcolor();
 
