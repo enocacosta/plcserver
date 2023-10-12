@@ -1,61 +1,45 @@
-const express = require('express')
-const cors = require('cors');
-var snap7 = require('node-snap7');
+const express = require('express');
 const app = express();
+const cors = require('cors');
+const conexionPLC = require('./config/conexionPLC');
+const {readPlc} = require('./config/readPlc');
 const conexionDB = require('./config/conexionDB');
-const Modelo = require('./model/modeloDB');
-require('dotenv').config();
+const {selectTurno, cronSelectTurno} = require('./calculos/selectTurno');
+const {calcularTiempo,cronCalcularTiempo}  = require('./calculos/calcularTiempo');
+const {calculosOEE} = require('./calculos/calculosOEE');
+const {cronGuardarOEE,cronGuardarOEEMediaNoche} = require('./calculos/guardarOEE');
+const userApp = require('./routes/user');
+const queryApp = require('./routes/reporte');
+const gerencialApp = require('./routes/gerencial');
 
+app.use(cors());  
+const tiempoLectura = 5000;
+
+conexionPLC();
 conexionDB();
-app.use(cors());
+selectTurno();
 
+setInterval(readPlc,tiempoLectura);
 
-const s7client = new snap7.S7Client();
-s7client.ConnectTo(process.env.IPDIR, 0, 1, function(err) {
-    if(err) {
-        return console.log(' >> Connection failed. Code #' + err + ' - ' + s7client.ErrorText(err));
-    }else{
-        console.log('Connection succesful');
-    }
-}); 
+setInterval(calcularTiempo,tiempoLectura);
 
-let array = ''
+setInterval(calculosOEE,tiempoLectura);
 
-//Read the first byte from PLC process outputs...
-setInterval(function(){
-    s7client.ReadArea(s7client.S7AreaDB, 1 , 0, 15, s7client.S7WLByte,function (err, buf) {
-        if (err) {
-            console.log(err);
-        }
-        console.log("Lectura 1");
-        console.log(buf);
+cronSelectTurno.start();
+cronCalcularTiempo.start();
+cronGuardarOEE.start();
+cronGuardarOEEMediaNoche.start();
 
-        let concatenated = '';
+app.use('/', userApp);
+app.use('/reporte', queryApp);
+app.use('/gerencial',gerencialApp);
 
-        for(let i=0; i<15;i++){
-          buffer=buf[i].toString(16);
-          concatenated += buffer + ' ';
-        }
-
-        concatenated.trim();
-        array = concatenated;
-        console.log(concatenated);
-
-        const newdatoModelo = new Modelo({
-          array: concatenated,
-        })
-        
-        const save = newdatoModelo.save()
-
-        })   
-},5000); 
-
-
-;
+// Start the server
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 
 
-
-
-
-
+ 

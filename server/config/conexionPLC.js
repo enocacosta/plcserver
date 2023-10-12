@@ -1,25 +1,16 @@
-const { S7Client } = require('node-snap7');
-const s7client = new S7Client();
+const client = require('../helpers/plcSettings');
 
-const connectToPLC = () => {
-    return new Promise((resolve, reject) => {
-        s7client.ConnectTo('192.168.1.10', 0, 2, (err) => {
-            if (err) {
-                reject(new Error(`Error promesa conexion plc: ${err}`));
-            } else {
-                resolve('Conexión exitosa');
-            }
-        });
-    });
-};
+client.on('error', console.error);
 
-const connectionPLC = async () => {
+
+const conexionPLC = async() => {
     try {
-        const conn = await connectToPLC();
-        console.log(`Conexion con PLC establecida: ${conn}`);
+        console.log('Conexión establecida');
+        await client.connect();
     } catch (error) {
-        console.error(`Error function conexion plc: ${error.message}`);
+        console.log(`conexion ${error}`);
     }
+ 
 };
 
-module.exports = connectionPLC
+module.exports = conexionPLC

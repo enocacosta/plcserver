@@ -1,0 +1,51 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #2c4f63;
+    font-weight: 700;
+}
+
+h1 {
+    text-align: center;
+}
+
+.informe {
+    border: 1px solid #000;
+    padding: 10px;
+    margin: 20px 0;
+    margin-left: 15%;
+    text-align: center;
+    display: none;
+}
+
+.informe h2 {
+    margin: 0;
+}
+
+.canvas-container {
+    display: flex;
+    justify-content: center; /* Centrar horizontalmente */
+    align-items: center;
+}
+
+canvas {
+    margin-right: 10px; /* Espacio entre los canvas */
+}
+
+.sidebar {
+    height: 100%;
+    width: 15%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #86868660;
+    padding-top: 20px;
+    text-align: center;
+
+}
+.slider {
+    width: 50%; /* Full-width */
+    height: 25px; /* Specified height */
+    
+}

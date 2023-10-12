@@ -3,107 +3,473 @@
 <head>
     <meta name="viewport" content="width=device-width">
     <title>Información de Producción</title>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" type="text/css" href="Tiemporeal/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="scripts.js"></script>
-    
-
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
 </head>
 
 
 <body>
-    <div class="contenedor-global">
-        <div class="contenedor-superior">
+    <div id="tabs">
+        <button class="tab-button" onclick="changeTab(0)">General</button>
+        <button class="tab-button" onclick="changeTab(1)">Producción</button>
+        <button class="tab-button" onclick="changeTab(2)">Mantenimiento</button>
+        <button class="tab-button" onclick="changeTab(3)">Gerencial</button>
+    </div>
 
-            <div class="contenedor-superiorizq">
-                
-        
-                <div class="production-info">
+    <div class="tab" id="tab1">
+    
+        <div class="contenedor-global">
+            <div class="contenedor-superior">
+
+                <div class="contenedor-superiorizq">
                     
-                    <p>Producción día: <input readonly class="textbox" id="producciondiaria" value="500"> cajas</p>
-        
-                    
-                    <p>Pruducción turno: <input readonly class="textbox" id="produccionturno" value="500"> cajas</p>
-        
-                    
-                    <p>Presentación: <input readonly class="textbox" id="presentacion" value="500"> ml</p>
+            
+                    <div class="production-info">
+                        
+                        <p>Producción día: <input readonly class="textbox" id="producciondiaria" value="500"> Bidones</p>
+            
+                        
+                        <p>Producción turno: <input readonly class="textbox" id="produccionturno" value="500"> Bidones</p>
+            
+                        
+                        <p>Presentación: <input readonly class="textbox" id="presentacion" value="500"> ml</p>
 
-                    <p>P. Programada: <input readonly class="textbox" id="paradaprogramada" value="500"> min</p>
+                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramada" value="500"> min</p>
 
-                    <p>Parada: <input readonly class="textbox" id="parada" value="500"> min</p>
-                </div>
-                
-        
-            </div>
-
-                
-                
-            <div class="contenedor-superiorder">
-
-                <div class="circular-progress">
-                    <div>
-                        <canvas id="Disponibilidad" width="200" height="200"></canvas>
+                        <p>Parada: <input readonly class="textbox" id="parada" value="500"> min</p>
                     </div>
                     
-                    <div>
-                        <canvas id="Rendimiento" width="200" height="200"></canvas>
-                    </div>
-
-                    <div>
-                        <canvas id="Calidad" width="200" height="200"></canvas>
-                    </div>
-
-                    <div>
-                        <canvas id="OEE" width="230" height="260"></canvas>
-                    </div>
-
-                    <div>
-                        <canvas id="timeChart" width="310" height="310"></canvas>
-                    </div>
-
-                    <div>
-                        <canvas id="esperadooee" width="140" height="300"></canvas>
-                        <p style="text-align: center;">OEE Esperado:</p>
-                        <button class="btn" id="esperadooeebt"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetb" value="0" style="text-align: center;">
-                    </div>
+            
                 </div>
 
-                
+                    
+                    
+                <div class="contenedor-superiorder">
+
+                    <div class="circular-progress">
+                        <div>
+                            <canvas id="Disponibilidad" width="200" height="200"></canvas>
+                        </div>
+                        
+                        <div>
+                            <canvas id="Rendimiento" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="Calidad" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="OEE" width="230" height="260"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="timeChart" width="310" height="310"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="esperadooee" width="140" height="300"></canvas>
+                            <p style="text-align: center;">OEE Esperado:</p>
+                            <button class="btn" id="esperadooeebt"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetb" value="0" style="text-align: center;">
+                        </div>
+
+                        
+                    </div>
+
+                    
+
+                </div>
+
+            
 
             </div>
 
-        
+
+            <div class="contenedor-inferior">
+
+
+                <div class="contenedor-inferiorizq">
+                    <img src="logos/bandatransportadora.png" style="width:30%; float: left; margin-left: 40px;">
+                    <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
+                    <button id="maq1" class="leds" style="top: 70%; left: 12%;">RUN</button>
+                    <button id="maq2" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
+                    <button id="maq3" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
+                    <button id="maq4" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
+
+                    
+                    <div style="float: left;   margin-left: 300px;">
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> Bidones/min</p>
+                        <canvas id="velocidad" width="310" height="310"></canvas>
+                    </div>
+
+                    <div style="float: left;   margin-left: 280px; margin-top: 40px;">
+                        <p style="text-align: center;">Consulta historicos</p>
+                        <p>Desde:</p><input type="date" id="fechahist">
+                        <p>Hasta:</p><input type="date" id="fechahistfin">
+                        <p></p>
+                        <label for="Turno"># de turno</label>
+                        <select id="turno" name="noturno">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        </select>  
+                        <div><button id="consultar">Consultar</button></div>
+                    </div>
+                </div>
+
+                <div class="contenedor-inferiorder">
+                    
+                </div>
+
+            </div>
+
+
+
 
         </div>
-
-
-        <div class="contenedor-inferior">
-
-
-            <div class="contenedor-inferiorizq">
-                <img src="bandatransportadora.png" style="width:100%;">
-                <button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button>
-                <button id="maq2" class="leds" style="top: 70%; left: 35%;">RUN</button>
-                <button id="maq3" class="leds" style="top: 70%; left: 60%;">RUN</button>
-                <button id="maq4" class="leds" style="top: 70%; left: 90%;">RUN</button>
-            </div>
-
-            <div class="contenedor-inferiorder">
-                <div>
-                    <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> cajas/min</p>
-
-                </div>
-                <div>
-                    <canvas id="velocidad" width="310" height="310"></canvas>
-                </div>
-            </div>
-
-        </div>
-
-
-
 
     </div>
+
+    <div class="tab" id="tab2">
+    
+        <div class="contenedor-global">
+            <div class="contenedor-superior">
+
+                <div class="contenedor-superiorizq">
+                    
+            
+                    <div class="production-info">
+                        
+                        <p>Producción día: <input readonly class="textbox" id="producciondiariap2" value="500"> Bidones</p>
+            
+                        
+                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop2" value="500"> Bidones</p>
+            
+                        
+                        <p>Presentación: <input readonly class="textbox" id="presentacionp2" value="500"> ml</p>
+
+                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap2" value="500"> min</p>
+
+                        <p>Parada: <input readonly class="textbox" id="paradap2" value="500"> min</p>
+                    </div>
+                    
+            
+                </div>
+
+                    
+                    
+                <div class="contenedor-superiorder">
+
+                    <div class="circular-progress">
+                        <div>
+                            <canvas id="Disponibilidadp2" width="200" height="200"></canvas>
+                        </div>
+                        
+                        <div>
+                            <canvas id="Rendimientop2" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="Calidadp2" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="OEEp2" width="230" height="260"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="timeChartp2" width="310" height="310"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="esperadooeep2" width="140" height="300"></canvas>
+                            <p style="text-align: center;">OEE Esperado:</p>
+                            <button class="btn" id="esperadooeebtp2"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetbp2" value="0" style="text-align: center;">
+                        </div>
+
+                        <div>
+                            <p style="text-align: center;">Consulta historicos</p>
+                            <p>Desde:</p><input type="date" id="fechahistp2">
+                            <p>Hasta:</p><input type="date" id="fechahistfinp2">
+                            <p></p>
+                            <label for="Turno"># de turno</label>
+                            <select id="turnop2" name="noturno">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            </select>  
+                            <div><button id="consultarp2">Consultar</button></div>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+            
+
+            </div>
+
+
+            <div class="contenedor-inferior">
+
+
+                <div class="contenedor-inferiorizq">
+                    <img src="logos/bandatransportadora.png" style="width:30%;">
+                    <button id="maq1p2" class="leds" style="top: 100%; left: 50%;">RUN</button>
+                    <button id="maq2p2" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
+                    <button id="maq3p2" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
+                    <button id="maq4p2" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
+                </div>
+
+                <div class="contenedor-inferiorder">
+                    <div>
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp2" value="0"> Bidones/min</p>
+
+                    </div>
+                    <div>
+                        <canvas id="velocidadp2" width="310" height="310"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="tab" id="tab3">
+    
+        <div class="contenedor-global">
+            <div class="contenedor-superior">
+
+                <div class="contenedor-superiorizq">
+                    
+            
+                    <div class="production-info">
+                        
+                        <p>Producción día: <input readonly class="textbox" id="producciondiariap3" value="500"> Bidones</p>
+            
+                        
+                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop3" value="500"> Bidones</p>
+            
+                        
+                        <p>Presentación: <input readonly class="textbox" id="presentacionp3" value="500"> ml</p>
+
+                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap3" value="500"> min</p>
+
+                        <p>Parada: <input readonly class="textbox" id="paradap3" value="500"> min</p>
+                    </div>
+                    
+            
+                </div>
+
+                    
+                    
+                <div class="contenedor-superiorder">
+
+                    <div class="circular-progress">
+                        <div>
+                            <canvas id="Disponibilidadp3" width="200" height="200"></canvas>
+                        </div>
+                        
+                        <div>
+                            <canvas id="Rendimientop3" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="Calidadp3" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="OEEp3" width="230" height="260"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="timeChartp3" width="310" height="310"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="esperadooeep3" width="140" height="300"></canvas>
+                            <p style="text-align: center;">OEE Esperado:</p>
+                            <button class="btn" id="esperadooeebtp3"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetbp3" value="0" style="text-align: center;">
+                        </div>
+
+                        <div>
+                            <p style="text-align: center;">Consulta historicos</p>
+                            <p>Desde:</p><input type="date" id="fechahistp3">
+                            <p>Hasta:</p><input type="date" id="fechahistfinp3">
+                            <p></p>
+                            <label for="Turno"># de turno</label>
+                            <select id="turnop3" name="noturno">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            </select>  
+                            <div><button id="consultarp3">Consultar</button></div>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+            
+
+            </div>
+
+
+            <div class="contenedor-inferior">
+
+
+                <div class="contenedor-inferiorizq">
+                    <img src="logos/bandatransportadora.png" style="width:30%;">
+                    <button id="maq1p3" class="leds" style="top: 100%; left: 50%;">RUN</button>
+                    <button id="maq2p3" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
+                    <button id="maq3p3" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
+                    <button id="maq4p3" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
+                </div>
+
+                <div class="contenedor-inferiorder">
+                    <div>
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp3" value="0"> Bidones/min</p>
+
+                    </div>
+                    <div>
+                        <canvas id="velocidadp3" width="310" height="310"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+    <div class="tab" id="tab4">
+    
+        <div class="contenedor-global">
+            <div class="contenedor-superior">
+
+                <div class="contenedor-superiorizq">
+                    
+            
+                    <div class="production-info">
+                        
+                        <p>Producción día: <input readonly class="textbox" id="producciondiariap4" value="500"> Bidones</p>
+            
+                        
+                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop4" value="500"> Bidones</p>
+            
+                        
+                        <p>Presentación: <input readonly class="textbox" id="presentacionp4" value="500"> ml</p>
+
+                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap4" value="500"> min</p>
+
+                        <p>Parada: <input readonly class="textbox" id="paradap4" value="500"> min</p>
+                    </div>
+                    
+            
+                </div>
+
+                    
+                    
+                <div class="contenedor-superiorder">
+
+                    <div class="circular-progress">
+                        <div>
+                            <canvas id="Disponibilidadp4" width="200" height="200"></canvas>
+                        </div>
+                        
+                        <div>
+                            <canvas id="Rendimientop4" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="Calidadp4" width="200" height="200"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="OEEp4" width="230" height="260"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="timeChartp4" width="310" height="310"></canvas>
+                        </div>
+
+                        <div>
+                            <canvas id="esperadooeep4" width="140" height="300"></canvas>
+                            <p style="text-align: center;">OEE Esperado:</p>
+                            <button class="btn" id="esperadooeebtp4"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetbp4" value="0" style="text-align: center;">
+                        </div>
+
+                        <div>
+                            <p style="text-align: center;">Consulta historicos</p>
+                            <p>Desde:</p><input type="date" id="fechahistp4">
+                            <p>Hasta:</p><input type="date" id="fechahistfinp4">
+                            <p></p>
+                            <label for="Turno"># de turno</label>
+                            <select id="turnop4" name="noturno">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            </select>  
+                            <div><button id="consultarp4">Consultar</button></div>
+                        </div>
+                    </div>
+
+                    
+
+                </div>
+
+            
+
+            </div>
+
+
+            <div class="contenedor-inferior">
+
+
+                <div class="contenedor-inferiorizq">
+                    <img src="logos/bandatransportadora.png" style="width:30%;">
+                    <button id="maq1p4" class="leds" style="top: 100%; left: 50%;">RUN</button>
+                    <button id="maq2p4" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
+                    <button id="maq3p4" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
+                    <button id="maq4p4" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
+                </div>
+
+                <div class="contenedor-inferiorder">
+                    <div>
+                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp4" value="0"> Bidones/min</p>
+
+                    </div>
+                    <div>
+                        <canvas id="velocidadp4" width="310" height="310"></canvas>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+        </div>
+
+    </div>
+
+
+    <script src="Tiemporeal/scriptp1.js"></script>
+    <script src="Tiemporeal/scriptp2.js"></script>
+    <script src="Tiemporeal/scriptp3.js"></script>
+    <script src="Tiemporeal/scriptp4.js"></script>
+    <script src="Tiemporeal/tabs.js"></script>
 </body>
 </html>
