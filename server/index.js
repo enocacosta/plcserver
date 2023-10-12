@@ -1,5 +1,4 @@
-const express = require('express');
-const app = express();
+const express = require('express')
 const cors = require('cors');
 const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
@@ -42,16 +41,3 @@ app.listen(port, () => {
 
 
 
-// function getTipoParo(x) {
-//   const obj = {
-//   1: "Paro por mantenimiento",
-//   2: "Paro por ausencia",
-//   3: "Paro por ...",
-//   4: "Paro por tin",
-//   5: "Paro por tan",
-
-//   }
-//   return obs[x] ?? "Error al recibir tipo de paro"
-// }
-
- 
