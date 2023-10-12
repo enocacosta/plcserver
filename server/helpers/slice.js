@@ -12,6 +12,7 @@ const sliceBuff = (res) =>{
     hora = res.slice(23,24); //hora
     minuto = res.slice(24,25); //minuto
     segundo = res.slice(25,26); //segundo
+    tipoParo = res.slice(26,27); //tipo de Paro 
 
     return{
         contador2,
@@ -26,6 +27,7 @@ const sliceBuff = (res) =>{
         hora,
         minuto,
         segundo,
+        tipoParo,
     }
 }
 

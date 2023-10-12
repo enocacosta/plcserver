@@ -7,7 +7,6 @@ const conexionPLC = require('./conexionPLC');
 
 client.on('error', console.error);
 
-let values = {}
 let oee = {}
 
 // Read DB
@@ -37,6 +36,8 @@ const readPlc = async()=>{
             fallosManual:oee.fallosManual,
             estadoMaquina: oee.estadoMaquina,
             fecha,
+            tipoParo: oee.tipoParo,
+            
         })
         
         const save = newdatosDb.save()  

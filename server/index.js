@@ -42,4 +42,16 @@ app.listen(port, () => {
 
 
 
+// function getTipoParo(x) {
+//   const obj = {
+//   1: "Paro por mantenimiento",
+//   2: "Paro por ausencia",
+//   3: "Paro por ...",
+//   4: "Paro por tin",
+//   5: "Paro por tan",
+
+//   }
+//   return obs[x] ?? "Error al recibir tipo de paro"
+// }
+
  
