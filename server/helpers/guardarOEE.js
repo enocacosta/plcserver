@@ -1,6 +1,6 @@
-const {getOEE} = require ('./calculosOEE')
+const {getOEE} = require ('../calculos/calculosOEE')
 const datosOEE = require('../model/modeloOEE');
-const {getTurnoNumero} = require('./selectTurno')
+const {getTurnoNumero} = require('../calculos/selectTurno')
 const cron = require('node-cron');
 
 const guardarOEE = async() =>{
