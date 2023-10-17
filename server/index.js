@@ -1,4 +1,5 @@
-const express = require('express')
+const express = require('express');
+const app = express();
 const cors = require('cors');
 const conexionPLC = require('./config/conexionPLC');
 const {readPlc} = require('./config/readPlc');
