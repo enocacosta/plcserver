@@ -3,6 +3,7 @@ const app = express.Router();
 const cors = require('cors');
 const datosOEE = require('../model/modeloOEE');
 const formatoFecha = require('../helpers/formatoFecha');
+const datosTipoParada = require('../model/modeloTipoParada');
 app.use(cors());
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
@@ -34,8 +35,19 @@ app.get('/', async (req, res) => {
         console.log(fechaI);
 
         const queryResult = await datosOEE.find(query).exec();
-        // console.log(queryResult);
-        res.json(queryResult);
+        const queryResultTipo = await datosTipoParada.find(query).exec();
+
+        // Combine the results into an object or array
+        const combinedResults = {
+            datosOEE: queryResult,
+            datosTipoParada: queryResultTipo,
+        };
+
+        console.log(combinedResults);
+        
+        // Send the combined results as a JSON response
+        res.json(combinedResults);
+
 
     } catch (error) {
         console.error('Database Error:', error);
