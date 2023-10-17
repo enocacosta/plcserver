@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
             'tiempoStop': tiempoParado,
             'tiempoProductivo': tiempoProductivo,
             'velocidad': oeeCalculado.velocidad,
+            'tipoParada': oee.tipoParada,
 
         });
 

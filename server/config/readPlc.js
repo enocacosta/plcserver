@@ -36,6 +36,7 @@ const readPlc = async()=>{
             fallosManual:oee.fallosManual,
             estadoMaquina: oee.estadoMaquina,
             fecha,
+            tipoParada,
             
         })
         
