@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function () {
         return res.json();
         })
         .then(data =>{
-            console.log(data)
+            
 
 
             timeChartval = Math.floor(Math.random() * 100) + 1;

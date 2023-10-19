@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var ctx4 = document.getElementById('OEEp4').getContext('2d');
     var ctx5 = document.getElementById('velocidadp4').getContext('2d');
     var ctx6 = document.getElementById('esperadooeep4').getContext('2d');
+    var ctx7 = document.getElementById('last3oee').getContext('2d');
     var esperadooeetb = document.getElementById('esperadooeetbp4').value;
     var maquina1 = document.getElementById('maq1p4');
     var maquina2 = document.getElementById('maq2p4');
@@ -59,33 +60,40 @@ document.addEventListener('DOMContentLoaded', function () {
     var valmaq4 = 1;
     var tparada = 0;
     var tproductivo = 0;
+    var d1 = 0;
+    var d2 = 0;
+    var d3 = 0;
 
 
-    function generarNumeroAleatorio() {
+    function Realtime() {
 
-        fetch('http://localhost:3000')
+        fetch('http://localhost:3000/gerencial')
         .then(res =>{
         return res.json();
         })
         .then(data =>{
             console.log(data)
 
+            data.forEach((item) => {
+                item.rendimiento = Math.round(item.rendimiento);
+                item.calidad = Math.round(item.calidad);
+                item.disponibilidad = Math.round(item.disponibilidad);
+            });
 
-            timeChartval = Math.floor(Math.random() * 100) + 1;
-            velvar = data.velocidad;
 
-            valrendimiento = parseInt(data.rendimiento);
-            valdisponibilidad = parseInt(data.disponibilidad);
-            valcalidad = parseInt(data.calidad);
-            valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
+            data.forEach((item) => {
+                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
+                item.createdAt = item.createdAt.slice(0, 10);
+            });
 
-            document.getElementById('producciondiariap4').value = parseInt(data.totalDia);
-            document.getElementById('produccionturnop4').value = parseInt(data.produccionTurno);
-            document.getElementById('paradap4').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
-            tparada  = (parseInt(data.tiempoStop))/60;
-            tproductivo = (parseInt(data.tiempoProductivo))/60;
-            
-            valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
+
+            d1 = data[2];
+            d2 = data[1];
+            d3 = data[0];
+
+            console.log(d1);
+            console.log(d2);
+            console.log(d3);
 
 
         }).catch(error => console.log(error));
@@ -96,6 +104,7 @@ document.addEventListener('DOMContentLoaded', function () {
         Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
         OEE.data.datasets[0].data = [valoee, 100-valoee];
         esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
+        last3oee.data.datasets[0].data = [d1.oee, d2.oee, d3.oee];
 
         if (valdisponibilidad<=40) {
             Disponibilidad.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
@@ -203,8 +212,9 @@ document.addEventListener('DOMContentLoaded', function () {
         OEE.update();
         velocidad.update();
         esperadooee.update();
+        last3oee.update();
 
-    }setInterval(generarNumeroAleatorio, 3000);
+    }setInterval(Realtime, 3000);
     
 
 
@@ -530,6 +540,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [],
                 backgroundColor: ['#36A42B'],
                 borderColor: ['#36A42B'],
+                radius: 0,
 
             }],
         },
@@ -612,424 +623,71 @@ document.addEventListener('DOMContentLoaded', function () {
             },
     });
 
+    var last3oee = new Chart(ctx7, {
+        type: 'bar',
+        data: {
+            labels: ['ANTEAYER', 'AYER', 'HOY'],
+            datasets: [{
+            data: [80, 80, 80],
+            backgroundColor: ['#fffe06', '#389743', '#389743'],
+            }],
+        },
+        options: {
+            responsive: false,
+            maintainAspectRatio: false,
+            tooltips: {
+                enabled: false,
+                },
+
+            plugins: {
+                legend: {
+                    display: false,
+                },
+                title: {
+                    display: true,
+                    text: 'OEE% ULTIMOS 3 DIAS',
+                    font: {weight: 'bold', size: 14},
+                    color: '#2c4f63',
+                },
+            },
+
+            scales: {
+                y: {
+                    max: 100,
+                    min: 0,
+                    ticks: {
+                        stepSize: 10,
+                        color: '#2c4f63',
+                        font: {weight: 'bold', size: 12},
+                    }
+                },
+                x: {
+                    position: 'top',
+                    ticks: { 
+                        color: '#2c4f63', 
+                        font: {weight: 'bold', size: 12},
+                    }
+                    
+                }
+            }
+            
+            },
+    });
+
         
-    generarNumeroAleatorio();
+    Realtime();
 
     function consultarhistoricos(){
-        confecha = document.getElementById('fechahistp4').value;
-        conturno = document.getElementById('turnop4').value;
+        var confecha1 = document.getElementById('fechahistp4').value;
+        var confecha2 = document.getElementById('fechahistfinp4').value;
+        var conturno = document.getElementById('turnop4').value;
 
-        // Construct the URL with query parameters
-        const url = `http://localhost:3000/reporte?date=${confecha}&turno=${conturno}`;
+        var url = 'reporte.html?valor1=' + encodeURIComponent(confecha1) +
+                      '&valor2=' + encodeURIComponent(confecha2) +
+                      '&valor3=' + encodeURIComponent(conturno);
 
-        // Make the GET request
-        fetch(url)
-        .then((response) => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then((data) => {
+        window.location.href = url;
 
-            var reportedisponibilidad = parseInt(data[0].disponibilidad);
-            var reporterendimiento = parseInt(data[0].rendimiento);
-            var reportecalidad = parseInt(data[0].calidad);
-            var reporteturno = parseInt(data[0].turno);
-            var reportefecha = confecha;
-            
-            console.log(reportedisponibilidad);
-            console.log(reporterendimiento);
-            console.log(reportecalidad);
-            console.log(reporteturno);
-            console.log(reportefecha);
-
-            const reportHTML = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Reporte Mensual</title>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 20px;
-                    }
-
-                    h1 {
-                        text-align: center;
-                    }
-
-                    .informe {
-                        border: 1px solid #000;
-                        padding: 10px;
-                        margin: 20px 0;
-                        text-align: center;
-                    }
-
-                    .informe h2 {
-                        margin: 0;
-                    }
-
-                    .canvas-container {
-                        display: flex;
-                        justify-content: center; /* Centrar horizontalmente */
-                        align-items: center;
-                    }
-
-                    canvas {
-                        margin-right: 10px; /* Espacio entre los canvas */
-                    }
-
-                    @media print {
-                        body {
-                            margin: 0;
-                            padding: 0;
-                        }
-
-                        h1 {
-                            page-break-before: always;
-                        }
-
-                        .informe {
-                            page-break-inside: avoid;
-                        }
-                    }
-                </style>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-
-                        var valdisponibilidad = ${reportedisponibilidad};
-                        var valrendimiento = ${reporterendimiento};
-                        var valcalidad = ${reportecalidad};
-                        var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
-
-                        document.getElementById("titlereportep4").innerHTML = "Reporte de: " + "${reportefecha}";
-                        document.getElementById("titleturnop4").innerHTML = "Turno: " + ${reporteturno};
-
-                        function drawPercentagedisponibilidad(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valdisponibilidad + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                    
-                        function drawPercentagerendimiento(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valrendimiento + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                            
-                        function drawPercentagecalidad(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valcalidad + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                    
-                        function drawPercentageoee(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valoee + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                        
-                        if (valdisponibilidad<=40) {
-                            var Disponibilidadcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valdisponibilidad>40 && valdisponibilidad<75) {
-                            var Disponibilidadcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Disponibilidadcolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valrendimiento<=40) {
-                            var Rendimientocolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valrendimiento>40 && valrendimiento<75) {
-                            var Rendimientocolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Rendimientocolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valcalidad<=40) {
-                            var Calidadcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valcalidad>40 && valcalidad<75) {
-                            var Calidadcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Calidadcolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valoee<=40) {
-                            var OEEcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valoee>40 && valoee<75) {
-                            var OEEcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var OEEcolor = ['#05fc03', '#e5e5e5'];
-                        }
-
-
-                        var ctx1 = document.getElementById('Disponibilidadp4').getContext('2d');
-                        var myChart = new Chart(ctx1, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Disponibilidad'],
-                                datasets: [{
-                                data: [valdisponibilidad, 100-valdisponibilidad],
-                                backgroundColor: Disponibilidadcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagedisponibilidad(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Disponibilidad',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx2 = document.getElementById('Rendimientop4').getContext('2d');
-                        var myChart = new Chart(ctx2, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Rendimiento'],
-                                datasets: [{
-                                data: [valrendimiento, 100-valrendimiento],
-                                backgroundColor: Rendimientocolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagerendimiento(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Rendimiento',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx3 = document.getElementById('Calidadp4').getContext('2d');
-                        var myChart = new Chart(ctx3, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Calidad'],
-                                datasets: [{
-                                data: [valcalidad, 100-valcalidad],
-                                backgroundColor: Calidadcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagecalidad(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Calidad',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx4 = document.getElementById('OEEp4').getContext('2d');
-                        var myChart = new Chart(ctx4, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['OEE'],
-                                datasets: [{
-                                data: [valoee, 100-valoee],
-                                backgroundColor: OEEcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentageoee(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'OEE',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-                    
-                    });
-                </script>
-            </head>
-            <body>
-                <h1 id="titlereporte"></h1> 
-                <h2 id="titleturno" style="text-align: center;"></h2>
-
-                <div class="informe">
-                    <h2>PARAMETROS</h2>
-                    <div class="canvas-container">
-                        <canvas id="Disponibilidad" width="200" height="200"></canvas>
-                        <canvas id="Rendimiento" width="200" height="200"></canvas>
-                        <canvas id="Calidad" width="200" height="200"></canvas>
-                    </div>
-                </div>
-
-                <div class="informe">
-                    <h2>OEE</h2>
-                        <div class="canvas-container">
-                            <canvas id="OEE" width="200" height="200"></canvas>
-                        </div>
-                </div>
-
-            </body>
-            </html>
-        `;
-
-        const blob = new Blob([reportHTML], { type: "text/html" });
-
-        const url = URL.createObjectURL(blob);
-
-        window.open(url, "_blank");
-        
-        window.addEventListener("beforeunload", function () {
-            URL.revokeObjectURL(url);
-        });
-
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
     }
 
 

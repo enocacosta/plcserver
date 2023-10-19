@@ -58,21 +58,23 @@ document.addEventListener('DOMContentLoaded', function () {
         })
         .then(data =>{
 
+            console.log(data);
+
             // 1. Convertir las variables rendimiento, calidad y disponibilidad a enteros
-            data.forEach((item) => {
+            data.datosOEE.forEach((item) => {
                 item.rendimiento = Math.round(item.rendimiento);
                 item.calidad = Math.round(item.calidad);
                 item.disponibilidad = Math.round(item.disponibilidad);
             });
 
             // 2. Calcular el valor de oee para cada objeto y acortar la fecha
-            data.forEach((item) => {
+            data.datosOEE.forEach((item) => {
                 item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
                 item.createdAt = item.createdAt.slice(0, 10);
             });
 
 
-            const groupedData = data.reduce((acc, item) => {
+            const groupedData = data.datosOEE.reduce((acc, item) => {
                 const date = item.createdAt;
                 const turno = item.turno;
                 if (!acc[date]) {
@@ -111,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
            setslider();
 
-           extractedData = data;
+           extractedData = data.datosOEE;
 
            detailedOEE();
              

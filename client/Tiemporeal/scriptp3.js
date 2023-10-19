@@ -61,18 +61,18 @@ document.addEventListener('DOMContentLoaded', function () {
     var tproductivo = 0;
 
 
-    function generarNumeroAleatorio() {
+    function Realtime() {
 
         fetch('http://localhost:3000')
         .then(res =>{
         return res.json();
         })
         .then(data =>{
-            console.log(data)
+            
 
 
             timeChartval = Math.floor(Math.random() * 100) + 1;
-            velvar = data.velocidad;
+            velvar = (data.velocidad*60).toFixed(2);
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);
@@ -204,7 +204,7 @@ document.addEventListener('DOMContentLoaded', function () {
         velocidad.update();
         esperadooee.update();
 
-    }setInterval(generarNumeroAleatorio, 3000);
+    }setInterval(Realtime, 3000);
     
 
 
@@ -530,6 +530,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 data: [],
                 backgroundColor: ['#36A42B'],
                 borderColor: ['#36A42B'],
+                radius: 0,
 
             }],
         },
@@ -613,423 +614,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
         
-    generarNumeroAleatorio();
+    Realtime();
 
     function consultarhistoricos(){
-        confecha = document.getElementById('fechahistp3').value;
-        conturno = document.getElementById('turnop3').value;
+        var confecha1 = document.getElementById('fechahistp3').value;
+        var confecha2 = document.getElementById('fechahistfinp3').value;
+        var conturno = document.getElementById('turnop3').value;
 
-        // Construct the URL with query parameters
-        const url = `http://localhost:3000/reporte?date=${confecha}&turno=${conturno}`;
+        var url = 'reporte.html?valor1=' + encodeURIComponent(confecha1) +
+                      '&valor2=' + encodeURIComponent(confecha2) +
+                      '&valor3=' + encodeURIComponent(conturno);
 
-        // Make the GET request
-        fetch(url)
-        .then((response) => {
-            if (!response.ok) {
-            throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then((data) => {
+        window.location.href = url;
 
-            var reportedisponibilidad = parseInt(data[0].disponibilidad);
-            var reporterendimiento = parseInt(data[0].rendimiento);
-            var reportecalidad = parseInt(data[0].calidad);
-            var reporteturno = parseInt(data[0].turno);
-            var reportefecha = confecha;
-            
-            console.log(reportedisponibilidad);
-            console.log(reporterendimiento);
-            console.log(reportecalidad);
-            console.log(reporteturno);
-            console.log(reportefecha);
-
-            const reportHTML = `
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <meta charset="UTF-8">
-                <title>Reporte Mensual</title>
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <style>
-                    body {
-                        font-family: Arial, sans-serif;
-                        margin: 20px;
-                    }
-
-                    h1 {
-                        text-align: center;
-                    }
-
-                    .informe {
-                        border: 1px solid #000;
-                        padding: 10px;
-                        margin: 20px 0;
-                        text-align: center;
-                    }
-
-                    .informe h2 {
-                        margin: 0;
-                    }
-
-                    .canvas-container {
-                        display: flex;
-                        justify-content: center; /* Centrar horizontalmente */
-                        align-items: center;
-                    }
-
-                    canvas {
-                        margin-right: 10px; /* Espacio entre los canvas */
-                    }
-
-                    @media print {
-                        body {
-                            margin: 0;
-                            padding: 0;
-                        }
-
-                        h1 {
-                            page-break-before: always;
-                        }
-
-                        .informe {
-                            page-break-inside: avoid;
-                        }
-                    }
-                </style>
-                <script>
-                    document.addEventListener('DOMContentLoaded', function () {
-
-                        var valdisponibilidad = ${reportedisponibilidad};
-                        var valrendimiento = ${reporterendimiento};
-                        var valcalidad = ${reportecalidad};
-                        var valoee =parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
-
-                        document.getElementById("titlereportep3").innerHTML = "Reporte de: " + "${reportefecha}";
-                        document.getElementById("titleturnop3").innerHTML = "Turno: " + ${reporteturno};
-
-                        function drawPercentagedisponibilidad(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valdisponibilidad + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                    
-                        function drawPercentagerendimiento(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valrendimiento + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                            
-                        function drawPercentagecalidad(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valcalidad + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                    
-                        function drawPercentageoee(chart) {
-                            var ctx = chart.chart.ctx;
-                            var width = (chart.chart.width);
-                            var height = (chart.chart.height)+35;
-                            var radius = Math.min(width, height) / 2; 
-                            var centerX = width / 2;
-                            var centerY = (height / 2);
-                            var fontSize = ((radius / 2).toFixed(0))-10; 
-                        
-                            var text = valoee + "%";
-                        
-                            ctx.font = fontSize + "px sans-serif";
-                            ctx.fillStyle = "#000"; // Color del texto
-                            ctx.textBaseline = "middle";
-                            ctx.textAlign = "center";
-                        
-                            // posición del texto en el centro del circulo
-                            var textX = centerX;
-                            var textY = centerY;
-                        
-                            ctx.fillText(text, textX, textY);
-                        }
-                        
-                        if (valdisponibilidad<=40) {
-                            var Disponibilidadcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valdisponibilidad>40 && valdisponibilidad<75) {
-                            var Disponibilidadcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Disponibilidadcolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valrendimiento<=40) {
-                            var Rendimientocolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valrendimiento>40 && valrendimiento<75) {
-                            var Rendimientocolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Rendimientocolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valcalidad<=40) {
-                            var Calidadcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valcalidad>40 && valcalidad<75) {
-                            var Calidadcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var Calidadcolor = ['#05fc03', '#e5e5e5'];
-                        }
-                
-                        if (valoee<=40) {
-                            var OEEcolor = ['#fd0100', '#e5e5e5'];
-                        } else if (valoee>40 && valoee<75) {
-                            var OEEcolor = ['#fffe06', '#e5e5e5'];            
-                        }else {
-                            var OEEcolor = ['#05fc03', '#e5e5e5'];
-                        }
-
-
-                        var ctx1 = document.getElementById('Disponibilidadp3').getContext('2d');
-                        var myChart = new Chart(ctx1, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Disponibilidad'],
-                                datasets: [{
-                                data: [valdisponibilidad, 100-valdisponibilidad],
-                                backgroundColor: Disponibilidadcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagedisponibilidad(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Disponibilidad',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx2 = document.getElementById('Rendimientop3').getContext('2d');
-                        var myChart = new Chart(ctx2, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Rendimiento'],
-                                datasets: [{
-                                data: [valrendimiento, 100-valrendimiento],
-                                backgroundColor: Rendimientocolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagerendimiento(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Rendimiento',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx3 = document.getElementById('Calidadp3').getContext('2d');
-                        var myChart = new Chart(ctx3, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['Calidad'],
-                                datasets: [{
-                                data: [valcalidad, 100-valcalidad],
-                                backgroundColor: Calidadcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentagecalidad(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'Calidad',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-
-                        var ctx4 = document.getElementById('OEEp3').getContext('2d');
-                        var myChart = new Chart(ctx4, {
-                            type: 'doughnut',
-                            data: {
-                                labels: ['OEE'],
-                                datasets: [{
-                                data: [valoee, 100-valoee],
-                                backgroundColor: OEEcolor,
-                                }],
-                            },
-                            options: {
-                                events: [],
-                                responsive: false,
-                                maintainAspectRatio: false,
-                                tooltips: {
-                                    enabled: false,
-                                    },
-                                animation: {
-                                    onComplete: function (chart) {
-                                        drawPercentageoee(chart);
-                                    }
-                                },
-                                plugins: {
-                                    title: {
-                                        display: true,
-                                        text: 'OEE',
-                                        font: {weight: 'bold', size: 14},
-                                        color: '#2c4f63',
-                                    },
-                                    legend: {
-                                    display: false
-                                    }
-                                },
-                    
-                                borderWidth: 0,
-                                cutout: 60,
-                            }
-                        });
-                    
-                    });
-                </script>
-            </head>
-            <body>
-                <h1 id="titlereporte"></h1> 
-                <h2 id="titleturno" style="text-align: center;"></h2>
-
-                <div class="informe">
-                    <h2>PARAMETROS</h2>
-                    <div class="canvas-container">
-                        <canvas id="Disponibilidad" width="200" height="200"></canvas>
-                        <canvas id="Rendimiento" width="200" height="200"></canvas>
-                        <canvas id="Calidad" width="200" height="200"></canvas>
-                    </div>
-                </div>
-
-                <div class="informe">
-                    <h2>OEE</h2>
-                        <div class="canvas-container">
-                            <canvas id="OEE" width="200" height="200"></canvas>
-                        </div>
-                </div>
-
-            </body>
-            </html>
-        `;
-
-        const blob = new Blob([reportHTML], { type: "text/html" });
-
-        const url = URL.createObjectURL(blob);
-
-        window.open(url, "_blank");
-        
-        window.addEventListener("beforeunload", function () {
-            URL.revokeObjectURL(url);
-        });
-
-        })
-        .catch((error) => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
     }
 
 
