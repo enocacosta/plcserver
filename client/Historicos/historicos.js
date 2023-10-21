@@ -110,6 +110,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
            document.getElementsByClassName("informe")[0].style.display = "block";
            document.getElementsByClassName("informe")[1].style.display = "block";
+           document.getElementsByClassName("informe")[2].style.display = "block";
 
            setslider();
 
@@ -564,6 +565,55 @@ document.addEventListener('DOMContentLoaded', function () {
             }
           }
         }
+    });
+
+    var ctx6 = document.getElementById('graficapareto').getContext('2d');
+    var graficapareto = new Chart(ctx6, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+              ],
+              datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                  'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+              }]
+          
+        },
+        
+    });
+
+
+    var ctx7 = document.getElementById('paradaespecifica').getContext('2d');
+    var paradaespecifica = new Chart(ctx7, {
+        type: 'pie',
+        data: {
+            labels: [
+                'Red',
+                'Blue',
+                'Yellow'
+              ],
+              datasets: [{
+                label: 'My First Dataset',
+                data: [300, 50, 100],
+                backgroundColor: [
+                  'rgb(255, 99, 132)',
+                  'rgb(54, 162, 235)',
+                  'rgb(255, 205, 86)'
+                ],
+                hoverOffset: 4
+              }]
+          
+        },
+        
     });
 
     var tempparams = new URLSearchParams(window.location.search);

@@ -12,7 +12,7 @@
 
 <body>
     <div id="tabs">
-        <button class="tab-button" onclick="changeTab(0)">General</button>
+        <button class="tab-button" onclick="changeTab(0)">Operario</button>
         <button class="tab-button" onclick="changeTab(1)">Producción</button>
         <button class="tab-button" onclick="changeTab(2)">Mantenimiento</button>
         <button class="tab-button" onclick="changeTab(3)">Gerencial</button>
@@ -29,12 +29,8 @@
                     <div class="production-info">
                         
                         <p>Producción día: <input readonly class="textbox" id="producciondiaria" value="500"> Bidones</p>
-            
                         
                         <p>Producción turno: <input readonly class="textbox" id="produccionturno" value="500"> Bidones</p>
-            
-                        
-                        <p>Presentación: <input readonly class="textbox" id="presentacion" value="500"> ml</p>
 
                         <p>P. Programada: <input readonly class="textbox" id="paradaprogramada" value="500"> min</p>
 
@@ -92,12 +88,8 @@
 
                 <div class="contenedor-inferiorizq">
                     <img src="logos/bandatransportadora.png" style="width:30%; float: left; margin-left: 40px;">
-                    <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
-                    <button id="maq1" class="leds" style="top: 70%; left: 12%;">RUN</button>
-                    <button id="maq2" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
-                    <button id="maq3" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
-                    <button id="maq4" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
 
+                    <button id="maq1" class="leds" style="top: 70%; left: 12%;">RUN</button>
                     
                     <div style="float: left;   margin-left: 300px;">
                         <p>Velocidad: <input readonly class="textbox" id="velocidadtb" value="0"> Bidones/min</p>
@@ -147,8 +139,6 @@
                         
                         <p>Producción turno: <input readonly class="textbox" id="produccionturnop2" value="500"> Bidones</p>
             
-                        
-                        <p>Presentación: <input readonly class="textbox" id="presentacionp2" value="500"> ml</p>
 
                         <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap2" value="500"> min</p>
 
@@ -206,11 +196,8 @@
 
                 <div class="contenedor-inferiorizq">
                     <img src="logos/bandatransportadora.png" style="width:30%; float: left; margin-left: 40px;">
-                    <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
+
                     <button id="maq1p2" class="leds" style="top: 70%; left: 12%;">RUN</button>
-                    <button id="maq2p2" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
-                    <button id="maq3p2" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
-                    <button id="maq4p2" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
 
                     
                     <div style="float: left;   margin-left: 300px;">
@@ -255,15 +242,6 @@
                     
             
                     <div class="production-info">
-                        
-                        <p>Producción día: <input readonly class="textbox" id="producciondiariap3" value="500"> Bidones</p>
-            
-                        
-                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop3" value="500"> Bidones</p>
-            
-                        
-                        <p>Presentación: <input readonly class="textbox" id="presentacionp3" value="500"> ml</p>
-
                         <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap3" value="500"> min</p>
 
                         <p>Parada: <input readonly class="textbox" id="paradap3" value="500"> min</p>
@@ -297,12 +275,6 @@
                             <canvas id="timeChartp3" width="310" height="310"></canvas>
                         </div>
 
-                        <div>
-                            <canvas id="esperadooeep3" width="140" height="300"></canvas>
-                            <p style="text-align: center;">OEE Esperado:</p>
-                            <button class="btn" id="esperadooeebtp3"><i class="fa fa-pencil" aria-hidden="true"></i></button><input class="textbox" id="esperadooeetbp3" value="0" style="text-align: center;">
-                        </div>
-
                         
                     </div>
 
@@ -320,17 +292,9 @@
 
                 <div class="contenedor-inferiorizq">
                     <img src="logos/bandatransportadora.png" style="width:30%; float: left; margin-left: 40px;">
-                    <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
-                    <button id="maq1p3" class="leds" style="top: 70%; left: 12%;">RUN</button>
-                    <button id="maq2p3" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
-                    <button id="maq3p3" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
-                    <button id="maq4p3" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
 
-                    
-                    <div style="float: left;   margin-left: 300px;">
-                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp3" value="0"> Bidones/min</p>
-                        <canvas id="velocidadp3" width="310" height="310"></canvas>
-                    </div>
+                    <button id="maq1p3" class="leds" style="top: 70%; left: 12%;">RUN</button>
+
 
                     <div style="float: left;   margin-left: 280px; margin-top: 40px;">
                         <p style="text-align: center;">Consulta historicos</p>
@@ -370,17 +334,6 @@
             
                     <div class="production-info">
                         
-                        <p>Producción día: <input readonly class="textbox" id="producciondiariap4" value="500"> Bidones</p>
-            
-                        
-                        <p>Producción turno: <input readonly class="textbox" id="produccionturnop4" value="500"> Bidones</p>
-            
-                        
-                        <p>Presentación: <input readonly class="textbox" id="presentacionp4" value="500"> ml</p>
-
-                        <p>P. Programada: <input readonly class="textbox" id="paradaprogramadap4" value="500"> min</p>
-
-                        <p>Parada: <input readonly class="textbox" id="paradap4" value="500"> min</p>
                     </div>
                     
             
@@ -407,9 +360,6 @@
                             <canvas id="OEEp4" width="230" height="260"></canvas>
                         </div>
 
-                        <div>
-                            <canvas id="timeChartp4" width="310" height="310"></canvas>
-                        </div>
 
                         <div>
                             <canvas id="esperadooeep4" width="140" height="300"></canvas>
@@ -437,32 +387,7 @@
 
 
                 <div class="contenedor-inferiorizq">
-                    <img src="logos/bandatransportadora.png" style="width:30%; float: left; margin-left: 40px;">
-                    <!--<button id="maq1" class="leds" style="top: 70%; left: 10%;">RUN</button> -->
-                    <button id="maq1p4" class="leds" style="top: 70%; left: 12%;">RUN</button>
-                    <button id="maq2p4" class="leds" style="top: 70%; left: 35%; display: none;">RUN</button>
-                    <button id="maq3p4" class="leds" style="top: 70%; left: 60%; display: none;">RUN</button>
-                    <button id="maq4p4" class="leds" style="top: 70%; left: 90%; display: none;">RUN</button>
 
-                    
-                    <div style="float: left;   margin-left: 300px;">
-                        <p>Velocidad: <input readonly class="textbox" id="velocidadtbp4" value="0"> Bidones/min</p>
-                        <canvas id="velocidadp4" width="310" height="310"></canvas>
-                    </div>
-
-                    <div style="float: left;   margin-left: 280px; margin-top: 40px;">
-                        <p style="text-align: center;">Consulta historicos</p>
-                        <p>Desde:</p><input type="date" id="fechahistp4">
-                        <p>Hasta:</p><input type="date" id="fechahistfinp4">
-                        <p></p>
-                        <label for="Turno"># de turno</label>
-                        <select id="turnop4" name="noturno">
-                        <option value="1">1</option>
-                        <option value="2">2</option>
-                        <option value="3">3</option>
-                        </select>  
-                        <div><button id="consultarp4">Consultar</button></div>
-                    </div>
                 </div>
 
                 <div class="contenedor-inferiorder">

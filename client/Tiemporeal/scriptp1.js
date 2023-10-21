@@ -9,9 +9,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var ctx6 = document.getElementById('esperadooee').getContext('2d');
     var esperadooeetb = document.getElementById('esperadooeetb').value;
     var maquina1 = document.getElementById('maq1');
-    var maquina2 = document.getElementById('maq2');
-    var maquina3 = document.getElementById('maq3');
-    var maquina4 = document.getElementById('maq4');
 
     document.getElementById('esperadooeebt').addEventListener ("click", oeeesperadoupdt);
     document.getElementById('consultar').addEventListener ("click", consultarhistoricos);
@@ -54,9 +51,6 @@ document.addEventListener('DOMContentLoaded', function () {
     var valoee = 0;
     var velvar = 0;
     var valmaq1 = 1;
-    var valmaq2 = 1;
-    var valmaq3 = 1;
-    var valmaq4 = 1;
     var tparada = 0;
     var tproductivo = 0;
 
@@ -85,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function () {
             tparada  = (parseInt(data.tiempoStop))/60;
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
-            valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
+            valmaq1 = data.estadoMaquina;
 
 
         }).catch(error => console.log(error));
@@ -159,39 +153,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }else if (valmaq1== 3){
             maquina1.style.backgroundColor = "#9a0501"
             maquina1.innerHTML = "STOP"
-        }
-
-        if (valmaq2 == 1) {
-            maquina2.style.backgroundColor = "green"
-            maquina2.innerHTML = "RUN"
-        }else if(valmaq2== 2){
-            maquina2.style.backgroundColor = "blue"
-            maquina2.innerHTML = "STAND BY"
-        }else if (valmaq2== 3){
-            maquina2.style.backgroundColor = "#9a0501"
-            maquina2.innerHTML = "STOP"
-        }
-
-        if (valmaq3 == 1) {
-            maquina3.style.backgroundColor = "green"
-            maquina3.innerHTML = "RUN"
-        }else if(valmaq3== 2){
-            maquina3.style.backgroundColor = "blue"
-            maquina3.innerHTML = "STAND BY"
-        }else if (valmaq3== 3){
-            maquina3.style.backgroundColor = "#9a0501"
-            maquina3.innerHTML = "STOP"
-        }
-
-        if (valmaq4 == 1) {
-            maquina4.style.backgroundColor = "green"
-            maquina4.innerHTML = "RUN"
-        }else if(valmaq4== 2){
-            maquina4.style.backgroundColor = "blue"
-            maquina4.innerHTML = "STAND BY"
-        }else if (valmaq4== 3){
-            maquina4.style.backgroundColor = "#9a0501"
-            maquina4.innerHTML = "STOP"
         }
         
 

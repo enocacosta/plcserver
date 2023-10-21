@@ -5,15 +5,8 @@ document.addEventListener('DOMContentLoaded', function () {
     var ctx2 = document.getElementById('Rendimientop3').getContext('2d');
     var ctx3 = document.getElementById('Calidadp3').getContext('2d');
     var ctx4 = document.getElementById('OEEp3').getContext('2d');
-    var ctx5 = document.getElementById('velocidadp3').getContext('2d');
-    var ctx6 = document.getElementById('esperadooeep3').getContext('2d');
-    var esperadooeetb = document.getElementById('esperadooeetbp3').value;
     var maquina1 = document.getElementById('maq1p3');
-    var maquina2 = document.getElementById('maq2p3');
-    var maquina3 = document.getElementById('maq3p3');
-    var maquina4 = document.getElementById('maq4p3');
 
-    document.getElementById('esperadooeebtp3').addEventListener ("click", oeeesperadoupdt);
     document.getElementById('consultarp3').addEventListener ("click", consultarhistoricos);
     document.getElementById('fechahistp3').addEventListener ("change", comparedates);
     document.getElementById('fechahistfinp3').addEventListener ("change", comparedates);
@@ -40,23 +33,13 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     }
 
-    function oeeesperadoupdt(){
-        esperadooeetb = document.getElementById('esperadooeetbp3').value;
-        esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
-        esperadooee.update();
-    }
-
 
     var timeChartval = 0;
     var valrendimiento = 0;
     var valdisponibilidad = 0;
     var valcalidad = 0;
     var valoee = 0;
-    var velvar = 0;
     var valmaq1 = 1;
-    var valmaq2 = 1;
-    var valmaq3 = 1;
-    var valmaq4 = 1;
     var tparada = 0;
     var tproductivo = 0;
 
@@ -72,20 +55,17 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
             timeChartval = Math.floor(Math.random() * 100) + 1;
-            velvar = (data.velocidad*60).toFixed(2);
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);
             valcalidad = parseInt(data.calidad);
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-            document.getElementById('producciondiariap3').value = parseInt(data.totalDia);
-            document.getElementById('produccionturnop3').value = parseInt(data.produccionTurno);
             document.getElementById('paradap3').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
             tparada  = (parseInt(data.tiempoStop))/60;
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
-            valmaq1 = valmaq2 = valmaq3 = valmaq4 = data.estadoMaquina;
+            valmaq1 = data.estadoMaquina;
 
 
         }).catch(error => console.log(error));
@@ -95,7 +75,6 @@ document.addEventListener('DOMContentLoaded', function () {
         Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
         Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
         OEE.data.datasets[0].data = [valoee, 100-valoee];
-        esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
 
         if (valdisponibilidad<=40) {
             Disponibilidad.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
@@ -130,24 +109,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
 
 
-        var fechaActual = new Date();
-        var horas = fechaActual.getHours();
-        var minutos = fechaActual.getMinutes();
-        var segundos = fechaActual.getSeconds();
-
-        if (minutos < 10) {
-            minutos = '0' + minutos;
-        }
-          
-        if (segundos < 10) {
-            segundos = '0' + segundos;
-        }
-
-
-        var horaActual = horas + ':' + minutos + ':' + segundos;
-        velocidad.data.labels.push(horaActual);
-        velocidad.data.datasets[0].data.push(velvar);
-        document.getElementById('velocidadtbp3').value= velvar;
 
 
         if (valmaq1 == 1) {
@@ -160,39 +121,6 @@ document.addEventListener('DOMContentLoaded', function () {
             maquina1.style.backgroundColor = "#9a0501"
             maquina1.innerHTML = "STOP"
         }
-
-        if (valmaq2 == 1) {
-            maquina2.style.backgroundColor = "green"
-            maquina2.innerHTML = "RUN"
-        }else if(valmaq2== 2){
-            maquina2.style.backgroundColor = "blue"
-            maquina2.innerHTML = "STAND BY"
-        }else if (valmaq2== 3){
-            maquina2.style.backgroundColor = "#9a0501"
-            maquina2.innerHTML = "STOP"
-        }
-
-        if (valmaq3 == 1) {
-            maquina3.style.backgroundColor = "green"
-            maquina3.innerHTML = "RUN"
-        }else if(valmaq3== 2){
-            maquina3.style.backgroundColor = "blue"
-            maquina3.innerHTML = "STAND BY"
-        }else if (valmaq3== 3){
-            maquina3.style.backgroundColor = "#9a0501"
-            maquina3.innerHTML = "STOP"
-        }
-
-        if (valmaq4 == 1) {
-            maquina4.style.backgroundColor = "green"
-            maquina4.innerHTML = "RUN"
-        }else if(valmaq4== 2){
-            maquina4.style.backgroundColor = "blue"
-            maquina4.innerHTML = "STAND BY"
-        }else if (valmaq4== 3){
-            maquina4.style.backgroundColor = "#9a0501"
-            maquina4.innerHTML = "STOP"
-        }
         
 
 
@@ -201,8 +129,6 @@ document.addEventListener('DOMContentLoaded', function () {
         Rendimiento.update();
         Calidad.update();
         OEE.update();
-        velocidad.update();
-        esperadooee.update();
 
     }setInterval(Realtime, 3000);
     
@@ -521,97 +447,6 @@ document.addEventListener('DOMContentLoaded', function () {
             },
     });
 
-
-    var velocidad = new Chart(ctx5, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{  
-                data: [],
-                backgroundColor: ['#36A42B'],
-                borderColor: ['#36A42B'],
-                radius: 0,
-
-            }],
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            tooltips: {
-                enabled: false,
-                },
-
-            plugins: {
-                legend: {
-                display: false
-                }
-            },
-
-            scales: {
-                y: {
-                    max: 3,
-                    min: 0,
-                    ticks: {
-                        stepSize: 1
-                    }
-                }
-            }
-
-            
-            },
-    });
-
-
-    var esperadooee = new Chart(ctx6, {
-        type: 'bar',
-        data: {
-            labels: ['R', 'E'],
-            datasets: [{
-            data: [valoee, 80],
-            backgroundColor: ['#fffe06', '#389743'],
-            }],
-        },
-        options: {
-            responsive: false,
-            maintainAspectRatio: false,
-            tooltips: {
-                enabled: false,
-                },
-
-            plugins: {
-                legend: {
-                    display: false,
-                },
-                title: {
-                    display: true,
-                    text: 'OEE%',
-                    font: {weight: 'bold', size: 14},
-                    color: '#2c4f63',
-                },
-            },
-
-            scales: {
-                y: {
-                    max: 100,
-                    min: 0,
-                    ticks: {
-                        stepSize: 10,
-                        color: '#2c4f63',
-                        font: {weight: 'bold', size: 12},
-                    }
-                },
-                x: {
-                    position: 'top',
-                    ticks: { 
-                        color: '#2c4f63', 
-                        font: {weight: 'bold', size: 12},
-                    }
-                    
-                }
-            }
-            
-            },
-    });
 
         
     Realtime();
