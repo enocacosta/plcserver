@@ -74,38 +74,26 @@ document.addEventListener('DOMContentLoaded', function () {
             });
 
 
-            const groupedData = data.datosOEE.reduce((acc, item) => {
-                const date = item.createdAt;
-                const turno = item.turno;
-                if (!acc[date]) {
-                  acc[date] = {};
-                }
-                acc[date][`turno${turno}`] = item.oee;
-                return acc;
-            }, {});
+            const groupedData = {};
+            data.datosOEE.forEach((item) => {
+            const date = `${item.createdAt} T${item.turno}`;
+            if (!groupedData[date]) {
+                groupedData[date] = item.oee;
+            }
+            });
             console.log(groupedData);
 
 
             // Obtén las fechas únicas y ordénalas
             const dates = Object.keys(groupedData).sort();
+            const values1 = Object.values(groupedData);
 
-            // Inicializa arreglos para cada turno
-
-            // Llena los arreglos con los valores de OEE correspondientes a cada fecha y turno
-            dates.forEach(date => {
-            const dataForDate = groupedData[date];
-            turno1Data.push(dataForDate.turno1 || null);
-            turno2Data.push(dataForDate.turno2 || null);
-            turno3Data.push(dataForDate.turno3 || null);
-            });
 
             // Configura las etiquetas (labels) del eje X
             labels1 = dates;
 
             OEETotal.data.labels = labels1;
-            OEETotal.data.datasets[0].data = turno1Data;
-            OEETotal.data.datasets[1].data = turno2Data;
-            OEETotal.data.datasets[2].data = turno3Data;
+            OEETotal.data.datasets[0].data = values1;
             OEETotal.update();
 
            document.getElementsByClassName("informe")[0].style.display = "block";
@@ -508,7 +496,7 @@ document.addEventListener('DOMContentLoaded', function () {
           ],
           datasets: [
             {
-              label: 'Turno 1',
+              label: 'OEE',
               data: [
                 20,
                 20,
@@ -519,30 +507,6 @@ document.addEventListener('DOMContentLoaded', function () {
               backgroundColor: '#00833c',
               fill: false
             },
-            {
-              label: 'Turno 2',
-              data: [
-                40,
-                50,
-                90,
-                60
-              ],
-              borderColor: '#76bd1d',
-              backgroundColor: '#76bd1d',
-              fill: false
-            },
-            {
-              label: 'Turno 3',
-              data: [
-                70,
-                80,
-                25,
-                40
-              ],
-              borderColor: '#fec524',
-              backgroundColor: '#fec524',
-              fill: false
-            }
           ]
         },
         options: {
@@ -588,6 +552,11 @@ document.addEventListener('DOMContentLoaded', function () {
               }]
           
         },
+
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+          }
         
     });
 
@@ -613,6 +582,11 @@ document.addEventListener('DOMContentLoaded', function () {
               }]
           
         },
+
+        options: {
+            responsive: false,
+            maintainAspectRatio: true,
+        }
         
     });
 

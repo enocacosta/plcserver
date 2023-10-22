@@ -259,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: 85,
 
 
             },
@@ -305,7 +305,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: 85,
             },
     });
 
@@ -348,7 +348,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: 85,
 
             },
     });
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 80,
+            cutout: 100,
             
             },
     });
