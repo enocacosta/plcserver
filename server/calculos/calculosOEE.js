@@ -53,6 +53,9 @@ if (rendimiento == Infinity){
 if(isNaN(rendimiento)){
     rendimiento=0;
 }
+if(isNaN(totalTurno)){
+    totalTurno=0;
+}
 
 
 console.log(disponibilidad,rendimiento,totalTurno);

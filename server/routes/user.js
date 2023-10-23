@@ -21,7 +21,7 @@ app.get('/', (req, res) => {
             'calidad': oeeCalculado.calidad,
             'estadoMaquina': oee.estadoMaquina,
             'totalDia': oeeCalculado.totalDia,
-            'produccionTurno': oeeCalculado.totalCant,
+            'produccionTurno': oeeCalculado.totalTurno,
             'tiempoStop': tiempoParado,
             'tiempoProductivo': tiempoProductivo,
             'velocidad': oeeCalculado.velocidad,
