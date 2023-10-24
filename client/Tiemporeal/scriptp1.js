@@ -617,7 +617,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var turnomalos = document.getElementById('noturnomalos').value;
         var numeromalos = document.getElementById('numeromalos').value;
 
-        fetch(`http://localhost:3000/reporte?fecha=${fechamalos}&turno=${turnomalos}&numeromalos=${numeromalos}`)
+        fetch(`http://localhost:3000/rechazos?fecha=${fechamalos}&turno=${turnomalos}&numeromalos=${numeromalos}`)
 
     }
 
