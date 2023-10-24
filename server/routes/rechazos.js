@@ -41,6 +41,6 @@ app.get('/', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
-
+//esta linea no hace nada
 module.exports = app;
     
