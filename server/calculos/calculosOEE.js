@@ -8,7 +8,7 @@ let disponibilidad;
 let rendimiento;
 let calidad;
 let velocidad;
-let totalCant;
+let totalTurno;
 let totalDia;
 let availableOperatingTime;
 
@@ -31,10 +31,10 @@ disponibilidad = (tiempoDisTraba/(tiempoTotal))*100;
 
 //calculo rendimiento
 let contador = oee.contador1+oee.contador2;
-totalCant = (contador)-(contadorSet);
+totalTurno = (contador)-(contadorSet);
 let availableOperatingTime = tiempoDis + tiempoStand;
-rendimiento = ((30*(totalCant))/availableOperatingTime)*100;
-velocidad = totalCant/availableOperatingTime;
+rendimiento = ((30*(totalTurno))/availableOperatingTime)*100;
+velocidad = totalTurno/availableOperatingTime;
 
 if(velocidad == NaN || velocidad == null || velocidad == undefined){
     velocidad = 0;
@@ -43,9 +43,6 @@ if(velocidad == NaN || velocidad == null || velocidad == undefined){
 console.log(tiempoDis);
 console.log(tiempoStand);
 console.log(tiempoParado);
-
-//calculo calidad
-calidad = ((totalCant-0)/totalCant)*100;
 
 totalDia = contador-contadorTurno1;
 
@@ -56,18 +53,16 @@ if (rendimiento == Infinity){
 if(isNaN(rendimiento)){
     rendimiento=0;
 }
-if(isNaN(calidad)){
-    calidad=0;
-}
 
-console.log(disponibilidad,rendimiento,calidad);
+
+console.log(disponibilidad,rendimiento,totalTurno);
 }
 
 module.exports = {
     getOEE: ()=> ({disponibilidad,
         rendimiento,
         calidad,
-        totalCant,
+        totalTurno,
         totalDia,
         availableOperatingTime,
         velocidad}),

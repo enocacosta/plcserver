@@ -37,9 +37,7 @@ app.get('/', async (req, res) => {
 
         const queryResult = await datosOEE.find(query).exec();
         const queryResultTipo = await datosTipoParada.find(query).exec();
-        const queryResultRechazos = await datosRechazos.find(queryRechazos).exec().catch((error) => {
-            console.error('Error querying datosRechazos:', error);
-          });
+        const queryResultRechazos = await datosRechazos.find(queryRechazos).exec();
 
         // Combine the results into an object or array
         const combinedResults = {

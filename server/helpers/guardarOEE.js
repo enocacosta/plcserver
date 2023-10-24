@@ -11,7 +11,7 @@ const guardarOEE = async() =>{
         const newdatosOEE = new datosOEE({
             disponibilidad: oeeCalculado.disponibilidad,
             rendimiento: oeeCalculado.rendimiento,
-            calidad: oeeCalculado.calidad,
+            totalTurno: oeeCalculado.totalTurno,
             turno: turnoNumero
         })
         
