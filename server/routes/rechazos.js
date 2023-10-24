@@ -8,12 +8,17 @@ app.use(cors());
 app.get('/', async (req, res) => {
     try {
 
-        let { fechamalos, turno, cantidad} = req.query; 
+        let { fecha, turno, numeromalos} = req.query;
+        
+        console.log(fecha);
+        console.log(turno);
+        console.log(numeromalos);
+
 
         const newDatosRechazos = new datosRechazos({
-            fecha : fechamalos,
+            fecha,
             turno,
-            cantidad,
+            cantidad: numeromalos,
         })
 
         const save = await newDatosRechazos.save()  
