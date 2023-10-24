@@ -2,6 +2,7 @@ const express = require('express');
 const app = express.Router();
 const cors = require('cors');
 const datosRechazos = require('../model/modeloRechazos');
+const formatoFecha = require('../helpers/formatoFecha');
 app.use(cors());
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
@@ -11,9 +12,10 @@ app.get('/', async (req, res) => {
         let { fecha, turno, numeromalos} = req.query;
         
         console.log(fecha);
-        console.log(turno);
-        console.log(numeromalos);
 
+        fecha = formatoFecha(fecha);
+
+        console.log(fecha);
 
         const newDatosRechazos = new datosRechazos({
             fecha,
@@ -23,7 +25,7 @@ app.get('/', async (req, res) => {
 
         const save = await newDatosRechazos.save()  
         .then(() => {
-            console.log('Document saved successfully in datos tipo parada');
+            console.log('Document saved successfully in datos rechazos');
           })
           .catch((error) => {
             console.error('Error saving document:', error);

@@ -13,7 +13,15 @@ app.get('/', async (req, res) => {
         // Receive data from the front-end
         let { fechaI, fechaF} = req.query; 
 
+        console.log(fechaI);
+
         const query = {};
+        const queryRechazos = {};
+
+        fechaI = formatoFecha(fechaI);
+        fechaF = formatoFecha(fechaF);
+
+        console.log(fechaI);
 
         if (fechaI && fechaF) {
             const startDate = new Date(fechaI);
@@ -25,11 +33,18 @@ app.get('/', async (req, res) => {
                 $gte: startDate,
                 $lte: endDate,
             };
+            queryRechazos.fecha = {
+                $gte: fechaI,
+                $lte: fechaF,
+            }
+            console.log(startDate);
         }
+
+        
 
         const queryResult = await datosOEE.find(query).exec();
         const queryResultTipo = await datosTipoParada.find(query).exec();
-        const queryResultRechazos = await datosRechazos.find(query).exec();
+        const queryResultRechazos = await datosRechazos.find(queryRechazos).exec();
 
         // Combine the results into an object or array
         const combinedResults = {
@@ -38,7 +53,7 @@ app.get('/', async (req, res) => {
             datosRechazos : queryResultRechazos,
         };
 
-        console.log(combinedResults);
+        
         
         // Send the combined results as a JSON response
         res.json(combinedResults);
