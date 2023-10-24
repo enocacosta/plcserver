@@ -11,6 +11,7 @@ const {cronGuardarOEE,cronGuardarOEEMediaNoche} = require('./helpers/guardarOEE'
 const userApp = require('./routes/user');
 const queryApp = require('./routes/reporte');
 const gerencialApp = require('./routes/gerencial');
+const rechazosApp = require('./routes/rechazos');
 
 app.use(cors());  
 const tiempoLectura = 5000;
@@ -33,6 +34,7 @@ cronGuardarOEEMediaNoche.start();
 app.use('/', userApp);
 app.use('/reporte', queryApp);
 app.use('/gerencial',gerencialApp);
+app.use('/rechazos',rechazosApp);
 
 // Start the server
 const port = process.env.PORT || 3000;
