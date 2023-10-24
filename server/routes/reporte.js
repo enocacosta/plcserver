@@ -1,9 +1,10 @@
 const express = require('express');
 const app = express.Router();
 const cors = require('cors');
-const datosOEE = require('../model/modeloOEE');
 const formatoFecha = require('../helpers/formatoFecha');
+const datosOEE = require('../model/modeloOEE');
 const datosTipoParada = require('../model/modeloTipoParada');
+const datosRechazos = require('../model/modeloRechazos');
 app.use(cors());
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
@@ -12,12 +13,7 @@ app.get('/', async (req, res) => {
         // Receive data from the front-end
         let { fechaI, fechaF} = req.query; 
 
-        console.log(fechaI);
-
         const query = {};
-
-        fechaI = formatoFecha(fechaI);
-        fechaF = formatoFecha(fechaF);
 
         if (fechaI && fechaF) {
             const startDate = new Date(fechaI);
@@ -31,16 +27,15 @@ app.get('/', async (req, res) => {
             };
         }
 
-        console.log(fechaF);
-        console.log(fechaI);
-
         const queryResult = await datosOEE.find(query).exec();
         const queryResultTipo = await datosTipoParada.find(query).exec();
+        const queryResultRechazos = await datosRechazos.find(query).exec();
 
         // Combine the results into an object or array
         const combinedResults = {
             datosOEE: queryResult,
             datosTipoParada: queryResultTipo,
+            datosRechazos : queryResultRechazos,
         };
 
         console.log(combinedResults);
