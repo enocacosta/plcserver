@@ -28,50 +28,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function Realtime() {
 
-        fetch('http://localhost:3000/gerencial')
+        fetch('http://localhost:3000')
         .then(res =>{
         return res.json();
         })
         .then(data =>{
             console.log(data)
 
-            data.forEach((item) => {
-                item.rendimiento = Math.round(item.rendimiento);
-                item.calidad = Math.round(item.calidad);
-                item.disponibilidad = Math.round(item.disponibilidad);
-            });
+            valrendimiento = parseInt(data.rendimiento);
+            valdisponibilidad = parseInt(data.disponibilidad);
+            valcalidad = parseInt(data.calidad);
+            valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
-
-            data.forEach((item) => {
-                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
-                item.createdAt = item.createdAt.slice(0, 10);
-            });
-
-
-            d1 = data[2];
-            d2 = data[1];
-            d3 = data[0];
-
-            console.log(d1);
-            console.log(d2);
-            console.log(d3);
-
-            valrendimiento = data[0].rendimiento;
-            valdisponibilidad = data[0].disponibilidad;
-            valcalidad = data[0].calidad;
-            valoee = data[0].oee;
-
-            valmaq1 = data.estadoMaquina;
+            Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
+            Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
+            Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
+            OEE.data.datasets[0].data = [valoee, 100-valoee];
+            esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
 
 
         }).catch(error => console.log(error));
         
-        Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
-        Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
-        Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
-        OEE.data.datasets[0].data = [valoee, 100-valoee];
-        esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
-        last3oee.data.datasets[0].data = [d1.oee, d2.oee, d3.oee];
+        
 
         if (valdisponibilidad<=40) {
             Disponibilidad.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
@@ -112,9 +90,48 @@ document.addEventListener('DOMContentLoaded', function () {
         Calidad.update();
         OEE.update();
         esperadooee.update();
-        last3oee.update();
 
     }setInterval(Realtime, 3000);
+
+    function lastoee(){
+
+        fetch('http://localhost:3000/gerencial')
+        .then(res =>{
+        return res.json();
+        })
+        .then(data =>{
+            console.log(data)
+
+            data.forEach((item) => {
+                item.rendimiento = Math.round(item.rendimiento);
+                item.calidad = Math.round(item.calidad);
+                item.disponibilidad = Math.round(item.disponibilidad);
+            });
+
+
+            data.forEach((item) => {
+                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
+                item.createdAt = item.createdAt.slice(0, 10);
+            });
+
+
+            d1 = data[2];
+            d2 = data[1];
+            d3 = data[0];
+
+            console.log(d1);
+            console.log(d2);
+            console.log(d3);
+
+            last3oee.data.datasets[0].data = [d1.oee, d2.oee, d3.oee];
+            last3oee.update();
+
+
+
+        }).catch(error => console.log(error));
+
+
+    }
     
 
 
@@ -500,6 +517,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
     Realtime();
+    lastoee();
 
 
 });
