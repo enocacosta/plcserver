@@ -2,13 +2,13 @@ const datosTipoParada = require('../model/modeloTipoParada');
  
 const guardarTipoParada = async(tipoParada , tiempo , turno) =>{
     try {
-        const newdatosOEE = new datosTipoParada({
+        const newDatosTipoParada = new datosTipoParada({
             tipoParada: tipoParada,
             tiempo: tiempo,
             turno: turno,
         })
         
-        const save = await newdatosOEE.save()  
+        const save = await newDatosTipoParada.save()  
         .then(() => {
             console.log('Document saved successfully in datos tipo parada');
           })
