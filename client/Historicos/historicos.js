@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var datetocompare = "";
     var filteredData;
     var extractedData;
+    var extractedData2;
 
     var labels1 = [];
     var turno1Data = [];
@@ -81,7 +82,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 groupedData[date] = item.oee;
             }
             });
-            console.log(groupedData);
+           
 
 
             // Obtén las fechas únicas y ordénalas
@@ -104,7 +105,44 @@ document.addEventListener('DOMContentLoaded', function () {
 
            extractedData = data.datosOEE;
 
-           detailedOEE();
+           
+
+           //Datos para las paradas
+
+            data.datosTipoParada.forEach((item) => {
+            item.createdAt = item.createdAt.slice(0, 10);
+            });
+
+            const groupedData2 = {};
+            data.datosTipoParada.forEach(item => {
+                const tipoParada = item.tipoParada;
+                if (!groupedData2[tipoParada]) {
+                    groupedData2[tipoParada] = 0;
+                }
+                groupedData2[tipoParada] += item.tiempo;
+            });
+
+
+            const totalDuration = Object.values(groupedData2).reduce((acc, duration) => acc + duration, 0);
+
+            const pieData = [];
+            for (const tipoParada in groupedData2) {
+                const tiempo = groupedData2[tipoParada];
+                const porcentaje = (tiempo / totalDuration) * 100;
+                pieData.push({ tipoParada, porcentaje });
+            }
+
+            const labelspiegen = pieData.map(item => `Error ${item.tipoParada}`);
+            const datapiegen = pieData.map(item => item.porcentaje);
+
+            graficapareto.data.labels = labelspiegen;
+            graficapareto.data.datasets[0].data = datapiegen;
+            graficapareto.update();
+
+            extractedData2 = data.datosTipoParada;
+
+            detailedOEE();
+
              
 
         }).catch(error => console.log(error));
@@ -163,24 +201,21 @@ document.addEventListener('DOMContentLoaded', function () {
             return item.createdAt == datetocompare && item.turno == document.getElementById("turno").value;
         });
         
-        console.log(filteredData[0]);
+        
 
         if (filteredData[0] === undefined) {
             Disponibilidad.data.datasets[0].data = [0, 0];
-            console.log(Disponibilidad.data.datasets[0].data[0]);
             Rendimiento.data.datasets[0].data = [0, 0];
             Calidad.data.datasets[0].data = [0, 0];
             OEE.data.datasets[0].data = [0, 0];
             document.getElementById("nodata").style.display = "block";
-          } else {
+        } else {
             Disponibilidad.data.datasets[0].data = [filteredData[0].disponibilidad, 100-filteredData[0].disponibilidad];
-            console.log(Disponibilidad.data.datasets[0].data[0]);
             Rendimiento.data.datasets[0].data = [filteredData[0].rendimiento, 100-filteredData[0].rendimiento];
             Calidad.data.datasets[0].data = [filteredData[0].calidad, 100-filteredData[0].calidad];
             OEE.data.datasets[0].data = [filteredData[0].oee, 100-filteredData[0].oee];
             document.getElementById("nodata").style.display = "none";
-          }
-        
+        }
 
         setcolor();
 
@@ -188,6 +223,53 @@ document.addEventListener('DOMContentLoaded', function () {
         Rendimiento.update();
         Calidad.update();
         OEE.update();
+
+
+
+        filteredData2 = extractedData2.filter(item => {
+            return item.createdAt == datetocompare;
+        });
+
+        if (filteredData2[0] === undefined) {
+            paradaespecifica.data.datasets[0].data = [0];
+            paradaespecifica.data.labels = ["none"];
+            document.getElementById("nodata").style.display = "block";
+        } else {
+
+            const tempdata = {};
+            filteredData2.forEach(item => {
+                const tipoParada = item.tipoParada;
+                if (!tempdata[tipoParada]) {
+                    tempdata[tipoParada] = 0;
+                }
+                tempdata[tipoParada] += item.tiempo;
+            });
+
+
+            const temptotalDuration = Object.values(tempdata).reduce((acc, duration) => acc + duration, 0);
+
+            const temppieData = [];
+            for (const tipoParada in tempdata) {
+                const tiempo = tempdata[tipoParada];
+                const porcentaje = (tiempo / temptotalDuration) * 100;
+                temppieData.push({ tipoParada, porcentaje });
+            }
+
+
+            const templabelspiegen = temppieData.map(item => `Error ${item.tipoParada}`);
+            const tempdatapiegen = temppieData.map(item => item.porcentaje);
+
+            paradaespecifica.data.labels = templabelspiegen;
+            paradaespecifica.data.datasets[0].data = tempdatapiegen;
+
+            document.getElementById("nodata").style.display = "none";
+        }
+
+        
+
+        paradaespecifica.update();
+
+        console.log(filteredData2);
 
     }
 
@@ -541,12 +623,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Yellow'
               ],
               datasets: [{
-                label: 'My First Dataset',
+                label: 'Pareto paradas',
                 data: [300, 50, 100],
                 backgroundColor: [
-                  'rgb(255, 99, 132)',
-                  'rgb(54, 162, 235)',
-                  'rgb(255, 205, 86)'
+                    'rgb(31, 119, 180)',
+                    'rgb(255, 127, 14)',
+                    'rgb(44, 160, 44)',
+                    'rgb(214, 39, 40)',
+                    'rgb(148, 103, 189)',
+                    'rgb(140, 86, 75)',
+                    'rgb(227, 119, 194)',
+                    'rgb(127, 127, 127)',
+                    'rgb(188, 189, 34)',
+                    'rgb(23, 190, 207)',
+                    'rgb(108, 75, 32)',
+                    'rgb(222, 223, 60)'
                 ],
                 hoverOffset: 4
               }]
@@ -556,7 +647,8 @@ document.addEventListener('DOMContentLoaded', function () {
         options: {
             responsive: true,
             maintainAspectRatio: false,
-          }
+            
+        }
         
     });
 
@@ -571,12 +663,21 @@ document.addEventListener('DOMContentLoaded', function () {
                 'Yellow'
               ],
               datasets: [{
-                label: 'My First Dataset',
+                label: 'Pareto paradas',
                 data: [300, 50, 100],
                 backgroundColor: [
-                  'rgb(255, 99, 132)',
-                  'rgb(54, 162, 235)',
-                  'rgb(255, 205, 86)'
+                    'rgb(31, 119, 180)',
+                    'rgb(255, 127, 14)',
+                    'rgb(44, 160, 44)',
+                    'rgb(214, 39, 40)',
+                    'rgb(148, 103, 189)',
+                    'rgb(140, 86, 75)',
+                    'rgb(227, 119, 194)',
+                    'rgb(127, 127, 127)',
+                    'rgb(188, 189, 34)',
+                    'rgb(23, 190, 207)',
+                    'rgb(108, 75, 32)',
+                    'rgb(222, 223, 60)'
                 ],
                 hoverOffset: 4
               }]
@@ -586,6 +687,14 @@ document.addEventListener('DOMContentLoaded', function () {
         options: {
             responsive: false,
             maintainAspectRatio: true,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Paradas%',
+                    font: {weight: 'bold', size: 14},
+                    color: '#2c4f63',
+                },
+            },
         }
         
     });
