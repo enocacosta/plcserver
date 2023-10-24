@@ -10,15 +10,11 @@ app.get('/', async (req, res) => {
     try {
 
         let { fecha, turno, numeromalos} = req.query;
-        
-        console.log(fecha);
 
         fecha = formatoFecha(fecha);
 
-        console.log(fecha);
-
         const newDatosRechazos = new datosRechazos({
-            fecha,
+            fecha: fecha.toISOString(),
             turno,
             cantidad: numeromalos,
         })
