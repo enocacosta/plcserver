@@ -15,6 +15,9 @@ app.get('/', async (req, res) => {
 
         const query = {};
 
+        fechaI = formatoFecha(fechaI);
+        fechaF = formatoFecha(fechaF);
+
         if (fechaI && fechaF) {
             const startDate = new Date(fechaI);
             startDate.setHours(0, 0, 0, 0); // Set time to midnight

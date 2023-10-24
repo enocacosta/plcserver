@@ -2,6 +2,7 @@ const express = require('express');
 const app = express.Router();
 const cors = require('cors');
 const datosRechazos = require('../model/modeloRechazos');
+const formatoFecha = require('../helpers/formatoFecha');
 app.use(cors());
 
 // Ruta HTTP para recibir la solicitud y enviar la respuesta
@@ -9,14 +10,11 @@ app.get('/', async (req, res) => {
     try {
 
         let { fecha, turno, numeromalos} = req.query;
-        
-        console.log(fecha);
-        console.log(turno);
-        console.log(numeromalos);
 
+        fecha = formatoFecha(fecha);
 
         const newDatosRechazos = new datosRechazos({
-            fecha,
+            fecha: fecha.toISOString(),
             turno,
             cantidad: numeromalos,
         })
