@@ -26,6 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('fechahist').value = formattedDate;
         document.getElementById('fechahistfin').value = formattedDate;
         document.getElementById('fechahistfin').max = formattedDate;
+
+        var today = new Date();
+        var year = today.getFullYear();
+        var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
+        var day = String(today.getDate()).padStart(2, '0');
+        var formattedDatetoday = year + '-' + month + '-' + day;
+        document.getElementById('fechamalos').value = formattedDate;
+        document.getElementById('fechamalos').max = formattedDatetoday;
     }setdates ();
 
     function comparedates (){
@@ -587,6 +595,29 @@ document.addEventListener('DOMContentLoaded', function () {
                       '&valor3=' + encodeURIComponent(conturno);
 
         window.location.href = url;
+
+    }
+
+
+    document.getElementById('numeromalos').addEventListener('input', function () {
+        // Obtén el valor actual del input
+        let valor = document.getElementById('numeromalos').value;
+    
+        // Elimina cualquier carácter que no sea un número entero
+        valor = valor.replace(/[^0-9]/g, '');
+    
+        // Actualiza el valor del input con solo números enteros
+        document.getElementById('numeromalos').value = valor;
+    });
+
+    document.getElementById('enviarmalos').addEventListener('click', enviarmalos);
+
+    function enviarmalos(){
+        var fechamalos = document.getElementById('fechamalos').value;
+        var turnomalos = document.getElementById('noturnomalos').value;
+        var numeromalos = document.getElementById('numeromalos').value;
+
+        fetch(`http://localhost:3000/reporte?fecha=${fechamalos}&turno=${turnomalos}&numeromalos=${numeromalos}`)
 
     }
 
