@@ -13,7 +13,7 @@ app.get('/', async (req, res) => {
 
         res.json(queryResult);
 
-        console.log(queryResult);
+        
 
     } catch (error) {
         console.error('Database Error:', error);
