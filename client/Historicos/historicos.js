@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // 1. Convertir las variables rendimiento, calidad y disponibilidad a enteros
             data.datosOEE.forEach((item) => {
                 item.rendimiento = Math.round(item.rendimiento);
-                item.calidad = Math.round(item.calidad);
+                item.totalTurno = Math.round(item.totalTurno);
                 item.disponibilidad = Math.round(item.disponibilidad);
             });
 
@@ -91,15 +91,19 @@ document.addEventListener('DOMContentLoaded', function () {
             data.datosOEE.forEach(oee => {
             const rechazos = groupedRechazos[oee.createdAt] && groupedRechazos[oee.createdAt][oee.turno];
             if (rechazos !== undefined) {
-                oee.calidad = Math.round(((oee.calidad - rechazos) / oee.calidad) * 100);
+                oee.calidad = Math.round(((oee.totalTurno - rechazos) / oee.totalTurno) * 100);
+            }else{
+                oee.calidad = Math.round(((oee.totalTurno) / oee.totalTurno) * 100)
             }
             });
+
+            
 
             //calculamos oee
             data.datosOEE.forEach((item) => {
                 item.oee = Math.round((item.calidad * item.rendimiento * item.disponibilidad) / 10000);
-            });
-            console.log(data.datosOEE);
+            });            
+            
 
 
 
