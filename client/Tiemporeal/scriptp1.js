@@ -11,39 +11,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var maquina1 = document.getElementById('maq1');
 
     document.getElementById('esperadooeebt').addEventListener ("click", oeeesperadoupdt);
-    document.getElementById('consultar').addEventListener ("click", consultarhistoricos);
-    document.getElementById('fechahist').addEventListener ("change", comparedates);
-    document.getElementById('fechahistfin').addEventListener ("change", comparedates);
 
-    function setdates (){
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        var yyyy = yesterday.getFullYear();
-        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var dd = String(yesterday.getDate()).padStart(2, '0');
-        var formattedDate = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('fechahist').max = formattedDate;
-        document.getElementById('fechahist').value = formattedDate;
-        document.getElementById('fechahistfin').value = formattedDate;
-        document.getElementById('fechahistfin').max = formattedDate;
-
-        var today = new Date();
-        var year = today.getFullYear();
-        var month = String(today.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var day = String(today.getDate()).padStart(2, '0');
-        var formattedDatetoday = year + '-' + month + '-' + day;
-        document.getElementById('fechamalos').value = formattedDate;
-        document.getElementById('fechamalos').max = formattedDatetoday;
-    }setdates ();
-
-    function comparedates (){
-        var fecha1 = new Date(document.getElementById('fechahist').value);
-        var fecha2 = new Date(document.getElementById('fechahistfin').value);
-
-        if (fecha1 > fecha2) {
-            document.getElementById('fechahist').value = document.getElementById('fechahistfin').value;
-        }
-    }
 
     function oeeesperadoupdt(){
         esperadooeetb = document.getElementById('esperadooeetb').value;
@@ -584,42 +552,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
     Realtime();
-
-    function consultarhistoricos(){
-        var confecha1 = document.getElementById('fechahist').value;
-        var confecha2 = document.getElementById('fechahistfin').value;
-        var conturno = document.getElementById('turno').value;
-
-        var url = 'reporte.html?valor1=' + encodeURIComponent(confecha1) +
-                      '&valor2=' + encodeURIComponent(confecha2) +
-                      '&valor3=' + encodeURIComponent(conturno);
-
-        window.location.href = url;
-
-    }
-
-
-    document.getElementById('numeromalos').addEventListener('input', function () {
-        // Obtén el valor actual del input
-        let valor = document.getElementById('numeromalos').value;
-    
-        // Elimina cualquier carácter que no sea un número entero
-        valor = valor.replace(/[^0-9]/g, '');
-    
-        // Actualiza el valor del input con solo números enteros
-        document.getElementById('numeromalos').value = valor;
-    });
-
-    document.getElementById('enviarmalos').addEventListener('click', enviarmalos);
-
-    function enviarmalos(){
-        var fechamalos = document.getElementById('fechamalos').value;
-        var turnomalos = document.getElementById('noturnomalos').value;
-        var numeromalos = document.getElementById('numeromalos').value;
-
-        fetch(`http://localhost:3000/rechazos?fecha=${fechamalos}&turno=${turnomalos}&numeromalos=${numeromalos}`)
-
-    }
 
 
 
