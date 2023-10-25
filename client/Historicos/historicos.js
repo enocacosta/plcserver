@@ -260,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
         filteredData2 = extractedData2.filter(item => {
-            return item.createdAt == datetocompare;
+            return item.createdAt == datetocompare && item.turno == document.getElementById("turno").value;
         });
 
         if (filteredData2[0] === undefined) {
