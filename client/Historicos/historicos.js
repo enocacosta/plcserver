@@ -68,11 +68,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 item.disponibilidad = Math.round(item.disponibilidad);
             });
 
-            // 2. Calcular el valor de oee para cada objeto y acortar la fecha
+            // 2. acortar la fecha
             data.datosOEE.forEach((item) => {
-                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
                 item.createdAt = item.createdAt.slice(0, 10);
             });
+
+            //para calidad
+            data.datosRechazos.forEach((item) => {
+                item.fecha = item.fecha.slice(0, 10);
+            });
+
+            // Primero, vamos a agrupar los datosRechazos por fecha y turno
+            const groupedRechazos = {};
+            data.datosRechazos.forEach(rechazo => {
+            if (!groupedRechazos[rechazo.fecha]) {
+                groupedRechazos[rechazo.fecha] = {};
+            }
+            groupedRechazos[rechazo.fecha][rechazo.turno] = rechazo.cantidad;
+            });
+
+            // Luego, calculamos calidad y lo agregamos a cada objeto en datosOEE
+            data.datosOEE.forEach(oee => {
+            const rechazos = groupedRechazos[oee.createdAt] && groupedRechazos[oee.createdAt][oee.turno];
+            if (rechazos !== undefined) {
+                oee.calidad = Math.round(((oee.calidad - rechazos) / oee.calidad) * 100);
+            }
+            });
+
+            //calculamos oee
+            data.datosOEE.forEach((item) => {
+                item.oee = Math.round((item.calidad * item.rendimiento * item.disponibilidad) / 10000);
+            });
+            console.log(data.datosOEE);
+
 
 
             const groupedData = {};
@@ -208,6 +236,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Rendimiento.data.datasets[0].data = [0, 0];
             Calidad.data.datasets[0].data = [0, 0];
             OEE.data.datasets[0].data = [0, 0];
+            document.getElementById("nodata").innerHTML = "No hay datos OEE para el dia/turno seleccionados"
             document.getElementById("nodata").style.display = "block";
         } else {
             Disponibilidad.data.datasets[0].data = [filteredData[0].disponibilidad, 100-filteredData[0].disponibilidad];
@@ -233,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filteredData2[0] === undefined) {
             paradaespecifica.data.datasets[0].data = [0];
             paradaespecifica.data.labels = ["none"];
+            document.getElementById("nodata").innerHTML = "No hay datos de paradas para el dia/turno seleccionados"
             document.getElementById("nodata").style.display = "block";
         } else {
 
@@ -265,6 +295,10 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById("nodata").style.display = "none";
         }
 
+        if (filteredData2[0] === undefined && filteredData[0] === undefined) {
+            document.getElementById("nodata").innerHTML = "No hay datos para el dia/turno seleccionados"
+            document.getElementById("nodata").style.display = "block";
+        }
         
 
         paradaespecifica.update();

@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);
-            valcalidad = parseInt(data.calidad);
+            valcalidad = 100;
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
             document.getElementById('producciondiariap2').value = parseInt(data.totalDia);

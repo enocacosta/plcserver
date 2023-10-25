@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             valrendimiento = parseInt(data.rendimiento);
             valdisponibilidad = parseInt(data.disponibilidad);
-            valcalidad = parseInt(data.calidad);
+            valcalidad = 100;
             valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
 
             Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
