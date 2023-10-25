@@ -169,6 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             graficapareto.data.labels = labelspiegen;
             graficapareto.data.datasets[0].data = datapiegen;
+            graficapareto.options.plugins.subtitle.text = "Tiempo total: " + totalDuration + " minutos";
             graficapareto.update();
 
             extractedData2 = data.datosTipoParada;
@@ -266,6 +267,7 @@ document.addEventListener('DOMContentLoaded', function () {
         if (filteredData2[0] === undefined) {
             paradaespecifica.data.datasets[0].data = [0];
             paradaespecifica.data.labels = ["none"];
+            paradaespecifica.options.plugins.subtitle.text = "Tiempo total: 0 minutos";
             document.getElementById("nodata").innerHTML = "No hay datos de paradas para el dia/turno seleccionados"
             document.getElementById("nodata").style.display = "block";
         } else {
@@ -295,6 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             paradaespecifica.data.labels = templabelspiegen;
             paradaespecifica.data.datasets[0].data = tempdatapiegen;
+            paradaespecifica.options.plugins.subtitle.text = "Tiempo total: " + temptotalDuration + " minutos";
 
             document.getElementById("nodata").style.display = "none";
         }
@@ -685,6 +688,13 @@ document.addEventListener('DOMContentLoaded', function () {
         options: {
             responsive: true,
             maintainAspectRatio: false,
+            plugins: {
+                subtitle: {
+                    display: true,
+                    text: '',
+                    font: {weight: 'bold', size: 14},
+                }
+            }
             
         }
         
@@ -732,6 +742,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     font: {weight: 'bold', size: 14},
                     color: '#2c4f63',
                 },
+                subtitle: {
+                    display: true,
+                    text: ''
+                }
             },
         }
         
