@@ -104,13 +104,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
             data.forEach((item) => {
                 item.rendimiento = Math.round(item.rendimiento);
-                item.calidad = Math.round(item.calidad);
+                item.totalTurno = Math.round(item.totalTurno);
                 item.disponibilidad = Math.round(item.disponibilidad);
             });
 
 
             data.forEach((item) => {
-                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.calidad) / 10000);
+                item.oee = Math.round((item.disponibilidad * item.rendimiento * item.totalTurno) / 10000);
                 item.createdAt = item.createdAt.slice(0, 10);
             });
 
