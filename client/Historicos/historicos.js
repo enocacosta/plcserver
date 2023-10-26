@@ -169,7 +169,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             graficapareto.data.labels = labelspiegen;
             graficapareto.data.datasets[0].data = datapiegen;
-            graficapareto.options.plugins.subtitle.text = "Tiempo total: " + totalDuration + " minutos";
+            graficapareto.options.plugins.subtitle.text = "Tiempo total: " + Math.floor(totalDuration/60) + " minutos y " + totalDuration % 60 + " segundos";
             graficapareto.update();
 
             extractedData2 = data.datosTipoParada;
@@ -297,7 +297,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             paradaespecifica.data.labels = templabelspiegen;
             paradaespecifica.data.datasets[0].data = tempdatapiegen;
-            paradaespecifica.options.plugins.subtitle.text = "Tiempo total: " + temptotalDuration + " minutos";
+            paradaespecifica.options.plugins.subtitle.text = "Tiempo total: " + Math.floor(temptotalDuration/60) + " minutos y " + temptotalDuration % 60 + " segundos";
 
             document.getElementById("nodata").style.display = "none";
         }
