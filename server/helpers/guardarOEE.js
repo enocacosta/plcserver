@@ -15,6 +15,7 @@ const guardarOEE = async() =>{
             turno: turnoNumero
         })
         
+        
         const save = await newdatosOEE.save()  
         .then(() => {
             console.log('Document saved successfully in datos oeecalculados');
