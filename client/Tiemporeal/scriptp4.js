@@ -467,7 +467,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var last3oee = new Chart(ctx7, {
         type: 'bar',
         data: {
-            labels: ['ANTEAYER', 'AYER', 'HOY'],
+            labels: ['ANTEPENÚLTIMO', 'PENÚLTIMO', 'ÚLTIMO'],
             datasets: [{
             data: [80, 80, 80],
             backgroundColor: ['#fffe06', '#389743', '#389743'],
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 title: {
                     display: true,
-                    text: 'OEE% ULTIMOS 3 DIAS',
+                    text: 'OEE% ULTIMOS 3 TURNOS',
                     font: {weight: 'bold', size: 14},
                     color: '#2c4f63',
                 },
