@@ -42,6 +42,17 @@ document.addEventListener('DOMContentLoaded', function () {
     var valmaq1 = 1;
     var tparada = 0;
     var tproductivo = 0;
+    var ultimaparada;
+
+    const paradaMap = {
+        1: "Proceso",
+        2: "Servicios industriales",
+        3: "Calidad / Medio ambiente / SST",
+        4: "Mant. Mecánico",
+        5: "Mant. Eléctrico",
+        6: "Metrología / Instrumentación",
+        7: "Otros"
+    };
 
 
     function Realtime() {
@@ -66,6 +77,13 @@ document.addEventListener('DOMContentLoaded', function () {
             tproductivo = (parseInt(data.tiempoProductivo))/60;
             
             valmaq1 = data.estadoMaquina;
+
+            ultimaparada = data.tipoParada;
+
+
+            if (paradaMap.hasOwnProperty(ultimaparada)) {
+                document.getElementById('tbultimaparada').innerHTML = paradaMap[ultimaparada];
+            }
 
 
         }).catch(error => console.log(error));
