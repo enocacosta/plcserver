@@ -25,10 +25,12 @@ const readPlc = async()=>{
                 oee[key]=accumulation;
             } 
         }      
+
+        
         
         //fecha del PLC
         const fecha = new Date(oee.year, oee.mes-1, oee.dia, oee.hora, oee.minuto, oee.segundo);
-        
+        console.log(oee);
         const newdatosDb = new datosDb({
             contador2: oee.contador2,
             contador1: oee.contador1,
