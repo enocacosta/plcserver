@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="es">
+
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>AutoOEE</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+
+    <body>
+
+        <nav class="navbar navbar-expand-lg bg-body-tertiary rounded sticky-top" aria-label="Thirteenth navbar example">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarsExample11" aria-controls="navbarsExample11" aria-expanded="false" aria-label="Toggle navigation">
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+        
+                <div class="collapse navbar-collapse d-lg-flex" id="navbarsExample11">
+                    <a class="navbar-brand col-lg-3 me-0" href="../Inicio/index.html"><img src="../logos/AUToOEE.png" class="img-fluid navicon" alt="AutoOEE"></a>
+                    <ul class="navbar-nav col-lg-6 justify-content-lg-center">
+                    <li class="nav-item"><a href="../Operario/index.html" class="nav-link" aria-current="page">Operario</a></li>
+                    <li class="nav-item"><a href="../Produccion/index.html" class="nav-link">Producción</a></li>
+                    <li class="nav-item"><a href="../Mantenimiento/index.html" class="nav-link active">Mantenimiento</a></li>
+                    <li class="nav-item"><a href="../Gerencial/index.html" class="nav-link">Gerencial</a></li>
+                    <li class="nav-item"><a href="../Acercade/index.html" class="nav-link">Acerca de nosotros</a></li>
+                  </ul>
+                  <div class="d-lg-flex col-lg-3 justify-content-lg-end">
+                    <a class="btn btn-primary" target="_blank" href="https://forms.office.com/Pages/ResponsePage.aspx?id=ebawul-96E-1Fsa4sxfHgv8suf5Us4dBngK1VFzZa0FUME9FVFVTRjFGRlJFRUhCWE9MSjZIRFpBMy4u">Encuesta</a>
+                  </div>
+                </div>
+              </div>
+        </nav>
+        
+        <div class="container-xxl flex-grow-1 container-p-y">
+
+        
+            <div class="row">
+
+                <div class="col-lg-4 col-md-4 order-0 align-self-center">
+                    <div class="row">
+
+                        
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                            <div class="avatar flex-shrink-0">
+                                                <i class="bi bi-clock-history text-success"></i>
+                                            </div>
+                                    </div>
+                                    <span class="fw-semibold d-block mb-1">P. Programada</span>
+                                    <h3 class="card-title mb-2" id="paradaprogramada">256</h3>
+                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> Minutos</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                            <div class="avatar flex-shrink-0">
+                                                <i class="bi bi-clock-history text-success"></i>
+                                            </div>
+                                    </div>
+                                    <span class="fw-semibold d-block mb-1">T. Parada</span>
+                                    <h3 class="card-title mb-2" id="parada">256</h3>
+                                    <small class="text-success fw-semibold"><i class="bx bx-up-arrow-alt"></i> Minutos</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        
+                        <div class="w-100"></div>
+
+                        <div>
+
+
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="card-title d-flex align-items-start justify-content-between">
+                                            <div class="avatar flex-shrink-0">
+                                                <i class="bi bi-clock-history text-success"></i>
+                                            </div>
+                                    </div>
+                                    <span class="fw-semibold d-block mb-1">Motivo ultima parada</span>
+                                    <h3 class="card-title mb-2" id="tbultimaparada">256</h3>
+                                </div>
+                            </div>
+                              
+        
+                        </div>
+
+                        
+                        
+
+
+                    </div>
+                </div>
+
+                <div class="col-lg-4 col-md-4 order-1">
+
+                    <div class="row">
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                            <canvas id="Disponibilidad"></canvas>
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                            <canvas id="Rendimiento"></canvas>
+
+                        </div>
+
+                        <div class="w-100"></div>
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                            <canvas id="Calidad"></canvas>
+
+                        </div>
+
+                        <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                            <canvas id="OEE"></canvas>
+
+                        </div>
+
+                        
+                    
+
+                    </div>
+
+                </div>
+
+                <div class="col-lg-4 col-md-4 order-2">
+
+
+                    
+
+                        <canvas id="timeChart"></canvas>
+
+                    
+
+                </div>
+
+                
+                
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-4 col-xl-4 order-0 mb-4">
+
+                    <div class="card">
+
+                        <div class="text-center">
+
+                            <h3 class="fw-semibold d-block mb-1">Consulta historicos</h3>
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="fechahist" class="form-label">Desde:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="date" class="form-control" id="fechahist">
+                                </div>
+                            </div>
+
+
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="fechahistfin" class="form-label">Hasta:</label>
+                                </div>
+                                <div class="col-auto">
+                                    <input type="date" class="form-control" id="fechahistfin">
+                                </div>
+                            </div>
+
+                            <div class="row g-3 align-items-center">
+                                <div class="col-auto">
+                                    <label for="turno" class="form-label">Turno: </label>
+                                </div>
+                                <div class="col-auto">
+                                    <select id="turno" class="form-select">
+                                        <option selected value="1">1</option>
+                                        <option value="2">2</option>
+                                        <option value="3">3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            
+                            <button class="btn btn-primary" id="consultar">Consultar</button>
+                            <div id="messagehist" style="margin-top: 10px;"></div>
+                        </div>
+
+                    </div>
+                      
+                </div>
+
+                <div class="col-lg-4 col-xl-4 order-0 mb-4">
+                   
+                    <div class="card">
+
+                        <img src="../logos/bandatransportadora.png" class="img-fluid" alt="...">
+                        <button id="maq1" type="button" class="btn btn-sm btn-success" disabled>RUN</button>
+                        <div class="btn-group btnsw" data-toggle="buttons">
+                            <label class="btn btn-success active">
+                              <input type="radio" name="options" id="option1" autocomplete="off" checked> RUN
+                            </label>
+                            <label class="btn btn-primary">
+                              <input type="radio" name="options" id="option2" autocomplete="off"> STANDBY
+                            </label>
+                            <label class="btn btn-danger">
+                              <input type="radio" name="options" id="option3" autocomplete="off"> STOP
+                            </label>
+                          </div>
+
+                    </div>
+                </div>
+
+                
+                
+            </div>
+
+
+
+
+
+
+            
+
+
+            
+
+        </div>
+
+        
+
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+        <script src="script3.js"></script>
+        
+    </body>
+
+</html>

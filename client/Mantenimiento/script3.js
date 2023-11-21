@@ -1,36 +1,79 @@
 document.addEventListener('DOMContentLoaded', function () {
-    window.jsPDF = window.jspdf.jsPDF;
-    var ctx = document.getElementById('timeChartp3').getContext('2d');
-    var ctx1 = document.getElementById('Disponibilidadp3').getContext('2d');
-    var ctx2 = document.getElementById('Rendimientop3').getContext('2d');
-    var ctx3 = document.getElementById('Calidadp3').getContext('2d');
-    var ctx4 = document.getElementById('OEEp3').getContext('2d');
-    var maquina1 = document.getElementById('maq1p3');
+    var ctx = document.getElementById('timeChart').getContext('2d');
+    var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
+    var ctx2 = document.getElementById('Rendimiento').getContext('2d');
+    var ctx3 = document.getElementById('Calidad').getContext('2d');
+    var ctx4 = document.getElementById('OEE').getContext('2d');
+    var maquina1 = document.getElementById('maq1');
+    var radioButtons = document.querySelectorAll('input[type="radio"]');
+    const messagehist = document.getElementById("messagehist");
 
-    document.getElementById('consultarp3').addEventListener ("click", consultarhistoricos);
-    document.getElementById('fechahistp3').addEventListener ("change", comparedates);
-    document.getElementById('fechahistfinp3').addEventListener ("change", comparedates);
+    let exe = true;
 
-    function setdates (){
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        var yyyy = yesterday.getFullYear();
-        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var dd = String(yesterday.getDate()).padStart(2, '0');
-        var formattedDate = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('fechahistp3').max = formattedDate;
-        document.getElementById('fechahistp3').value = formattedDate;
-        document.getElementById('fechahistfinp3').value = formattedDate;
-        document.getElementById('fechahistfinp3').max = formattedDate;
-    }setdates ();
+    document.getElementById('consultar').addEventListener ("click", consultarhistoricos);
+    document.getElementById('fechahist').addEventListener ("change", comparedates);
+    document.getElementById('fechahistfin').addEventListener ("change", comparedates);
+
+    function setdates() {
+        var startDate = new Date('2023-09-30');
+        var endDate = new Date('2023-10-11');
+    
+        var startYYYY = startDate.getFullYear();
+        var startMM = String(startDate.getMonth() + 1).padStart(2, '0');
+        var startDD = String(startDate.getDate()).padStart(2, '0');
+        var formattedStartDate = startYYYY + '-' + startMM + '-' + startDD;
+    
+        var endYYYY = endDate.getFullYear();
+        var endMM = String(endDate.getMonth() + 1).padStart(2, '0');
+        var endDD = String(endDate.getDate()).padStart(2, '0');
+        var formattedEndDate = endYYYY + '-' + endMM + '-' + endDD;
+    
+        document.getElementById('fechahist').min = formattedStartDate;
+        document.getElementById('fechahist').max = formattedEndDate;
+        document.getElementById('fechahist').value = formattedStartDate;
+        document.getElementById('fechahistfin').min = formattedStartDate;
+        document.getElementById('fechahistfin').max = formattedEndDate;
+        document.getElementById('fechahistfin').value = formattedEndDate;
+    }setdates();
+    
 
     function comparedates (){
-        var fecha1 = new Date(document.getElementById('fechahistp3').value);
-        var fecha2 = new Date(document.getElementById('fechahistfinp3').value);
+        var fecha1 = new Date(document.getElementById('fechahist').value);
+        var fecha2 = new Date(document.getElementById('fechahistfin').value);
 
         if (fecha1 > fecha2) {
-            document.getElementById('fechahistp3').value = document.getElementById('fechahistfinp3').value;
+            document.getElementById('fechahist').value = document.getElementById('fechahistfin').value;
         }
+    }
+
+
+    // Add an event listener to each radio input to detect changes
+    radioButtons.forEach(function (radioButton) {
+        radioButton.addEventListener('change', function () {
+            if (radioButton.checked) {
+                // Verifica cuál de los botones está seleccionado
+                if (radioButton.id === "option1") {
+                    maquina1.className  = "btn btn-sm btn-success"
+                    maquina1.innerHTML = "RUN"
+                    exe = true;
+                } else if (radioButton.id === "option2") {
+                    maquina1.className  = "btn btn-sm btn-primary"
+                    maquina1.innerHTML = "STAND BY"
+                    exe = false;
+                } else if (radioButton.id === "option3") {
+                    maquina1.className = "btn btn-sm btn-danger"
+                    maquina1.innerHTML = "STOP"
+                    exe = true;
+                }
+            }
+        });
+    });
+
+    const generateRandomNumber = (base, rangeSize, lowerLimit, upperLimit) => {
+        // Calculate the valid range respecting the lower and upper limits
+        const validRange = Math.min(upperLimit - base, rangeSize, base - lowerLimit);
+        // Generate a random number within the specified range around the base
+        return base + Math.floor(Math.random() * (2 * rangeSize + 1)) - rangeSize;
     }
 
 
@@ -39,10 +82,16 @@ document.addEventListener('DOMContentLoaded', function () {
     var valdisponibilidad = 0;
     var valcalidad = 0;
     var valoee = 0;
-    var valmaq1 = 1;
     var tparada = 0;
     var tproductivo = 0;
     var ultimaparada;
+    var velvar;
+
+    let baseNumber1= 75;
+    let baseNumber2= 75;
+    let baseNumber3= 75;
+    let baseNumber4= 1.5;
+    const rangeSize = 3; // The range size is 3 numbers above and below the base
 
     const paradaMap = {
         1: "Proceso",
@@ -54,41 +103,47 @@ document.addEventListener('DOMContentLoaded', function () {
         7: "Otros"
     };
 
+    ultimaparada = Math.floor((Math.random() * (7 - 1) + 1));
+
+     if (paradaMap.hasOwnProperty(ultimaparada)) {
+            document.getElementById('tbultimaparada').innerHTML = paradaMap[ultimaparada];
+        }
+
+
 
     function Realtime() {
 
-        fetch('http://localhost:3000')
-        .then(res =>{
-        return res.json();
-        })
-        .then(data =>{
-            
+        timeChartval = Math.floor(Math.random() * 100) + 1;
+
+        if(exe == true){
+            valrendimiento = generateRandomNumber(baseNumber1, rangeSize,10,100);
+            valdisponibilidad = generateRandomNumber(baseNumber2, rangeSize,10,100);
+            valcalidad = generateRandomNumber(baseNumber3, rangeSize,10,100);
+            velvar = (Math.random() * (2 - 1) + 1).toFixed(2); 
+        }
+
+        baseNumber1 = valrendimiento;
+        baseNumber2 = valdisponibilidad;
+        baseNumber3 = valcalidad;
+        baseNumber4 = velvar;
+
+        valoee = parseInt(((valcalidad/100)*(valdisponibilidad/100)*(valrendimiento/100))*100);
+
+        // Generate random numbers for tiempoStop, tiempoProductivo, and tiempoProgramada
+        const totalSum = 100;
+        const maxVariation = 2;
+        tiempoStop = generateRandomNumber(10, 1);
+        tiempoProductivo = generateRandomNumber(40, 1);
+        tiempoProgramada = generateRandomNumber(20, 1);
+
+        document.getElementById('parada').innerHTML = ((parseInt(tiempoStop))/60).toFixed(2);
+        tparada  = (parseInt(tiempoStop))/60;
+        tproductivo = (parseInt(tiempoProductivo))/60;
+        tprogramada = (parseInt(tiempoProgramada))/60;
 
 
-            timeChartval = Math.floor(Math.random() * 100) + 1;
-
-            valrendimiento = parseInt(data.rendimiento);
-            valdisponibilidad = parseInt(data.disponibilidad);
-            valcalidad = 100;
-            valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
-
-            document.getElementById('paradap3').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
-            tparada  = (parseInt(data.tiempoStop))/60;
-            tproductivo = (parseInt(data.tiempoProductivo))/60;
-            
-            valmaq1 = data.estadoMaquina;
-
-            ultimaparada = data.tipoParada;
-
-
-            if (paradaMap.hasOwnProperty(ultimaparada)) {
-                document.getElementById('tbultimaparada').innerHTML = paradaMap[ultimaparada];
-            }
-
-
-        }).catch(error => console.log(error));
         
-        timeChart.data.datasets[0].data = [tparada, tproductivo, 0];
+        timeChart.data.datasets[0].data = [tparada, tproductivo, tprogramada];
         Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
         Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
         Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
@@ -126,22 +181,6 @@ document.addEventListener('DOMContentLoaded', function () {
             OEE.data.datasets[0].backgroundColor = ['#05fc03', '#e5e5e5'];
         }
 
-
-
-
-        if (valmaq1 == 1) {
-            maquina1.style.backgroundColor = "green"
-            maquina1.innerHTML = "RUN"
-        }else if(valmaq1== 2){
-            maquina1.style.backgroundColor = "blue"
-            maquina1.innerHTML = "STAND BY"
-        }else if (valmaq1== 3){
-            maquina1.style.backgroundColor = "#9a0501"
-            maquina1.innerHTML = "STOP"
-        }
-        
-
-
         timeChart.update();
         Disponibilidad.update();
         Rendimiento.update();
@@ -152,7 +191,10 @@ document.addEventListener('DOMContentLoaded', function () {
     
 
 
-    function drawPercentagedisponibilidad(chart) {
+    // Función para dibujar el porcentaje en el centro del circulo
+
+
+    function drawPercentage(chart, val) {
         var ctx = chart.chart.ctx;
         var width = (chart.chart.width);
         var height = (chart.chart.height)+35;
@@ -161,78 +203,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valdisponibilidad + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
-    }
-
-    function drawPercentagerendimiento(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valrendimiento + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
-    }
-
-
-    function drawPercentagecalidad(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valcalidad + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
-    }
-
-
-    function drawPercentageoee(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valoee + "%";
+        var text = val + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -263,8 +234,8 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -305,14 +276,14 @@ document.addEventListener('DOMContentLoaded', function () {
         options: {
 
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagedisponibilidad(chart);
+                    drawPercentage(chart, valdisponibilidad);;
                 }
             },
 
@@ -329,7 +300,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
 
 
             },
@@ -351,14 +322,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagerendimiento(chart);
+                    drawPercentage(chart, valrendimiento);
                 }
             },
 
@@ -375,7 +346,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
             },
     });
 
@@ -394,14 +365,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagecalidad(chart);
+                    drawPercentage(chart, valcalidad);
                 }
             },
 
@@ -418,7 +389,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
 
             },
     });
@@ -436,14 +407,14 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentageoee(chart);
+                    drawPercentage(chart, valoee);
                 }
             },
 
@@ -460,7 +431,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 80,
+            cutout: '85%',
             
             },
     });
@@ -470,15 +441,34 @@ document.addEventListener('DOMContentLoaded', function () {
     Realtime();
 
     function consultarhistoricos(){
-        var confecha1 = document.getElementById('fechahistp3').value;
-        var confecha2 = document.getElementById('fechahistfinp3').value;
-        var conturno = document.getElementById('turnop3').value;
 
-        var url = 'reporte.html?valor1=' + encodeURIComponent(confecha1) +
-                      '&valor2=' + encodeURIComponent(confecha2) +
-                      '&valor3=' + encodeURIComponent(conturno);
+        if (document.getElementById('fechahist').value == "" || document.getElementById('fechahistfin').value == "") {
+            messagehist.textContent = "Ingrese una fecha";
+            messagehist.className = "text-danger";
+            return;
+        }else if (document.getElementById('fechahist').value > document.getElementById('fechahistfin').value) {
+            messagehist.textContent = "Fecha final no puede ser menor a la inicial";
+            messagehist.className = "text-danger";
+            return;
+        }else if(document.getElementById('fechahistfin').value > document.getElementById('fechahistfin').max) {
 
-        window.location.href = url;
+            messagehist.textContent = "Fecha final no puede se mayor al dia de hoy";
+            messagehist.className = "text-danger";
+            return;
+        }else {
+            var confecha1 = document.getElementById('fechahist').value;
+            var confecha2 = document.getElementById('fechahistfin').value;
+            var conturno = document.getElementById('turno').value;
+
+            var url = '../Historicos/reporte.html?valor1=' + encodeURIComponent(confecha1) +
+                        '&valor2=' + encodeURIComponent(confecha2) +
+                        '&valor3=' + encodeURIComponent(conturno);
+
+            window.location.href = url;
+        }
+
+
+        
 
     }
 

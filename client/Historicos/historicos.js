@@ -49,11 +49,26 @@ document.addEventListener('DOMContentLoaded', function () {
     //OBTENER INFORMACIÓN
 
     function getinfort(){
+        
+        if (document.getElementById('fechahist').value == "" || document.getElementById('fechahistfin').value == "") {
+            messagehist.textContent = "Ingrese una fecha";
+            messagehist.className = "text-danger";
+            return;
+        }else if (document.getElementById('fechahist').value > document.getElementById('fechahistfin').value) {
+            messagehist.textContent = "Fecha final no puede ser menor a la inicial";
+            messagehist.className = "text-danger";
+            return;
+        }else if(document.getElementById('fechahistfin').value > document.getElementById('fechahistfin').max) {
+
+            messagehist.textContent = "Fecha final no puede se mayor al dia de hoy";
+            messagehist.className = "text-danger";
+            return;
+        }else {messagehist.className = "visually-hidden";}
 
         fecha1 = document.getElementById("fechahist").value;
         fecha2 = document.getElementById("fechahistfin").value;
 
-        fetch(`http://localhost:3000/reporte?fechaI=${fecha1}&fechaF=${fecha2}`)
+        fetch(`/reporte`)
         .then(res =>{
         return res.json();
         })
@@ -66,6 +81,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 item.rendimiento = Math.round(item.rendimiento);
                 item.totalTurno = Math.round(item.totalTurno);
                 item.disponibilidad = Math.round(item.disponibilidad);
+                item.calidad = Math.round(item.calidad);
             });
 
             // 2. acortar la fecha
@@ -129,9 +145,9 @@ document.addEventListener('DOMContentLoaded', function () {
             OEETotal.data.datasets[0].data = values1;
             OEETotal.update();
 
-           document.getElementsByClassName("informe")[0].style.display = "block";
-           document.getElementsByClassName("informe")[1].style.display = "block";
-           document.getElementsByClassName("informe")[2].style.display = "block";
+           //document.getElementsByClassName("informe")[0].style.display = "block";
+           //document.getElementsByClassName("informe")[1].style.display = "block";
+           //document.getElementsByClassName("informe")[2].style.display = "block";
 
            setslider();
 
@@ -456,14 +472,14 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Disponibilidad'],
             datasets: [{
-            data: [80, 100-80],
+            data: [100, 0],
             backgroundColor: '#9BD0F5',
             }],
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -485,7 +501,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '80%',
         }
     });
 
@@ -495,14 +511,14 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Rendimiento'],
             datasets: [{
-            data: [80, 100-80],
+            data: [100, 0],
             backgroundColor: '#9BD0F5',
             }],
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -524,7 +540,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '80%',
         }
     });
 
@@ -534,14 +550,14 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['Calidad'],
             datasets: [{
-            data: [80, 100-80],
+            data: [100, 0],
             backgroundColor: '#9BD0F5',
             }],
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -563,7 +579,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '80%',
         }
     });
 
@@ -573,14 +589,14 @@ document.addEventListener('DOMContentLoaded', function () {
         data: {
             labels: ['OEE'],
             datasets: [{
-            data: [80, 100-80],
+            data: [100, 0],
             backgroundColor: '#9BD0F5',
             }],
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -602,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 70,
+            cutout: '80%',
         }
     });
 
@@ -612,18 +628,12 @@ document.addEventListener('DOMContentLoaded', function () {
         type: 'line',
         data: {
           labels: [
-            "2023-09-28",
-            "2023-09-29",
-            "2023-09-30",
-            "2023-10-01"
+            "No hay datos"
           ],
           datasets: [
             {
               label: 'OEE',
               data: [
-                20,
-                20,
-                67,
                 null
               ],
               borderColor: '#00833c',
@@ -634,7 +644,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
           responsive: true,
-          maintainAspectRatio: false,
+          maintainAspectRatio: true,
           scales: {
             x: {
                 title: {
@@ -659,13 +669,11 @@ document.addEventListener('DOMContentLoaded', function () {
         type: 'pie',
         data: {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'No hay datos'
               ],
               datasets: [{
                 label: 'Pareto paradas',
-                data: [300, 50, 100],
+                data: [100],
                 backgroundColor: [
                     'rgb(31, 119, 180)',
                     'rgb(255, 127, 14)',
@@ -687,7 +695,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             responsive: true,
-            maintainAspectRatio: false,
+            maintainAspectRatio: true,
             plugins: {
                 subtitle: {
                     display: true,
@@ -706,13 +714,11 @@ document.addEventListener('DOMContentLoaded', function () {
         type: 'pie',
         data: {
             labels: [
-                'Red',
-                'Blue',
-                'Yellow'
+                'No hay datos'
               ],
               datasets: [{
                 label: 'Pareto paradas',
-                data: [300, 50, 100],
+                data: [100],
                 backgroundColor: [
                     'rgb(31, 119, 180)',
                     'rgb(255, 127, 14)',
@@ -733,7 +739,7 @@ document.addEventListener('DOMContentLoaded', function () {
         },
 
         options: {
-            responsive: false,
+            responsive: true,
             maintainAspectRatio: true,
             plugins: {
                 title: {
@@ -766,5 +772,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     }
+
+    var canvasbutton = document.getElementById("canvasbutton");
+    var badge1 = document.getElementById("badge1");
+    canvasbutton.addEventListener("click", function() {
+        if (!badge1.classList.contains("visually-hidden")) {
+            badge1.classList.add("visually-hidden");
+        }
+
+    });
 
 });

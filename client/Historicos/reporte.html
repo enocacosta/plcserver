@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="es">
+
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AutoOEE</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="historicos.css">
+  </head>
+
+  <body>
+
+    <nav class="navbar bg-body-tertiary sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand col-lg-3 me-0" href="../Inicio/index.html"><img src="../logos/AUToOEE.png" class="img-fluid navicon" alt="AutoOEE"></a>
+        <button id="canvasbutton" class="navbar-toggler position-relative" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar" aria-label="Toggle navigation">
+          <span id="badge1" class="position-absolute top-0 start-100 translate-middle p-2 bg-danger border border-light rounded-circle">
+            <span class="visually-hidden">New alerts</span>
+          </span>
+        
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+          <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel"><a class="navbar-brand col-lg-3 me-0" href="../Inicio/index.html"><img src="../logos/AUToOEE.png" class="img-fluid" alt="AutoOEE" style="max-width: 30%;"></a></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          </div>
+          <div class="offcanvas-body">
+            <div class="card" style="background-color: #f5f5f9;">
+              <div class="text-center">
+
+                <h3 class="fw-semibold d-block mb-1">Consulta historicos</h3>
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="fechahist" class="form-label">Desde:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" class="form-control" id="fechahist">
+                    </div>
+                </div>
+
+
+                <div class="row g-3 align-items-center">
+                    <div class="col-auto">
+                        <label for="fechahistfin" class="form-label">Hasta:</label>
+                    </div>
+                    <div class="col-auto">
+                        <input type="date" class="form-control" id="fechahistfin">
+                    </div>
+                </div>
+                
+                
+                <button class="btn btn-primary" id="consultar">Consultar</button>
+                <div id="messagehist" style="margin-top: 10px;"></div>
+            </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container-xxl flex-grow-1 container-p-y">
+
+        
+        
+      <div class="card text-center mb-2">
+        <h1 id="titlereporte"></h1> 
+        <h2 id="titleturno" style="text-align: center;"></h2>
+        <h2>PARAMETROS</h2>
+      
+        
+      <div class="row justify-content-center">
+
+
+
+          <div class="col-lg-4 col-md-4 order-0">
+
+              <div class="row">
+
+                  <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                      <canvas id="Disponibilidad"></canvas>
+
+                  </div>
+
+                  <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                      <canvas id="Rendimiento"></canvas>
+
+                  </div>
+
+                  <div class="w-100"></div>
+
+                  <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                      <canvas id="Calidad"></canvas>
+
+                  </div>
+
+                  <div class="col-lg-6 col-md-12 col-6 mb-4">
+
+                      <canvas id="OEE"></canvas>
+
+                  </div>
+
+                  
+              
+
+              </div>
+
+          </div>
+
+          <div class="col-lg-4 col-md-4 order-1">
+
+
+              
+
+                  <canvas id="paradaespecifica"></canvas>
+
+              
+
+          </div>
+
+          
+          
+      </div>
+
+      <div class="col-lg-18">
+
+        <label id="nodata" class="text-danger" style="display: none;">No hay datos para el dia/turno seleccionados</label>
+          <p></p>
+
+          <div class="input-group mb-3 justify-content-center">
+            <label class="input-group-text" for="turno">Turno</label>
+            <select class="form-select" id="turno" name="noturno" style="max-width: 10%;">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              </select> 
+          </div>
+          
+
+        
+           
+          <p></p>
+          <input type="range" min="1" max="100" value="50" class="form-range" id="dateRange" style="max-width: 50%;">
+          <p></p>
+          <span id="selectedDate" class="fw-semibold">Fecha seleccionada: </span>
+
+        </div>
+
+
+    </div>
+
+    <div class="card text-center mb-2">
+
+      <div class="row">
+        <h1>Historico con turnos</h1>
+
+          <div class="col-lg-18 order-0">
+
+              <canvas id="OEETotal"></canvas>
+                
+          </div>
+
+          
+          
+      </div>
+
+    </div>
+
+
+    <div class="card text-center">
+      <div class="row justify-content-center">
+        <h1>Pareto de paradas</h1>
+
+        <div class="col-lg-10 order-0">
+
+            <canvas id="graficapareto"></canvas>
+              
+        </div>
+
+        
+        
+    </div>
+  </div>
+
+
+
+      
+
+    </div>
+      
+      
+
+
+      
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/jspdf@latest/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="historicos.js"></script>
+  </body>
+
+</html>

@@ -1,134 +1,173 @@
 document.addEventListener('DOMContentLoaded', function () {
     window.jsPDF = window.jspdf.jsPDF;
-    var ctx = document.getElementById('timeChartp2').getContext('2d');
-    var ctx1 = document.getElementById('Disponibilidadp2').getContext('2d');
-    var ctx2 = document.getElementById('Rendimientop2').getContext('2d');
-    var ctx3 = document.getElementById('Calidadp2').getContext('2d');
-    var ctx4 = document.getElementById('OEEp2').getContext('2d');
-    var ctx5 = document.getElementById('velocidadp2').getContext('2d');
-    var ctx6 = document.getElementById('esperadooeep2').getContext('2d');
-    var esperadooeetb = document.getElementById('esperadooeetbp2').value;
-    var maquina1 = document.getElementById('maq1p2');
+    var ctx = document.getElementById('timeChart').getContext('2d');
+    var ctx1 = document.getElementById('Disponibilidad').getContext('2d');
+    var ctx2 = document.getElementById('Rendimiento').getContext('2d');
+    var ctx3 = document.getElementById('Calidad').getContext('2d');
+    var ctx4 = document.getElementById('OEE').getContext('2d');
+    var ctx5 = document.getElementById('velocidad').getContext('2d');
+    var ctx6 = document.getElementById('esperadooee').getContext('2d');
+    var esperadooeetb = document.getElementById('esperadooeetb').value;
+    var maquina1 = document.getElementById('maq1');
+    var radioButtons = document.querySelectorAll('input[type="radio"]');
 
-    document.getElementById('esperadooeebtp2').addEventListener ("click", oeeesperadoupdt);
-    document.getElementById('consultarp2').addEventListener ("click", consultarhistoricos);
-    document.getElementById('fechahistp2').addEventListener ("change", comparedates);
-    document.getElementById('fechahistfinp2').addEventListener ("change", comparedates);
+    let exe = true;
 
-    function setdates (){
-        var yesterday = new Date();
-        yesterday.setDate(yesterday.getDate() - 1);
-        var yyyy = yesterday.getFullYear();
-        var mm = String(yesterday.getMonth() + 1).padStart(2, '0'); // Enero es 0
-        var dd = String(yesterday.getDate()).padStart(2, '0');
-        var formattedDate = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('fechahistp2').max = formattedDate;
-        document.getElementById('fechahistp2').value = formattedDate;
-        document.getElementById('fechahistfinp2').value = formattedDate;
-        document.getElementById('fechahistfinp2').max = formattedDate;
-    }setdates ();
+    document.getElementById('esperadooeebt').addEventListener ("click", oeeesperadoupdt);
+    document.getElementById('esperadooeetb').addEventListener ("keydown", enterbutton);
 
-    function comparedates (){
-        var fecha1 = new Date(document.getElementById('fechahistp2').value);
-        var fecha2 = new Date(document.getElementById('fechahistfinp2').value);
-
-        if (fecha1 > fecha2) {
-            document.getElementById('fechahistp2').value = document.getElementById('fechahistfinp2').value;
-        }
-    }
 
     function oeeesperadoupdt(){
-        esperadooeetb = document.getElementById('esperadooeetbp2').value;
+        esperadooeetb = document.getElementById('esperadooeetb').value;
         esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
         esperadooee.update();
     }
 
+    function enterbutton(e){
+
+        if (!/^\d$/.test(e.key) && e.key !== 'Backspace' && e.key !== 'Delete' && e.key !== 'ArrowLeft' && e.key !== 'ArrowRight') {
+            e.preventDefault();
+        }
+
+        
+        if (e.key === 'Enter' || e.keyCode === 13) {
+            document.getElementById('esperadooeebt').click();
+            
+        }
+    }
+
+    maquina1.className  = "btn btn-sm btn-success"
+    maquina1.innerHTML = "RUN"
+
+    // Add an event listener to each radio input to detect changes
+    radioButtons.forEach(function (radioButton) {
+        radioButton.addEventListener('change', function () {
+            if (radioButton.checked) {
+                // Verifica cuál de los botones está seleccionado
+                if (radioButton.id === "option1") {
+                    maquina1.className  = "btn btn-sm btn-success"
+                    maquina1.innerHTML = "RUN"
+                    exe = true;
+                } else if (radioButton.id === "option2") {
+                    maquina1.className  = "btn btn-sm btn-primary"
+                    maquina1.innerHTML = "STAND BY"
+                    exe = false;
+                } else if (radioButton.id === "option3") {
+                    maquina1.className = "btn btn-sm btn-danger"
+                    maquina1.innerHTML = "STOP"
+                    exe = true;
+                }
+            }
+        });
+    });
+
 
     var timeChartval = 0;
-    var valrendimiento = 0;
+    var valrendimiento = 70;
     var valdisponibilidad = 0;
     var valcalidad = 0;
     var valoee = 0;
     var velvar = 0;
-    var valmaq1 = 1;
     var tparada = 0;
     var tproductivo = 0;
 
+    const generateRandomNumber = (base, rangeSize, lowerLimit, upperLimit) => {
+        // Calculate the valid range respecting the lower and upper limits
+        const validRange = Math.min(upperLimit - base, rangeSize, base - lowerLimit);
+        // Generate a random number within the specified range around the base
+        return base + Math.floor(Math.random() * (2 * rangeSize + 1)) - rangeSize;
+    }
+      
+    let baseNumber1= 75;
+    let baseNumber2= 75;
+    let baseNumber3= 75;
+    let baseNumber4= 1.5;
+    const rangeSize = 3; // The range size is 3 numbers above and below the base
+
+    // Set static random values for totalDia and produccionTurno
+    totalDia = Math.floor(Math.random() * 1000) + 500;  // Adjust the range as needed
+    produccionTurno = Math.floor(Math.random() * 500) + 100;  // Adjust the range as needed
 
     function Realtime() {
 
-        fetch('http://localhost:3000')
-        .then(res =>{
-        return res.json();
-        })
-        .then(data =>{
-            
+        if(exe == true){
+            valrendimiento = generateRandomNumber(baseNumber1, rangeSize,10,100);
+            valdisponibilidad = generateRandomNumber(baseNumber2, rangeSize,10,100);
+            valcalidad = generateRandomNumber(baseNumber3, rangeSize,10,100);
+            velvar = (Math.random() * (2 - 1) + 1).toFixed(2); 
+        }
 
-
-            timeChartval = Math.floor(Math.random() * 100) + 1;
-            velvar = (data.velocidad*60).toFixed(2);
-
-            valrendimiento = parseInt(data.rendimiento);
-            valdisponibilidad = parseInt(data.disponibilidad);
-            valcalidad = 100;
-            valoee = parseInt((valrendimiento*valdisponibilidad*valcalidad)/10000);
-
-            document.getElementById('producciondiariap2').value = parseInt(data.totalDia);
-            document.getElementById('produccionturnop2').value = parseInt(data.produccionTurno);
-            document.getElementById('paradap2').value = ((parseInt(data.tiempoStop))/60).toFixed(2);
-            tparada  = (parseInt(data.tiempoStop))/60;
-            tproductivo = (parseInt(data.tiempoProductivo))/60;
-            
-            valmaq1 = data.estadoMaquina;
-
-
-        }).catch(error => console.log(error));
+        baseNumber1 = valrendimiento;
+        baseNumber2 = valdisponibilidad;
+        baseNumber3 = valcalidad;
+        baseNumber4 = velvar;
         
-        timeChart.data.datasets[0].data = [tparada, tproductivo, 0];
+        valoee = parseInt(((valcalidad/100)*(valdisponibilidad/100)*(valrendimiento/100))*100);
+    
+        // Generate random numbers for tiempoStop, tiempoProductivo, and tiempoProgramada
+        const totalSum = 100;
+        const maxVariation = 2;
+        tiempoStop = generateRandomNumber(10, 1);
+        tiempoProductivo = generateRandomNumber(40, 1);
+        tiempoProgramada = generateRandomNumber(20, 1);
+
+        totalDia = totalDia+1;
+        produccionTurno = produccionTurno+1;
+    
+        document.getElementById('producciondiaria').innerHTML = parseInt(totalDia);
+        document.getElementById('produccionturno').innerHTML = parseInt(produccionTurno);
+        document.getElementById('parada').innerHTML = ((parseInt(tiempoStop))).toFixed(2);
+        tparada  = (parseInt(tiempoStop))/60;
+        tproductivo = (parseInt(tiempoProductivo))/60;
+        tprogramada = (parseInt(tiempoProgramada))/60;
+        document.getElementById('paradaprogramada').innerHTML = (tprogramada).toFixed(2);
+    
+        timeChart.data.datasets[0].data = [tparada, tproductivo, tprogramada];
         Disponibilidad.data.datasets[0].data = [valdisponibilidad, 100-valdisponibilidad];
         Rendimiento.data.datasets[0].data = [valrendimiento, 100-valrendimiento];
         Calidad.data.datasets[0].data = [valcalidad, 100-valcalidad];
         OEE.data.datasets[0].data = [valoee, 100-valoee];
         esperadooee.data.datasets[0].data = [valoee, esperadooeetb];
-
+    
         if (valdisponibilidad<=40) {
             Disponibilidad.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
         } else if (valdisponibilidad>40 && valdisponibilidad<75) {
             Disponibilidad.data.datasets[0].backgroundColor = ['#fffe06', '#e5e5e5'];            
-        }else {
+        } else {
             Disponibilidad.data.datasets[0].backgroundColor = ['#05fc03', '#e5e5e5'];
         }
-
+    
         if (valrendimiento<=40) {
             Rendimiento.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
         } else if (valrendimiento>40 && valrendimiento<75) {
             Rendimiento.data.datasets[0].backgroundColor = ['#fffe06', '#e5e5e5'];            
-        }else {
+        } else {
             Rendimiento.data.datasets[0].backgroundColor = ['#05fc03', '#e5e5e5'];
         }
-
+    
         if (valcalidad<=40) {
             Calidad.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
         } else if (valcalidad>40 && valcalidad<75) {
             Calidad.data.datasets[0].backgroundColor = ['#fffe06', '#e5e5e5'];            
-        }else {
+        } else {
             Calidad.data.datasets[0].backgroundColor = ['#05fc03', '#e5e5e5'];
         }
-
+    
         if (valoee<=40) {
             OEE.data.datasets[0].backgroundColor = ['#fd0100', '#e5e5e5'];
         } else if (valoee>40 && valoee<75) {
             OEE.data.datasets[0].backgroundColor = ['#fffe06', '#e5e5e5'];            
-        }else {
+        } else {
             OEE.data.datasets[0].backgroundColor = ['#05fc03', '#e5e5e5'];
         }
 
 
+        
         var fechaActual = new Date();
         var horas = fechaActual.getHours();
         var minutos = fechaActual.getMinutes();
         var segundos = fechaActual.getSeconds();
-
+    
         if (minutos < 10) {
             minutos = '0' + minutos;
         }
@@ -136,28 +175,12 @@ document.addEventListener('DOMContentLoaded', function () {
         if (segundos < 10) {
             segundos = '0' + segundos;
         }
-
-
+    
         var horaActual = horas + ':' + minutos + ':' + segundos;
         velocidad.data.labels.push(horaActual);
         velocidad.data.datasets[0].data.push(velvar);
-        document.getElementById('velocidadtbp2').value= velvar;
-
-
-        if (valmaq1 == 1) {
-            maquina1.style.backgroundColor = "green"
-            maquina1.innerHTML = "RUN"
-        }else if(valmaq1== 2){
-            maquina1.style.backgroundColor = "blue"
-            maquina1.innerHTML = "STAND BY"
-        }else if (valmaq1== 3){
-            maquina1.style.backgroundColor = "#9a0501"
-            maquina1.innerHTML = "STOP"
-        }
-
-        
-
-
+        document.getElementById('velocidadtb').value= velvar;
+    
         timeChart.update();
         Disponibilidad.update();
         Rendimiento.update();
@@ -166,34 +189,16 @@ document.addEventListener('DOMContentLoaded', function () {
         velocidad.update();
         esperadooee.update();
 
-    }setInterval(Realtime, 3000);
-    
-
-
-    function drawPercentagedisponibilidad(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valdisponibilidad + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
     }
+    
+    // Schedule the Realtime function to run every 3 seconds
+    setInterval(Realtime, 3000);
+    
 
-    function drawPercentagerendimiento(chart) {
+    // Función para dibujar el porcentaje en el centro del circulo
+
+
+    function drawPercentage(chart, val) {
         var ctx = chart.chart.ctx;
         var width = (chart.chart.width);
         var height = (chart.chart.height)+35;
@@ -202,55 +207,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var centerY = (height / 2);
         var fontSize = ((radius / 2).toFixed(0))-10; 
     
-        var text = valrendimiento + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
-    }
-
-
-    function drawPercentagecalidad(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valcalidad + "%";
-    
-        ctx.font = fontSize + "px sans-serif";
-        ctx.fillStyle = "#000"; // Color del texto
-        ctx.textBaseline = "middle";
-        ctx.textAlign = "center";
-    
-        // posición del texto en el centro del circulo
-        var textX = centerX;
-        var textY = centerY;
-    
-        ctx.fillText(text, textX, textY);
-    }
-
-
-    function drawPercentageoee(chart) {
-        var ctx = chart.chart.ctx;
-        var width = (chart.chart.width);
-        var height = (chart.chart.height)+35;
-        var radius = Math.min(width, height) / 2; 
-        var centerX = width / 2;
-        var centerY = (height / 2);
-        var fontSize = ((radius / 2).toFixed(0))-10; 
-    
-        var text = valoee + "%";
+        var text = val + "%";
     
         ctx.font = fontSize + "px sans-serif";
         ctx.fillStyle = "#000"; // Color del texto
@@ -264,10 +221,7 @@ document.addEventListener('DOMContentLoaded', function () {
         ctx.fillText(text, textX, textY);
     }
     
-    
-
     // Crear los gráficos
-
 
     var timeChart = new Chart(ctx, {
         type: 'pie',
@@ -281,8 +235,8 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
@@ -323,14 +277,14 @@ document.addEventListener('DOMContentLoaded', function () {
         options: {
 
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagedisponibilidad(chart);
+                    drawPercentage(chart, valdisponibilidad);
                 }
             },
 
@@ -347,7 +301,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
 
 
             },
@@ -369,14 +323,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagerendimiento(chart);
+                    drawPercentage(chart, valrendimiento);
                 }
             },
 
@@ -393,7 +347,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
             },
     });
 
@@ -412,14 +366,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentagecalidad(chart);
+                    drawPercentage(chart, valcalidad);
                 }
             },
 
@@ -436,7 +390,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 60,
+            cutout: '85%',
 
             },
     });
@@ -454,14 +408,14 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         options: {
             events: [],
-            responsive: false,
-            maintainAspectRatio: false,
+            responsive: true,
+            maintainAspectRatio: true,
             tooltips: {
                 enabled: false,
                 },
             animation: {
                 onComplete: function (chart) {
-                    drawPercentageoee(chart);
+                    drawPercentage(chart, valoee);
                 }
             },
 
@@ -478,7 +432,7 @@ document.addEventListener('DOMContentLoaded', function () {
             },
 
             borderWidth: 0,
-            cutout: 80,
+            cutout: '85%',
             
             },
     });
@@ -577,43 +531,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         
     Realtime();
-
-    function consultarhistoricos(){
-        var confecha1 = document.getElementById('fechahistp2').value;
-        var confecha2 = document.getElementById('fechahistfinp2').value;
-        var conturno = document.getElementById('turnop2').value;
-
-        var url = 'reporte.html?valor1=' + encodeURIComponent(confecha1) +
-                      '&valor2=' + encodeURIComponent(confecha2) +
-                      '&valor3=' + encodeURIComponent(conturno);
-
-        window.location.href = url;
-
-    }
-
-
-
-    document.getElementById('numeromalos').addEventListener('input', function () {
-        // Obtén el valor actual del input
-        let valor = document.getElementById('numeromalos').value;
-    
-        // Elimina cualquier carácter que no sea un número entero
-        valor = valor.replace(/[^0-9]/g, '');
-    
-        // Actualiza el valor del input con solo números enteros
-        document.getElementById('numeromalos').value = valor;
-    });
-
-    document.getElementById('enviarmalos').addEventListener('click', enviarmalos);
-
-    function enviarmalos(){
-        var fechamalos = document.getElementById('fechamalos').value;
-        var turnomalos = document.getElementById('noturnomalos').value;
-        var numeromalos = document.getElementById('numeromalos').value;
-
-        fetch(`http://localhost:3000/rechazos?fecha=${fechamalos}&turno=${turnomalos}&numeromalos=${numeromalos}`)
-
-    }
 
 
 
