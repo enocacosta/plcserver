@@ -31,6 +31,17 @@ cronCalcularTiempo.start();
 cronGuardarOEE.start();
 cronGuardarOEEMediaNoche.start();
 
+app.use(cors());
+app.use(express.static('client'))
+app.use(express.static(path.join(__dirname, '/client/logos/')));
+app.use(express.static(path.join(__dirname, '/client/Inicio')));
+app.use(express.static(path.join(__dirname, '/client/Acercade/')));
+app.use(express.static(path.join(__dirname, '/client/Gerencial')));
+app.use(express.static(path.join(__dirname, '/client/Historicos/')));
+app.use(express.static(path.join(__dirname, '/client/Mantenimiento')));
+app.use(express.static(path.join(__dirname, '/client/Operario/')));
+app.use(express.static(path.join(__dirname, '/client/Produccion')));
+
 app.use('/', userApp);
 app.use('/reporte', queryApp);
 app.use('/gerencial',gerencialApp);
